@@ -1,0 +1,139 @@
+buildscript {
+    repositories {
+        jcenter()
+        maven { url = 'https://files.minecraftforge.net/maven' }
+        maven { url "https://plugins.gradle.org/m2/" }
+        mavenCentral()
+    }
+    dependencies {
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
+        classpath 'gradle.plugin.com.matthewprenger:CurseGradle:1.1.0'
+        classpath 'com.wynprice.cursemaven:CurseMaven:2.1.1'
+    }
+}
+
+plugins {
+    id "com.wynprice.cursemaven" version "2.1.1"
+}
+
+
+apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'eclipse'
+apply plugin: 'com.matthewprenger.cursegradle'
+apply plugin: 'maven'
+apply plugin: 'com.wynprice.cursemaven'
+
+apply from: 'https://raw.githubusercontent.com/MinecraftModDevelopment/Gradle-Collection/master/generic/markdown-git-changelog.gradle'
+
+version = '0.1'
+group = 'com.grimmauld.createintegration' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = 'createintegration'
+
+sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
+
+minecraft {
+    mappings channel: 'snapshot', version: '20190719-1.14.3'
+    runs {
+        client {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+            property 'forge.logging.console.level', 'debug'
+
+            mods {
+                createintegration {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        server {
+            workingDirectory project.file('run')
+
+            // Recommended logging data for a userdev environment
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+            // Recommended logging level for the console
+            property 'forge.logging.console.level', 'debug'
+
+            mods {
+                createintegration {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        data {
+            workingDirectory project.file('run')
+
+            // Recommended logging data for a userdev environment
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+            // Recommended logging level for the console
+            property 'forge.logging.console.level', 'debug'
+
+            args '--mod', 'createintegration', '--all', '--output', file('src/generated/resources/')
+
+            mods {
+                createintegration {
+                    source sourceSets.main
+                }
+            }
+        }
+    }
+}
+
+
+configurations.all {
+    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+}
+
+
+repositories {
+    mavenLocal()
+    maven { url "https://maven.latmod.com/" } //FTB GUI Library, Item Filters, FTB Teams, KubeJS
+    maven { url "http://www.wynprice.com/dummycursemaven/curse/maven/create/2926732_mapped_snapshot_20190719-1.14.3/create-2926732_mapped_snapshot_20190719-1.14.3.pom" }
+}
+
+
+
+dependencies {
+
+    minecraft 'net.minecraftforge:forge:1.14.4-28.2.0' // .3
+
+    implementation fg.deobf("curse.maven:create:2926732")
+
+}
+
+
+jar {
+    manifest {
+        attributes([
+                "Specification-Title": "createintegration",
+                "Specification-Vendor": "grimmauld",
+                "Specification-Version": "1",
+                "Implementation-Title": project.name,
+                "Implementation-Version": "${version}",
+                "Implementation-Vendor" :"grimmauld",
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
+    }
+}
+
+task deobfJar(type: Jar) {
+    from sourceSets.main.output
+    classifier 'deobf'
+}
+
+build.dependsOn deobfJar
+
+
+def reobfFile = file("$buildDir/reobfJar/output.jar")
+def reobfArtifact = artifacts.add('default', reobfFile) {
+    type 'jar'
+    builtBy 'reobfJar'
+}
+
+
+artifacts {
+    archives deobfJar
+}

@@ -1,0 +1,10 @@
+{
+    "variants": {
+        "facing=north": {"model": "createintegration:block/dynamo"},
+        "facing=south": {"model": "createintegration:block/dynamo", "y":180},
+        "facing=west": {"model": "createintegration:block/dynamo", "y": 270},
+        "facing=east": {"model": "createintegration:block/dynamo", "y": 90},
+        "facing=up": {"model": "createintegration:block/dynamo", "x": -90},
+        "facing=down": {"model": "createintegration:block/dynamo", "x": 90}
+    }
+}

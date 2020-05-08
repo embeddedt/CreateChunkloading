@@ -1,0 +1,8 @@
+{
+	"item.createintegration.rough_crystal_compound":"Rough crystal compound",
+	"item.createintegration.polished_crystal_compound":"Polished crystal compound",
+	"item.createintegration.blank_crystal":"Blank crystal",
+	"item.createintegration.dust_of_the_sea":"Dust of the Sea",
+	"block.createintegration.dynamo":"Stressed Out Dynamo",
+	"itemGroup.createintegration": "Create Integration"
+}
