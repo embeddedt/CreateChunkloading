@@ -6,6 +6,8 @@ import org.apache.logging.log4j.Logger;
 import com.grimmauld.createintegration.blocks.Dynamo;
 import com.grimmauld.createintegration.blocks.DynamoTile;
 import com.grimmauld.createintegration.blocks.ModBlocks;
+import com.grimmauld.createintegration.blocks.Motor;
+import com.grimmauld.createintegration.blocks.MotorTile;
 import com.grimmauld.createintegration.setup.ClientProxy;
 import com.grimmauld.createintegration.setup.IProxy;
 import com.grimmauld.createintegration.setup.ModSetup;
@@ -72,18 +74,21 @@ public class CreateIntegration {
 			Item.Properties properties = new Item.Properties().group(setup.itemGroup);
 			
 			event.getRegistry().register(new BlockItem(ModBlocks.DYNAMO, properties).setRegistryName("dynamo"));
+			event.getRegistry().register(new BlockItem(ModBlocks.MOTOR, properties).setRegistryName("motor"));
 		}
 		
 		@SubscribeEvent
 		public static void registerBlocks(final RegistryEvent.Register<Block> event) {
 			logger.info("blocks registering");
 			event.getRegistry().register(new Dynamo());
+			event.getRegistry().register(new Motor());
 			
 		}
 		
 		@SubscribeEvent
 		public static void onTileEntityRegistry(final RegistryEvent.Register<TileEntityType<?>> event) {
 			event.getRegistry().register(TileEntityType.Builder.create(DynamoTile::new, ModBlocks.DYNAMO).build(null).setRegistryName("dynamo"));
+			event.getRegistry().register(TileEntityType.Builder.create(MotorTile::new, ModBlocks.MOTOR).build(null).setRegistryName("motor"));
 		}
 		
 	}

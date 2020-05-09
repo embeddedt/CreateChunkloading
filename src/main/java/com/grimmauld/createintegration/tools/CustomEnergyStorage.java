@@ -5,9 +5,11 @@ import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.energy.EnergyStorage;
 
 public class CustomEnergyStorage extends EnergyStorage implements INBTSerializable<CompoundNBT>{
-
+	private int maxTransfer;
+	
 	public CustomEnergyStorage(int capacity, int maxTransfer) {
 		super(capacity, maxTransfer);
+		this.maxTransfer = maxTransfer; 
 	}
 	
 	public void setEnergy(int energy) {
@@ -40,6 +42,11 @@ public class CustomEnergyStorage extends EnergyStorage implements INBTSerializab
 		tag.putInt("energy", getEnergyStored());
 		return tag;
 	}
-
+	
+	@Override
+	public boolean canReceive() {
+		return maxTransfer != 0;
+	}
+	
 
 }

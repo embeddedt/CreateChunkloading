@@ -10,4 +10,10 @@ public class ModBlocks {
 	
 	@ObjectHolder("createintegration:dynamo")
 	public static TileEntityType<DynamoTile> DYNAMO_TILE;
+	
+	@ObjectHolder("createintegration:motor")
+	public static Motor MOTOR;
+	
+	@ObjectHolder("createintegration:motor")
+	public static TileEntityType<MotorTile> MOTOR_TILE;
 }
