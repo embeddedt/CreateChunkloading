@@ -1,13 +1,14 @@
-modLoader="javafml" #mandatory
-loaderVersion="[28,)" #mandatory (28 is current forge version)
-# issueTrackerURL="http://my.issue.tracker/" # todo: github?
-[[mods]] #mandatory
+modLoader="javafml"
+loaderVersion="[28,)"
+issueTrackerURL="https://github.com/LordGrimmauld/createintegration/issues"
+logoFile="createintegration_logo.png"
+[[mods]]
 modId="createintegration"
 version="0.1"
 displayName="Create Integration"
-# displayURL="http://example.com/" # todo: CurseForge? Github?
-credits="Thanks to Alexander2907 for the textures" #optional
-authors="Grimmauld" #optional
+displayURL="https://www.curseforge.com/minecraft/mc-mods/create-integration"
+credits="Thanks to Alexander2907 for the textures"
+authors="Grimmauld"
 description='''
 This mod adds an interface to convert mechanical energy provided from Create machinery to FE.
 '''
