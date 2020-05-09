@@ -48,7 +48,7 @@ public class DynamoTile extends KineticTileEntity implements ITickableTileEntity
         energy.ifPresent(energy -> {
             AtomicInteger capacity = new AtomicInteger(energy.getEnergyStored());
             if (capacity.get() > 0) {
-            	Direction direction = Direction.NORTH;
+            	Direction direction = Direction.SOUTH;
                 TileEntity te = world.getTileEntity(pos.offset(direction));
                 if (te != null) {
                     boolean doContinue = te.getCapability(CapabilityEnergy.ENERGY, direction).map(handler -> {

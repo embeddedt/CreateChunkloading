@@ -25,7 +25,7 @@ apply plugin: 'com.wynprice.cursemaven'
 
 apply from: 'https://raw.githubusercontent.com/MinecraftModDevelopment/Gradle-Collection/master/generic/markdown-git-changelog.gradle'
 
-version = '0.1.1'
+version = '0.1.2'
 group = 'com.grimmauld.createintegration' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'createintegration'
 
@@ -90,7 +90,6 @@ configurations.all {
 
 repositories {
     mavenLocal()
-    maven { url "https://maven.latmod.com/" } //FTB GUI Library, Item Filters, FTB Teams, KubeJS
     maven { url "http://www.wynprice.com/dummycursemaven/curse/maven/create/2926732_mapped_snapshot_20190719-1.14.3/create-2926732_mapped_snapshot_20190719-1.14.3.pom" }
 }
 
