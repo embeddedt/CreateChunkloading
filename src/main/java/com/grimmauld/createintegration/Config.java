@@ -58,7 +58,7 @@ public class Config {
         DYNAMO_SEND = COMMON_BUILDER.comment("Power transfer to send per tick")
                 .defineInRange("send", 25000, 0, Integer.MAX_VALUE);
         DYNAMO_SU = COMMON_BUILDER.comment("Stress Units required to run the Dynamo")
-                .defineInRange("su", 64, 0, Integer.MAX_VALUE);
+                .defineInRange("su", 256, 0, Integer.MAX_VALUE);
 
         COMMON_BUILDER.pop();
     }
