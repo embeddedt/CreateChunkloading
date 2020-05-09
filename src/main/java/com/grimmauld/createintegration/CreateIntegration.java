@@ -71,7 +71,7 @@ public class CreateIntegration {
 		@SubscribeEvent
 		public static void registerItems(final RegistryEvent.Register<Item> event) {
 			logger.info("items registering");
-			Item.Properties properties = new Item.Properties().group(setup.itemGroup);
+			Item.Properties properties = new Item.Properties().group(ModSetup.itemGroup);
 			
 			event.getRegistry().register(new BlockItem(ModBlocks.DYNAMO, properties).setRegistryName("dynamo"));
 			event.getRegistry().register(new BlockItem(ModBlocks.MOTOR, properties).setRegistryName("motor"));

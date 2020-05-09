@@ -2,6 +2,8 @@ package com.grimmauld.createintegration.blocks;
 
 import javax.annotation.Nullable;
 
+import com.simibubi.create.modules.contraptions.base.KineticBlock;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
@@ -15,10 +17,11 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ToolType;
 
-public class Motor  extends Block{
+public class Motor  extends KineticBlock{
 
 	public Motor() {
 		super(Properties.create(Material.IRON)
@@ -58,5 +61,15 @@ public class Motor  extends Block{
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
         builder.add(BlockStateProperties.FACING, BlockStateProperties.POWERED);
     }
+	
+	@Override
+	protected boolean hasStaticPart() {
+		return true;
+	}
+	
+	@Override
+	public boolean hasShaftTowards(IWorldReader world, BlockPos pos, BlockState state, Direction face) {
+		return face == state.get(BlockStateProperties.FACING);
+	}
 
 }

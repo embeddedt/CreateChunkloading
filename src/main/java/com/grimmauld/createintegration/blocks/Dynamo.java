@@ -71,4 +71,9 @@ public class Dynamo extends KineticBlock{
 	public boolean hasShaftTowards(IWorldReader world, BlockPos pos, BlockState state, Direction face) {
 		return face == state.get(BlockStateProperties.FACING);
 	}
+	
+	@Override
+	public boolean hideStressImpact() {
+		return true;
+	}
 }

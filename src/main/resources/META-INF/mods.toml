@@ -4,7 +4,7 @@ issueTrackerURL="https://github.com/LordGrimmauld/createintegration/issues"
 logoFile="createintegration_logo.png"
 [[mods]]
 modId="createintegration"
-version="0.1.2"
+version="0.1.3"
 displayName="Create Integration"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/create-integration"
 credits="Thanks to Alexander2907 for the textures"
@@ -27,6 +27,6 @@ This mod adds an interface to convert mechanical energy provided from Create mac
 [[dependencies.createintegration]]
     modId="create"
     mandatory=true
-    versionRange="[mc1.14-0.2.2b]" #keep updated
+    versionRange="[mc1.14-0.2.2b,mc1.14-0.2.3]" #keep updated
     ordering="NONE"
     side="BOTH"

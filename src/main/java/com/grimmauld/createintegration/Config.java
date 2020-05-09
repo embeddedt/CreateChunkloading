@@ -31,6 +31,9 @@ public class Config {
     
     public static ForgeConfigSpec.IntValue MOTOR_CAPACITY;
     public static ForgeConfigSpec.IntValue MOTOR_MAXINPUT;
+    public static ForgeConfigSpec.IntValue MOTOR_SPEED;
+    public static ForgeConfigSpec.IntValue MOTOR_SU;
+    public static ForgeConfigSpec.IntValue MOTOR_FE;
 
 
     static {
@@ -74,6 +77,12 @@ public class Config {
                 .defineInRange("maxPower", 100000, 0, Integer.MAX_VALUE);
         MOTOR_MAXINPUT = COMMON_BUILDER.comment("Max FE/t input for the motor")
                 .defineInRange("receive", 25000, 0, Integer.MAX_VALUE);
+        MOTOR_SU = COMMON_BUILDER.comment("Generated base stress units")
+                .defineInRange("su", 1024, 0, Integer.MAX_VALUE);
+        MOTOR_SPEED = COMMON_BUILDER.comment("Motor Speed")
+                .defineInRange("rpm", 16, 0, 256);
+        MOTOR_FE = COMMON_BUILDER.comment("FE/t required to run the motor")
+                .defineInRange("fe", 4096, 0, Integer.MAX_VALUE);
 
         COMMON_BUILDER.pop();
     }
