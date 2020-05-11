@@ -12,6 +12,7 @@ import com.grimmauld.createintegration.tools.CustomEnergyStorage;
 import com.simibubi.create.modules.contraptions.base.KineticTileEntity;
 
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
@@ -28,12 +29,12 @@ import net.minecraftforge.energy.IEnergyStorage;
 public class DynamoTile extends KineticTileEntity implements ITickableTileEntity{
 	
     private LazyOptional<IEnergyStorage> energy = LazyOptional.of(this::createEnergy);
-
     	
 	public DynamoTile() {
 		super(DYNAMO_TILE);
 	}
 		
+
 
 	@Override
 	public void tick() {
@@ -48,7 +49,7 @@ public class DynamoTile extends KineticTileEntity implements ITickableTileEntity
         energy.ifPresent(energy -> {
             AtomicInteger capacity = new AtomicInteger(energy.getEnergyStored());
             if (capacity.get() > 0) {
-            	Direction direction = Direction.SOUTH;
+            	Direction direction = getBlockState().get(BlockStateProperties.FACING).getOpposite();
                 TileEntity te = world.getTileEntity(pos.offset(direction));
                 if (te != null) {
                     boolean doContinue = te.getCapability(CapabilityEnergy.ENERGY, direction).map(handler -> {
