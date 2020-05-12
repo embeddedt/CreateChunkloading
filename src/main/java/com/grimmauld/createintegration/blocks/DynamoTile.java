@@ -3,6 +3,7 @@ package com.grimmauld.createintegration.blocks;
 import static com.grimmauld.createintegration.blocks.ModBlocks.DYNAMO_TILE;
 
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Predicate;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -11,11 +12,17 @@ import com.grimmauld.createintegration.Config;
 import com.grimmauld.createintegration.tools.CustomEnergyStorage;
 import com.simibubi.create.modules.contraptions.base.KineticTileEntity;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.Direction;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
@@ -29,9 +36,12 @@ import net.minecraftforge.energy.IEnergyStorage;
 public class DynamoTile extends KineticTileEntity implements ITickableTileEntity{
 	
     private LazyOptional<IEnergyStorage> energy = LazyOptional.of(this::createEnergy);
-    	
+    private static DamageSource damageSourceDynamo = new DamageSource("createintegration.dynamo").setDamageBypassesArmor();
+    private byte damageCooldown;
+    
 	public DynamoTile() {
 		super(DYNAMO_TILE);
+		damageCooldown = 0;
 	}
 		
 
@@ -41,7 +51,22 @@ public class DynamoTile extends KineticTileEntity implements ITickableTileEntity
 		energy.ifPresent(e -> ((CustomEnergyStorage) e).addEnergy((int) Math.abs(Config.DYNAMO_GENERATE_MULTIPLIER.get()*getSpeed())));
 		markDirty();
 		sendOutPower();
-		// super.tick();
+		damageCooldown++;
+		if(damageCooldown%20==0) {
+			boolean attacked = false;
+			for(Entity entityIn: world.getEntitiesWithinAABB(LivingEntity.class, new AxisAlignedBB(pos.getX()-0.3, pos.getY()-1, pos.getZ()-0.3, pos.getX()+1.3, pos.getY()+2, pos.getZ()+1.3), new Predicate<Entity>() {
+				@Override
+				public boolean test(Entity testEntity) {
+					return true;
+				}})) {
+				entityIn.attackEntityFrom(damageSourceDynamo, MathHelper.clamp(Math.abs(10 * getEnergy() / Config.DYNAMO_MAXPOWER.get()), 0, 20));
+				attacked = true;
+			}
+			if(attacked) {
+				setEnergy(0);
+				markDirty();
+			}
+		}
 	}
 	
 	
@@ -92,7 +117,7 @@ public class DynamoTile extends KineticTileEntity implements ITickableTileEntity
 	
 	
 	private IEnergyStorage createEnergy() {
-		return new CustomEnergyStorage(Config.DYNAMO_MAXPOWER.get(), 0);
+		return new CustomEnergyStorage(Config.DYNAMO_MAXPOWER.get(), 0, Config.DYNAMO_SEND.get());
 	}
 	
 	
@@ -110,4 +135,18 @@ public class DynamoTile extends KineticTileEntity implements ITickableTileEntity
 	public float calculateStressApplied() {
 		return Config.DYNAMO_SU.get();
 	}
+    
+    private int getEnergy() {
+    	AtomicInteger energyStored = new AtomicInteger(0); 
+    	energy.ifPresent(energy -> {
+            energyStored.set(energy.getEnergyStored());
+        });
+    	return energyStored.get();
+    }
+    
+    private void setEnergy(int value) {
+    	energy.ifPresent(energy -> {
+    		((CustomEnergyStorage) energy).setEnergy(0);
+        });
+    }
 }
