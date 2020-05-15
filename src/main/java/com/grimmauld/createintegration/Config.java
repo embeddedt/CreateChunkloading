@@ -16,13 +16,14 @@ public class Config {
 
     public static final String CATEGORY_GENERAL = "general";
     public static final String CATEGORY_POWER = "power";
+    public static final String CATEGORY_Belt_MACHINES = "belt_machines";
     public static final String SUBCATEGORY_DYNAMO = "dynamo";
     public static final String SUBCATEGORY_MOTOR = "motor";
 
     public static ForgeConfigSpec COMMON_CONFIG;
     public static ForgeConfigSpec CLIENT_CONFIG;
 
-    
+    public static ForgeConfigSpec.IntValue ROLLER_SU;
     
     public static ForgeConfigSpec.IntValue DYNAMO_MAXPOWER;
     public static ForgeConfigSpec.IntValue DYNAMO_GENERATE_MULTIPLIER;
@@ -43,6 +44,10 @@ public class Config {
 
         COMMON_BUILDER.comment("General settings").push(CATEGORY_GENERAL);
         COMMON_BUILDER.pop();
+        
+        COMMON_BUILDER.comment("Belt machines settings").push(CATEGORY_Belt_MACHINES);
+        setupBeltMachinesConfig(COMMON_BUILDER, CLIENT_BUILDER);
+        COMMON_BUILDER.pop();
 
         COMMON_BUILDER.comment("Power settings").push(CATEGORY_POWER);
 
@@ -54,6 +59,12 @@ public class Config {
         COMMON_CONFIG = COMMON_BUILDER.build();
         CLIENT_CONFIG = CLIENT_BUILDER.build();
     }
+    
+    private static void setupBeltMachinesConfig(ForgeConfigSpec.Builder COMMON_BUILDER, ForgeConfigSpec.Builder CLIENT_BUILDER) {
+    	ROLLER_SU = COMMON_BUILDER.comment("Base SU for the Rolling Machine")
+                .defineInRange("rollingMachineSU", 4, 0, Integer.MAX_VALUE);
+    }    
+    
 
     private static void setupDynamoConfig(ForgeConfigSpec.Builder COMMON_BUILDER, ForgeConfigSpec.Builder CLIENT_BUILDER) {
         COMMON_BUILDER.comment("Dynamo settings").push(SUBCATEGORY_DYNAMO);

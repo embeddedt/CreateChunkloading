@@ -12,7 +12,6 @@ import com.simibubi.create.ScreenResources;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.gui.drawable.IDrawable;
-import mezz.jei.api.gui.drawable.IDrawableStatic;
 import mezz.jei.api.gui.ingredient.IGuiItemStackGroup;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
@@ -111,9 +110,5 @@ public class RollingCategory implements IRecipeCategory<RollingRecipe>{
 		ScreenResources.JEI_LONG_ARROW.draw(52, 12);
 		
 		roller.draw(72, 25);
-		
-		
-		// ScreenResources.JEI_SHADOW.draw(58, 55);
-		// saw.draw(72, 35);
 	}
 }

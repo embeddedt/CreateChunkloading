@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
+import com.grimmauld.createintegration.Config;
 import com.grimmauld.createintegration.CreateIntegration;
 import com.grimmauld.createintegration.recipes.RollingRecipe;
 import com.simibubi.create.AllBlocks;
@@ -375,7 +376,7 @@ public class RollingMachineTile extends KineticTileEntity {
 	
     @Override
 	public float calculateStressApplied() {
-		return 4.0f;
+		return Config.ROLLER_SU.get();
 	}
 }
 

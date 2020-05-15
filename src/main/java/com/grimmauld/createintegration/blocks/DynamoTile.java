@@ -13,7 +13,6 @@ import com.grimmauld.createintegration.tools.CustomEnergyStorage;
 import com.simibubi.create.modules.contraptions.base.KineticTileEntity;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.state.properties.BlockStateProperties;

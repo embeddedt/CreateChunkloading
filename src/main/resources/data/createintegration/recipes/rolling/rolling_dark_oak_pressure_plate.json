@@ -1,0 +1,10 @@
+{
+  "type": "createintegration:rolling",
+  "input": {
+    "item": "minecraft:dark_oak_planks"
+  },
+  "output": {
+    "item": "minecraft:dark_oak_pressure_plate"
+  },
+  "duration": 200  
+}

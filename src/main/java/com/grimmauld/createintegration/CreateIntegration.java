@@ -13,6 +13,7 @@ import com.grimmauld.createintegration.blocks.Motor;
 import com.grimmauld.createintegration.blocks.MotorTile;
 import com.grimmauld.createintegration.blocks.RollingMachine;
 import com.grimmauld.createintegration.blocks.RollingMachineTile;
+import com.grimmauld.createintegration.blocks.RollingMachineTileEntityRenderer;
 import com.grimmauld.createintegration.recipes.RecipeTypeRolling;
 import com.grimmauld.createintegration.recipes.RollingRecipe;
 import com.grimmauld.createintegration.setup.ClientProxy;
@@ -21,21 +22,26 @@ import com.grimmauld.createintegration.setup.ModSetup;
 import com.grimmauld.createintegration.setup.ServerProxy;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.item.crafting.RecipeManager;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.RegistryEvent.Register;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.config.ModConfig;
@@ -43,7 +49,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
-import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
 @Mod("createintegration")
 public class CreateIntegration {
@@ -73,6 +78,8 @@ public class CreateIntegration {
 		Config.loadConfig(Config.COMMON_CONFIG, FMLPaths.CONFIGDIR.get().resolve("createintegration-common.toml"));
 		
 		MinecraftForge.EVENT_BUS.register(this);		
+		
+		FMLJavaModLoadingContext.get().getModEventBus().addListener(CreateIntegration::clientInit);
 	}
 	
     private void registerRecipeSerializers (Register<IRecipeSerializer<?>> event) {
@@ -115,6 +122,10 @@ public class CreateIntegration {
 		logger.info("Client method registered.");
 	}
 	
+	public static void clientInit(FMLClientSetupEvent event) {
+		registerRenderers();
+	}
+	
 	@Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
 	public static class RegistryEvents{
 		@SubscribeEvent
@@ -147,5 +158,15 @@ public class CreateIntegration {
 			logger.info("finished TEs registering");
 		}
 		
+	}
+	
+	@OnlyIn(Dist.CLIENT)
+	public static void registerRenderers() {
+		bind(RollingMachineTile.class, new RollingMachineTileEntityRenderer());
+	}
+	
+	@OnlyIn(Dist.CLIENT)
+	private static <T extends TileEntity> void bind(Class<T> clazz, TileEntityRenderer<? super T> renderer) {
+		ClientRegistry.bindTileEntitySpecialRenderer(clazz, renderer);
 	}
 }

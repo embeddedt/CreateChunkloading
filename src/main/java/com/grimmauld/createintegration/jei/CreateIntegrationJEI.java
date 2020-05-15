@@ -14,7 +14,6 @@ import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.runtime.JeiHelpers;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
 
 @JeiPlugin

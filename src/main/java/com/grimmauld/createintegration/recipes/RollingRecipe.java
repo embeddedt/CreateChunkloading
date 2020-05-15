@@ -8,7 +8,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.grimmauld.createintegration.CreateIntegration;
 import com.grimmauld.createintegration.blocks.ModBlocks;
-import com.simibubi.create.modules.contraptions.processing.ProcessingOutput;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.BlockItem;
