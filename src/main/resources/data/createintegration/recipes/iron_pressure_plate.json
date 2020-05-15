@@ -1,0 +1,10 @@
+{
+  "type": "createintegration:rolling",
+  "input": {
+    "item": "minecraft:iron_ingot"
+  },
+  "output": {
+    "item": "minecraft:heavy_weighted_pressure_plate"
+  },
+  "duration": 200  
+}

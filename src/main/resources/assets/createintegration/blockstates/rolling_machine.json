@@ -1,0 +1,10 @@
+{
+    "variants": {
+        "facing=north": {"model": "createintegration:block/rolling_machine"},
+        "facing=south": {"model": "createintegration:block/rolling_machine", "y":180},
+        "facing=west": {"model": "createintegration:block/rolling_machine", "y": 270},
+        "facing=east": {"model": "createintegration:block/rolling_machine", "y": 90},
+        "facing=up": {"model": "createintegration:block/rolling_machine", "x": -90},
+        "facing=down": {"model": "createintegration:block/rolling_machine", "x": 90}
+    }
+}

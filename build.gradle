@@ -26,7 +26,7 @@ apply plugin: 'com.wynprice.cursemaven'
 
 apply from: 'https://raw.githubusercontent.com/MinecraftModDevelopment/Gradle-Collection/master/generic/markdown-git-changelog.gradle'
 
-version = '0.1.3c'
+version = '0.1.4'
 group = 'com.grimmauld.createintegration'
 archivesBaseName = 'createintegration'
 
@@ -91,12 +91,26 @@ configurations.all {
 repositories {
     mavenLocal()
     maven { url "http://www.wynprice.com/dummycursemaven/curse/maven/create/2926732_mapped_snapshot_20190719-1.14.3/create-2926732_mapped_snapshot_20190719-1.14.3.pom" }
+    maven {
+        // location of the maven that hosts JEI files
+        name "Progwml6 maven"
+        url "https://dvs1.progwml6.com/files/maven/"
+    }
+    maven {
+        // location of a maven mirror for JEI files, as a fallback
+        name "ModMaven"
+        url "https://modmaven.k-4u.nl"
+    }
 }
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.14.4-28.2.11'
 	implementation fg.deobf("curse.maven:create:2926732")
-	implementation fg.deobf("curse.maven:immersive-engineering:2799143")
+	
+	    // compile against the JEI API but do not include it at runtime
+ 	compileOnly fg.deobf("mezz.jei:jei-1.14.4:6.0.0.26:api")
+  	// at runtime, use the full JEI jar
+  	runtimeOnly fg.deobf("mezz.jei:jei-1.14.4:6.0.0.26")
 }
 
 jar {

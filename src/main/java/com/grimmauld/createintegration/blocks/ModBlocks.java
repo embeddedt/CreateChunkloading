@@ -16,4 +16,10 @@ public class ModBlocks {
 	
 	@ObjectHolder("createintegration:motor")
 	public static TileEntityType<MotorTile> MOTOR_TILE;
+	
+	@ObjectHolder("createintegration:rolling_machine")
+	public static RollingMachine ROLLING_MACHINE;
+	
+	@ObjectHolder("createintegration:rolling_machine")
+	public static TileEntityType<RollingMachineTile> ROLLING_MACHINE_TILE;
 }

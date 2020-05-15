@@ -1,9 +1,11 @@
 {
 	"block.createintegration.dynamo":"Stressed Out Dynamo",
 	"block.createintegration.motor":"Stressed Out Motor",
+	"block.createintegration.rolling_machine":"Rolling Machine",
 	
 	"death.attack.createintegration.dynamo": "%1$s was zapped to death by Stressed Out Dynamo",
 	"death.attack.createintegration.motor": "%1$s was zapped to death by Stressed Out Motor",
 	
-	"itemGroup.createintegration": "Create Integration"
+	"itemGroup.createintegration": "Create Integration",
+	"createintegration.category.rolling": "Rolling"
 }
