@@ -32,7 +32,6 @@ public class RollingRecipe implements IRecipe<IInventory> {
 	private final int processingDuration;
 	private final ResourceLocation id;
 	
-//	public static List<RollingRecipe> allRollingRecipes = new ArrayList<RollingRecipe>();
 
 	public RollingRecipe(ResourceLocation id, Ingredient input, ItemStack output, int processingTime) {
 
@@ -41,7 +40,6 @@ public class RollingRecipe implements IRecipe<IInventory> {
 		this.output = output;
 		this.processingDuration = processingTime;
 		
-//		allRollingRecipes.add(this);
 		
 
 		// This output is not required, but it can be used to detect when a recipe has
@@ -50,6 +48,8 @@ public class RollingRecipe implements IRecipe<IInventory> {
 		System.out.println("Loaded " + this.toString());
 	}
 
+	
+	// keep
 	@Override
 	public String toString() {
 
@@ -57,6 +57,7 @@ public class RollingRecipe implements IRecipe<IInventory> {
 		return "RollingRecipe [input=" + this.input + ", output=" + this.output + ", id=" + this.id + "]";
 	}
 
+	// done
 	@Override
 	public boolean matches(IInventory inv, World worldIn) {
 
@@ -65,6 +66,8 @@ public class RollingRecipe implements IRecipe<IInventory> {
 		return this.input.test(inv.getStackInSlot(0));
 	}
 
+	
+	// done
 	@Override
 	public ItemStack getCraftingResult(IInventory inv) {
 
@@ -74,41 +77,53 @@ public class RollingRecipe implements IRecipe<IInventory> {
 		return this.output.copy();
 	}
 
+	
+	// done
 	@Override
 	public ItemStack getRecipeOutput() {
 
 		return this.output;
 	}
 	
+	// done
     public Ingredient getInput () {
         
         return this.input;
     }
 	
 
+    // done
 	@Override
 	public ResourceLocation getId() {
 
 		return this.id;
 	}
 
+	
+	// done
 	@Override
 	public IRecipeSerializer<?> getSerializer() {
 
 		return SERIALIZER;
 	}
 
+	
+	// done, keep
 	@Override
 	public IRecipeType<?> getType() {
 
 		return CreateIntegration.ROLLING_RECIPE;
 	}
 
+	
+	// keep
 	@Override
 	public ItemStack getIcon() {
 		return new ItemStack(new BlockItem(ModBlocks.ROLLING_MACHINE, new Item.Properties()));
 	}
 
+	
+	// done
 	public boolean isValid(ItemStack input) {
 
 		return this.input.test(input);

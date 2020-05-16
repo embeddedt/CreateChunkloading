@@ -1,6 +1,5 @@
 package com.grimmauld.createintegration.blocks;
 
-
 import javax.annotation.Nullable;
 
 import com.simibubi.create.foundation.block.ITE;
@@ -24,38 +23,31 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
-public class RollingMachine extends DirectionalAxisKineticBlock implements ITE<RollingMachineTile>{
-	
+public abstract class BeltMachine extends DirectionalAxisKineticBlock implements ITE<BeltMachineTile> { 
 	public static final BooleanProperty RUNNING = BooleanProperty.create("running");
-	
-	// done
-	public RollingMachine() {
+
+	public BeltMachine(String registryName) {
 		super(Properties.from(Blocks.ANDESITE));
-		setRegistryName("rolling_machine");  // TODO
+		setRegistryName(registryName);
 		setDefaultState(getDefaultState().with(RUNNING, false));
 	}
 	
-	//done
 	@Override
 	public boolean hasTileEntity(BlockState state) {
 		return true;
 	}
 	
-	// has to be implemented here
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new RollingMachineTile();
-	}
+	public abstract TileEntity createTileEntity(BlockState state, IBlockReader world);
 	
-	// done
 	@Override
 	protected boolean hasStaticPart() {
 		return true;
 	}
 	
-
 	
-/*	@Override
+	// drop handling 
+	/*	@Override
 	public void onLanded(IBlockReader worldIn, Entity entityIn) {
 		super.onLanded(worldIn, entityIn);
 		if (!(entityIn instanceof ItemEntity)) {
@@ -73,49 +65,32 @@ public class RollingMachine extends DirectionalAxisKineticBlock implements ITE<R
 			te.insertItem((ItemEntity) entityIn);
 		});
 	}*/
-
-
-
-	// done
+	
 	@Override
 	public PushReaction getPushReaction(BlockState state) {
 		return PushReaction.NORMAL;
 	}
-
-	// done
-	public static boolean isHorizontal(BlockState state) {
-		return true; // state.get(BlockStateProperties.FACING).getAxis().isHorizontal();
-	}
-
 	
-	// done
+	public static boolean isHorizontal(BlockState state) {
+		return true;
+	}
+	
 	@Override
 	protected void fillStateContainer(Builder<Block, BlockState> builder) {
 		builder.add(RUNNING);
 		super.fillStateContainer(builder);
 	}
-
 	
-	// TODO
 	@Override
-	public Class<RollingMachineTile> getTileEntityClass() {
-		return RollingMachineTile.class;
+	public Class<BeltMachineTile> getTileEntityClass(){
+		return BeltMachineTile.class;
 	}
 	
-	
-	// done
   	@Override
 	public boolean hasShaftTowards(IWorldReader world, BlockPos pos, BlockState state, Direction face) {
 		return face == state.get(BlockStateProperties.FACING) || face == state.get(BlockStateProperties.FACING).getOpposite();
 	}
-  
-  	// Done
-	@Override
-	public Axis getRotationAxis(BlockState state) {
-		return state.get(BlockStateProperties.FACING).getAxis();
-	}
-	
-	// done
+  	
     @Override
     public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, @Nullable LivingEntity entity, ItemStack stack) {
         if (entity != null) {
@@ -123,10 +98,14 @@ public class RollingMachine extends DirectionalAxisKineticBlock implements ITE<R
         }
     }
 	
-    
-    // done
 	private static Direction getFacingFromEntity(BlockPos clickedBlock, LivingEntity entity) {
         Vec3d vec = entity.getPositionVec();
         return Direction.getFacingFromVector((float) (entity.isSneaking()?-1:1)*(vec.x - clickedBlock.getX()), .0f, (float) (entity.isSneaking()?-1:1)*(vec.z - clickedBlock.getZ()));
     }
+	
+	@Override
+	public Axis getRotationAxis(BlockState state) {
+		return state.get(BlockStateProperties.FACING).getAxis();
+	}
+  	
 }

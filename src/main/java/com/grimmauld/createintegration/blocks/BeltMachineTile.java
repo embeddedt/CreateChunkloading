@@ -1,19 +1,14 @@
 package com.grimmauld.createintegration.blocks;
 
-import static com.grimmauld.createintegration.blocks.RollingMachine.RUNNING;
+import static com.grimmauld.createintegration.blocks.BeltMachine.RUNNING;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-import com.grimmauld.createintegration.Config;
-import com.grimmauld.createintegration.CreateIntegration;
 import com.grimmauld.createintegration.recipes.RollingRecipe;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.foundation.behaviour.base.TileEntityBehaviour;
-import com.simibubi.create.foundation.item.ItemHelper;
 import com.simibubi.create.foundation.utility.VecHelper;
 import com.simibubi.create.modules.contraptions.base.KineticTileEntity;
 import com.simibubi.create.modules.contraptions.components.saw.SawTileEntity;
@@ -32,6 +27,7 @@ import net.minecraft.particles.ItemParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -41,31 +37,25 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
-public class RollingMachineTile extends KineticTileEntity {
-
+public abstract class BeltMachineTile extends KineticTileEntity{
 	public ProcessingInventory inventory;
 	private int recipeIndex;
 	private LazyOptional<IItemHandler> invProvider = LazyOptional.empty();
 	private boolean destroyed;
 
-	
-	// done
-	public RollingMachineTile() {
-		super(ModBlocks.ROLLING_MACHINE_TILE);
+	public BeltMachineTile(TileEntityType<?> TET) {
+		super(TET);
 		inventory = new ProcessingInventory(this::start);
 		inventory.remainingTime = -1;
 		recipeIndex = 0;
 		invProvider = LazyOptional.of(() -> inventory);
 	}
-
 	
-	// done
 	@Override
 	public void addBehaviours(List<TileEntityBehaviour> behaviours) {		
 		super.addBehaviours(behaviours);
 	}
 	
-	// done
 	protected BeltTileEntity getTargetingBelt() {
 		Vec3d itemMovement = getItemMovementVec();
 		BlockPos targetPos = pos.add(-itemMovement.x, -itemMovement.y, -itemMovement.z);
@@ -74,13 +64,11 @@ public class RollingMachineTile extends KineticTileEntity {
 		return BeltHelper.getSegmentTE(world, targetPos);
 	}
 	
-	// done
 	@Override
 	public boolean hasFastRenderer() {
 		return false;
 	}
 	
-	// done
 	@Override
 	public void onSpeedChanged(float prevSpeed) {
 		super.onSpeedChanged(prevSpeed);
@@ -89,8 +77,7 @@ public class RollingMachineTile extends KineticTileEntity {
 		if (shouldRun != running && !destroyed)
 			world.setBlockState(pos, getBlockState().with(RUNNING, shouldRun), 2 | 16);
 	}
-
-	// done
+	
 	@Override
 	public CompoundNBT write(CompoundNBT compound) {
 		compound.put("Inventory", inventory.serializeNBT());
@@ -98,16 +85,13 @@ public class RollingMachineTile extends KineticTileEntity {
 		return super.write(compound);
 	}
 
-	// done
 	@Override
 	public void read(CompoundNBT compound) {
 		super.read(compound);
 		inventory.deserializeNBT(compound.getCompound("Inventory"));
 		recipeIndex = compound.getInt("RecipeIndex");
 	}
-
 	
-	// done
 	@Override
 	public void tick() {
 		super.tick();
@@ -214,7 +198,7 @@ public class RollingMachineTile extends KineticTileEntity {
 							sendData();
 						}
 					}
-					if (te instanceof RollingMachineTile) {
+					if (te instanceof BeltMachineTile) {
 						RollingMachineTile rollingMachineTile = (RollingMachineTile) te;
 						Vec3d otherMovement = rollingMachineTile.getItemMovementVec();
 						if (Direction.getFacingFromVector(otherMovement.x, otherMovement.y,
@@ -260,14 +244,14 @@ public class RollingMachineTile extends KineticTileEntity {
 
 		return;
 	}
-
+	
 	@Override
 	public void remove() {
 		invProvider.invalidate();
 		destroyed = true;
 		super.remove();
 	}
-
+	
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
 		if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
@@ -275,7 +259,6 @@ public class RollingMachineTile extends KineticTileEntity {
 		return super.getCapability(cap, side);
 	}
 	
-	// in abstract
 	protected void spawnParticles(ItemStack stack) {
 		if (stack == null || stack.isEmpty())
 			return;
@@ -298,57 +281,17 @@ public class RollingMachineTile extends KineticTileEntity {
 		world.addParticle(particleData, pos.getX() + -vec.x * offset, pos.getY() + .45f, pos.getZ() + -vec.z * offset,
 				-vec.x * speed, r.nextFloat() * speed, -vec.z * speed);
 	}
-
 	
-	// in abstract
 	public Vec3d getItemMovementVec() {
 		boolean alongX = getBlockState().get(BlockStateProperties.FACING).getZOffset() != 0;
 		int offset = getSpeed() < 0 ? -1 : 1;
 		return new Vec3d(offset * (alongX ? 1 : 0), 0, offset * (alongX ? 0 : -1));
 	}
 	
+	abstract void applyRecipe();
 	
-	// outside abstract, but default
-	private void applyRecipe() {
-		List<? extends IRecipe<?>> recipes = getRecipes();
-		if (recipes.isEmpty())
-			return;
-		if (recipeIndex >= recipes.size())
-			recipeIndex = 0;
-
-		IRecipe<?> recipe = recipes.get(recipeIndex);
-
-		int rolls = inventory.getStackInSlot(0).getCount();
-		inventory.clear();
-
-		List<ItemStack> list = new ArrayList<>();
-		for (int roll = 0; roll < rolls; roll++) {
-			List<ItemStack> results = new LinkedList<ItemStack>();
-			if (recipe instanceof RollingRecipe)
-				results.add(recipe.getRecipeOutput().copy());
-
-			for (int i = 0; i < results.size(); i++) {
-				ItemStack stack = results.get(i);
-				ItemHelper.addToList(stack, list);
-			}
-		}
-		for (int slot = 0; slot < list.size() && slot + 1 < inventory.getSlots(); slot++)
-			inventory.setStackInSlot(slot + 1, list.get(slot));
-	}
+	abstract List<? extends IRecipe<?>> getRecipes();
 	
-	// outside abstract, but default?
-	private List<? extends IRecipe<?>> getRecipes() {
-		List<IRecipe<?>> recipeList = new ArrayList<IRecipe<?>>();
-		for(IRecipe<?> recipe: CreateIntegration.getRecipes(CreateIntegration.ROLLING_RECIPE, world.getRecipeManager()).values()) {
-			
-			if(((RollingRecipe)recipe).isValid(inventory.getStackInSlot(0))) {
-				recipeList.add(recipe);
-			}
-		}
-		return recipeList;
-	}
-	
-	// in abstract, unused
 	public void insertItem(ItemEntity entity) {
 		if (!inventory.isEmpty())
 			return;
@@ -358,9 +301,7 @@ public class RollingMachineTile extends KineticTileEntity {
 		inventory.insertItem(0, entity.getItem().copy(), false);
 		entity.remove();
 	}
-
 	
-	// in abstract
 	public void start(ItemStack inserted) {
 		if (inventory.isEmpty())
 			return;
@@ -384,7 +325,7 @@ public class RollingMachineTile extends KineticTileEntity {
 		}
 
 		IRecipe<?> recipe = recipes.get(recipeIndex);
-		if (recipe instanceof RollingRecipe) {  // add abstract recipe
+		if (recipe instanceof RollingRecipe) {  // TODO:  add abstract recipe
 			time = ((RollingRecipe) recipe).getProcessingDuration();
 		} 
 
@@ -394,10 +335,6 @@ public class RollingMachineTile extends KineticTileEntity {
 		sendData();
 	}
 	
-	// outside abstract
-    @Override
-	public float calculateStressApplied() {
-		return Config.ROLLER_SU.get();
-	}
+	@Override
+	public abstract float calculateStressApplied();
 }
-
