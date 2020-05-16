@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import com.grimmauld.createintegration.recipes.RollingRecipe;
+import com.grimmauld.createintegration.recipes.BeltMachineRecipe;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.foundation.behaviour.base.TileEntityBehaviour;
 import com.simibubi.create.foundation.utility.VecHelper;
@@ -39,9 +39,9 @@ import net.minecraftforge.items.IItemHandler;
 
 public abstract class BeltMachineTile extends KineticTileEntity{
 	public ProcessingInventory inventory;
-	private int recipeIndex;
-	private LazyOptional<IItemHandler> invProvider = LazyOptional.empty();
-	private boolean destroyed;
+	protected int recipeIndex;
+	protected LazyOptional<IItemHandler> invProvider = LazyOptional.empty();
+	protected boolean destroyed;
 
 	public BeltMachineTile(TileEntityType<?> TET) {
 		super(TET);
@@ -199,8 +199,8 @@ public abstract class BeltMachineTile extends KineticTileEntity{
 						}
 					}
 					if (te instanceof BeltMachineTile) {
-						RollingMachineTile rollingMachineTile = (RollingMachineTile) te;
-						Vec3d otherMovement = rollingMachineTile.getItemMovementVec();
+						BeltMachineTile beltMachineTile = (BeltMachineTile) te;
+						Vec3d otherMovement = beltMachineTile.getItemMovementVec();
 						if (Direction.getFacingFromVector(otherMovement.x, otherMovement.y,
 								otherMovement.z) != itemMovementFacing.getOpposite()) {
 							for (int slot = 0; slot < inventory.getSlots(); slot++) {
@@ -208,9 +208,9 @@ public abstract class BeltMachineTile extends KineticTileEntity{
 								if (stack.isEmpty())
 									continue;
 	
-								ProcessingInventory rollerInv = rollingMachineTile.inventory;
-								if (rollerInv.isEmpty()) {
-									rollerInv.insertItem(0, stack, false);
+								ProcessingInventory beltMachineInv = beltMachineTile.inventory;
+								if (beltMachineInv.isEmpty()) {
+									beltMachineInv.insertItem(0, stack, false);
 									inventory.setStackInSlot(slot, ItemStack.EMPTY);
 	
 								} else {
@@ -288,7 +288,7 @@ public abstract class BeltMachineTile extends KineticTileEntity{
 		return new Vec3d(offset * (alongX ? 1 : 0), 0, offset * (alongX ? 0 : -1));
 	}
 	
-	abstract void applyRecipe();
+	protected abstract void applyRecipe();
 	
 	abstract List<? extends IRecipe<?>> getRecipes();
 	
@@ -325,8 +325,8 @@ public abstract class BeltMachineTile extends KineticTileEntity{
 		}
 
 		IRecipe<?> recipe = recipes.get(recipeIndex);
-		if (recipe instanceof RollingRecipe) {  // TODO:  add abstract recipe
-			time = ((RollingRecipe) recipe).getProcessingDuration();
+		if (recipe instanceof BeltMachineRecipe) {
+			time = ((BeltMachineRecipe) recipe).getProcessingDuration();
 		} 
 
 		inventory.remainingTime = time * Math.max(1, (inserted.getCount() / 5));

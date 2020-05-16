@@ -1,19 +1,14 @@
 package com.grimmauld.createintegration.recipes;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.grimmauld.createintegration.CreateIntegration;
 import com.grimmauld.createintegration.blocks.ModBlocks;
 
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.item.crafting.Ingredient;
@@ -21,31 +16,14 @@ import net.minecraft.item.crafting.ShapedRecipe;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
-public class RollingRecipe implements IRecipe<IInventory> {
+public class RollingRecipe extends BeltMachineRecipe {
 	public static final Serializer SERIALIZER = new Serializer();
 
-	private final Ingredient input;
-	private final ItemStack output;
-	private final int processingDuration;
-	private final ResourceLocation id;
-	
 
 	public RollingRecipe(ResourceLocation id, Ingredient input, ItemStack output, int processingTime) {
-
-		this.id = id;
-		this.input = input;
-		this.output = output;
-		this.processingDuration = processingTime;
-		
-		
-
-		// This output is not required, but it can be used to detect when a recipe has
-		// been
-		// loaded into the game.
-		System.out.println("Loaded " + this.toString());
+		super(id, input, output, processingTime);
 	}
 
 	
@@ -57,61 +35,9 @@ public class RollingRecipe implements IRecipe<IInventory> {
 		return "RollingRecipe [input=" + this.input + ", output=" + this.output + ", id=" + this.id + "]";
 	}
 
-	// done
-	@Override
-	public boolean matches(IInventory inv, World worldIn) {
-
-		// This method is ignored by our custom recipe system, and only has partial
-		// functionality. isValid is used instead.
-		return this.input.test(inv.getStackInSlot(0));
-	}
-
-	
-	// done
-	@Override
-	public ItemStack getCraftingResult(IInventory inv) {
-
-		// This method is ignored by our custom recipe system. getRecipeOutput().copy()
-		// is used
-		// instead.
-		return this.output.copy();
-	}
-
-	
-	// done
-	@Override
-	public ItemStack getRecipeOutput() {
-
-		return this.output;
-	}
-	
-	// done
-    public Ingredient getInput () {
-        
-        return this.input;
-    }
-	
-
-    // done
-	@Override
-	public ResourceLocation getId() {
-
-		return this.id;
-	}
-
-	
-	// done
-	@Override
-	public IRecipeSerializer<?> getSerializer() {
-
-		return SERIALIZER;
-	}
-
-	
 	// done, keep
 	@Override
 	public IRecipeType<?> getType() {
-
 		return CreateIntegration.ROLLING_RECIPE;
 	}
 
@@ -122,12 +48,6 @@ public class RollingRecipe implements IRecipe<IInventory> {
 		return new ItemStack(new BlockItem(ModBlocks.ROLLING_MACHINE, new Item.Properties()));
 	}
 
-	
-	// done
-	public boolean isValid(ItemStack input) {
-
-		return this.input.test(input);
-	}
 
 	private static class Serializer extends ForgeRegistryEntry<IRecipeSerializer<?>>
 			implements IRecipeSerializer<RollingRecipe> {
@@ -183,22 +103,9 @@ public class RollingRecipe implements IRecipe<IInventory> {
 		}
 	}
 
+
 	@Override
-	public boolean canFit(int width, int height) {
-		return true;
-	}
-
-	public int getProcessingDuration() {
-		return processingDuration;
-	}
-
-	public List<ItemStack> getRollableResults() {
-		List<ItemStack> out = new ArrayList<ItemStack>();
-		out.add(this.getRecipeOutput().copy());
-		return out;
-	}
-
-	public List<ItemStack> getPossibleOutputs() {
-		return getRollableResults();
+	public IRecipeSerializer<?> getSerializer() {
+		return SERIALIZER;
 	}
 }

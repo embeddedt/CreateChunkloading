@@ -15,10 +15,10 @@ import net.minecraftforge.registries.ForgeRegistryEntry;
 
 public abstract class BeltMachineRecipe implements IRecipe<IInventory>{
 
-	private final Ingredient input;
-	private final ItemStack output;
-	private final int processingDuration;
-	private final ResourceLocation id;
+	protected final Ingredient input;
+	protected final ItemStack output;
+	protected final int processingDuration;
+	protected final ResourceLocation id;
 	
 	
 	public BeltMachineRecipe(ResourceLocation id, Ingredient input, ItemStack output, int processingTime) {
@@ -74,7 +74,7 @@ public abstract class BeltMachineRecipe implements IRecipe<IInventory>{
 	public abstract IRecipeSerializer<?> getSerializer();
 	
 	@Override
-	public abstract IRecipeType<IRecipe<?>> getType();
+	public abstract IRecipeType<?> getType();
 	
 	
 	public boolean isValid(ItemStack input) {
