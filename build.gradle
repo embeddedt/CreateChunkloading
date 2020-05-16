@@ -108,9 +108,10 @@ dependencies {
 	implementation fg.deobf("curse.maven:create:2926732")
 	
 	    // compile against the JEI API but do not include it at runtime
- 	compileOnly fg.deobf("mezz.jei:jei-1.14.4:6.0.0.26:api")
+ 	// compileOnly fg.deobf("mezz.jei:jei-1.14.4:6.0.0.26:api")
   	// at runtime, use the full JEI jar
-  	runtimeOnly fg.deobf("mezz.jei:jei-1.14.4:6.0.0.26")
+  	// runtimeOnly fg.deobf("mezz.jei:jei-1.14.4:6.0.0.26")
+  	implementation fg.deobf("mezz.jei:jei-1.14.4:6.0.0.26")
 }
 
 jar {

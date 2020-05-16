@@ -287,8 +287,8 @@ public class RollingMachineTile extends KineticTileEntity {
 				-vec.x * speed, r.nextFloat() * speed, -vec.z * speed);
 	}
 
-	public Vec3d getItemMovementVec() {
-		boolean alongX = !getBlockState().get(RollingMachine.AXIS_ALONG_FIRST_COORDINATE);
+	public Vec3d getItemMovementVec() { // FIXME
+		boolean alongX = getBlockState().get(RollingMachine.AXIS_ALONG_FIRST_COORDINATE);
 		int offset = getSpeed() < 0 ? -1 : 1;
 		return new Vec3d(offset * (alongX ? 1 : 0), 0, offset * (alongX ? 0 : -1));
 	}

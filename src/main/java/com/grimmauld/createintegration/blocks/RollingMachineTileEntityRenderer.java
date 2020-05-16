@@ -22,6 +22,7 @@ import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.MathHelper;
@@ -40,7 +41,7 @@ public class RollingMachineTileEntityRenderer extends SafeTileEntityRenderer<Rol
 		KineticTileEntityRenderer.renderRotatingBuffer(te, getWorld(), getRotatedModel(te), x, y, z,
 				Tessellator.getInstance().getBuffer());
 		
-		Direction direction = te.getBlockState().get(RollingMachine.FACING);
+		Direction direction = te.getBlockState().get(BlockStateProperties.FACING);
 				
 		KineticTileEntityRenderer.renderRotatingBuffer(te, getWorld(), getRotatedModel(te), x + 0.5f * direction.getXOffset(), y, z + 0.5f * direction.getZOffset(),
 				Tessellator.getInstance().getBuffer());
@@ -49,7 +50,7 @@ public class RollingMachineTileEntityRenderer extends SafeTileEntityRenderer<Rol
 	
 	protected void renderItems(RollingMachineTile te, double x, double y, double z, float partialTicks) {
 		if (!te.inventory.isEmpty()) {
-			boolean alongZ = !te.getBlockState().get(RollingMachine.AXIS_ALONG_FIRST_COORDINATE);
+			boolean alongZ = te.getBlockState().get(RollingMachine.AXIS_ALONG_FIRST_COORDINATE);
 			GlStateManager.pushMatrix();
 
 			boolean moving = te.inventory.recipeDuration != 0;
