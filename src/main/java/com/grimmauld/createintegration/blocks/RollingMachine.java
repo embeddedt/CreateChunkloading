@@ -109,7 +109,7 @@ public class RollingMachine extends DirectionalAxisKineticBlock implements ITE<R
         if (entity != null) {
             world.setBlockState(pos, state.with(BlockStateProperties.FACING, getFacingFromEntity(pos, entity)), 2);
         }
-    }	
+    }
 	
 	private static Direction getFacingFromEntity(BlockPos clickedBlock, LivingEntity entity) {
         Vec3d vec = entity.getPositionVec();

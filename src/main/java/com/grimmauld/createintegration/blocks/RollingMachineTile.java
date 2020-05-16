@@ -30,6 +30,7 @@ import net.minecraft.particles.BlockParticleData;
 import net.minecraft.particles.IParticleData;
 import net.minecraft.particles.ItemParticleData;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -263,7 +264,8 @@ public class RollingMachineTile extends KineticTileEntity {
 			return invProvider.cast();
 		return super.getCapability(cap, side);
 	}
-
+	
+	// in abstract
 	protected void spawnParticles(ItemStack stack) {
 		if (stack == null || stack.isEmpty())
 			return;
@@ -287,12 +289,16 @@ public class RollingMachineTile extends KineticTileEntity {
 				-vec.x * speed, r.nextFloat() * speed, -vec.z * speed);
 	}
 
-	public Vec3d getItemMovementVec() { // FIXME
-		boolean alongX = getBlockState().get(RollingMachine.AXIS_ALONG_FIRST_COORDINATE);
+	
+	// in abstract
+	public Vec3d getItemMovementVec() {
+		boolean alongX = getBlockState().get(BlockStateProperties.FACING).getZOffset() != 0;
 		int offset = getSpeed() < 0 ? -1 : 1;
 		return new Vec3d(offset * (alongX ? 1 : 0), 0, offset * (alongX ? 0 : -1));
 	}
-
+	
+	
+	// outside abstract, but default
 	private void applyRecipe() {
 		List<? extends IRecipe<?>> recipes = getRecipes();
 		if (recipes.isEmpty())
@@ -319,7 +325,8 @@ public class RollingMachineTile extends KineticTileEntity {
 		for (int slot = 0; slot < list.size() && slot + 1 < inventory.getSlots(); slot++)
 			inventory.setStackInSlot(slot + 1, list.get(slot));
 	}
-
+	
+	// outside abstract, but default?
 	private List<? extends IRecipe<?>> getRecipes() {
 		List<IRecipe<?>> recipeList = new ArrayList<IRecipe<?>>();
 		for(IRecipe<?> recipe: CreateIntegration.getRecipes(CreateIntegration.ROLLING_RECIPE, world.getRecipeManager()).values()) {
@@ -330,7 +337,8 @@ public class RollingMachineTile extends KineticTileEntity {
 		}
 		return recipeList;
 	}
-
+	
+	// in abstract, unused
 	public void insertItem(ItemEntity entity) {
 		if (!inventory.isEmpty())
 			return;
@@ -341,6 +349,8 @@ public class RollingMachineTile extends KineticTileEntity {
 		entity.remove();
 	}
 
+	
+	// in abstract
 	public void start(ItemStack inserted) {
 		if (inventory.isEmpty())
 			return;
@@ -364,7 +374,7 @@ public class RollingMachineTile extends KineticTileEntity {
 		}
 
 		IRecipe<?> recipe = recipes.get(recipeIndex);
-		if (recipe instanceof RollingRecipe) {
+		if (recipe instanceof RollingRecipe) {  // add abstract recipe
 			time = ((RollingRecipe) recipe).getProcessingDuration();
 		} 
 
@@ -374,6 +384,7 @@ public class RollingMachineTile extends KineticTileEntity {
 		sendData();
 	}
 	
+	// outside abstract
     @Override
 	public float calculateStressApplied() {
 		return Config.ROLLER_SU.get();

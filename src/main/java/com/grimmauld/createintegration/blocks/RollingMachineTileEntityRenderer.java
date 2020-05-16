@@ -50,7 +50,7 @@ public class RollingMachineTileEntityRenderer extends SafeTileEntityRenderer<Rol
 	
 	protected void renderItems(RollingMachineTile te, double x, double y, double z, float partialTicks) {
 		if (!te.inventory.isEmpty()) {
-			boolean alongZ = te.getBlockState().get(RollingMachine.AXIS_ALONG_FIRST_COORDINATE);
+			boolean alongZ = te.getBlockState().get(BlockStateProperties.FACING).getXOffset() == 0;
 			GlStateManager.pushMatrix();
 
 			boolean moving = te.inventory.recipeDuration != 0;
