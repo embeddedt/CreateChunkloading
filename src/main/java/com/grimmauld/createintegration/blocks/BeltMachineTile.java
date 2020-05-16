@@ -169,8 +169,8 @@ public abstract class BeltMachineTile extends KineticTileEntity{
 				}
 			}
 
-			// Try moving items onto next saw/roller
-			if (AllBlocks.SAW.typeOf(world.getBlockState(nextPos))) {
+			// Try moving items onto next saw/belt machine
+			if (AllBlocks.SAW.typeOf(world.getBlockState(nextPos)) || world.getBlockState(nextPos).getBlock() instanceof BeltMachine) {
 				TileEntity te = world.getTileEntity(nextPos);
 				if (te != null) {
 					if (te instanceof SawTileEntity) {
@@ -201,8 +201,7 @@ public abstract class BeltMachineTile extends KineticTileEntity{
 					if (te instanceof BeltMachineTile) {
 						BeltMachineTile beltMachineTile = (BeltMachineTile) te;
 						Vec3d otherMovement = beltMachineTile.getItemMovementVec();
-						if (Direction.getFacingFromVector(otherMovement.x, otherMovement.y,
-								otherMovement.z) != itemMovementFacing.getOpposite()) {
+						if (Direction.getFacingFromVector(otherMovement.x, otherMovement.y, otherMovement.z) != itemMovementFacing.getOpposite()) {
 							for (int slot = 0; slot < inventory.getSlots(); slot++) {
 								ItemStack stack = inventory.getStackInSlot(slot);
 								if (stack.isEmpty())
