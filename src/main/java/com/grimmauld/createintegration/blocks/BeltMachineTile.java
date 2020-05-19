@@ -2,6 +2,7 @@ package com.grimmauld.createintegration.blocks;
 
 import static com.grimmauld.createintegration.blocks.BeltMachine.RUNNING;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -15,8 +16,10 @@ import com.simibubi.create.modules.contraptions.components.saw.SawTileEntity;
 import com.simibubi.create.modules.contraptions.processing.ProcessingInventory;
 import com.simibubi.create.modules.contraptions.relays.belt.BeltHelper;
 import com.simibubi.create.modules.contraptions.relays.belt.BeltTileEntity;
+import com.simibubi.create.modules.contraptions.relays.belt.transport.TransportedItemStack;
 
 import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -40,6 +43,7 @@ import net.minecraftforge.items.IItemHandler;
 public abstract class BeltMachineTile extends KineticTileEntity{
 	public ProcessingInventory inventory;
 	protected int recipeIndex;
+	protected int recipeNumber;
 	protected LazyOptional<IItemHandler> invProvider = LazyOptional.empty();
 	protected boolean destroyed;
 
@@ -48,6 +52,7 @@ public abstract class BeltMachineTile extends KineticTileEntity{
 		inventory = new ProcessingInventory(this::start);
 		inventory.remainingTime = -1;
 		recipeIndex = 0;
+		recipeNumber = 0;
 		invProvider = LazyOptional.of(() -> inventory);
 	}
 	
@@ -57,12 +62,17 @@ public abstract class BeltMachineTile extends KineticTileEntity{
 	}
 	
 	protected BeltTileEntity getTargetingBelt() {
-		Vec3d itemMovement = getItemMovementVec();
-		BlockPos targetPos = pos.add(-itemMovement.x, -itemMovement.y, -itemMovement.z);
+		BlockPos targetPos = getTargetingBeltBlock();
 		if (!AllBlocks.BELT.typeOf(world.getBlockState(targetPos)))
 			return null;
 		return BeltHelper.getSegmentTE(world, targetPos);
 	}
+	
+	private BlockPos getTargetingBeltBlock() {
+		Vec3d itemMovement = getItemMovementVec();
+		return pos.add(-itemMovement.x, -itemMovement.y, -itemMovement.z);
+	}
+	
 	
 	@Override
 	public boolean hasFastRenderer() {
@@ -82,6 +92,7 @@ public abstract class BeltMachineTile extends KineticTileEntity{
 	public CompoundNBT write(CompoundNBT compound) {
 		compound.put("Inventory", inventory.serializeNBT());
 		compound.putInt("RecipeIndex", recipeIndex);
+		compound.putInt("RecipeNumber", recipeNumber);
 		return super.write(compound);
 	}
 
@@ -90,6 +101,7 @@ public abstract class BeltMachineTile extends KineticTileEntity{
 		super.read(compound);
 		inventory.deserializeNBT(compound.getCompound("Inventory"));
 		recipeIndex = compound.getInt("RecipeIndex");
+		recipeNumber = compound.getInt("RecipeNumber");
 	}
 	
 	@Override
@@ -98,31 +110,41 @@ public abstract class BeltMachineTile extends KineticTileEntity{
 		if (getSpeed() == 0)
 			return;
 		
-		if (inventory.isEmpty()) {
-			
+		
+		// insert from belt
+		if (inventory.getStackInSlot(0).getCount() < 64 && AllBlocks.BELT.typeOf(world.getBlockState(getTargetingBeltBlock()))) { 
 			BeltTileEntity beltTE = getTargetingBelt();
 			if (beltTE == null)
 				return;
 			BeltTileEntity controllerTE = beltTE.getControllerTE();
 			if (controllerTE == null)
 				return;
-			
-			
 			controllerTE.getInventory().forEachWithin(beltTE.index, .2f , stack -> {
-				inventory.insertItem(0, stack.stack, false);
-				this.markDirty();
-				controllerTE.markDirty();
-				return Collections.emptyList();
+				ItemStack insertStack = stack.stack.copy();
+				List<TransportedItemStack> returnList = new ArrayList<TransportedItemStack>();
+				returnList.add(stack);
+				if(inventory.isEmpty()) {
+					inventory.insertItem(0, insertStack, false);
+					this.markDirty();
+					controllerTE.markDirty();
+					return Collections.emptyList();
+				} else if(inventory.getStackInSlot(0).getItem().equals(insertStack.getItem())) {
+					if(inventory.getStackInSlot(0).getCount() + insertStack.getCount() > 64) {
+						stack.stack.setCount(stack.stack.getCount() + inventory.getStackInSlot(0).getCount() - 64);
+						inventory.getStackInSlot(0).setCount(64);
+						return returnList;
+					} else {
+						inventory.getStackInSlot(0).setCount(inventory.getStackInSlot(0).getCount() + insertStack.getCount());
+						return Collections.emptyList();
+					}
+				}
+				return returnList;
+				
+				
 			});
 		}		
 		
-		if (inventory.remainingTime == -1) {
-			if (!inventory.isEmpty() && !inventory.appliedRecipe)
-				start(inventory.getStackInSlot(0));
-			return;
-		}
-
-		float processingSpeed = MathHelper.clamp(Math.abs(getSpeed()) / 32, 1, 128);
+		float processingSpeed = MathHelper.clamp(Math.abs(getSpeed()) / 32, 1, 128) * (canProcess() ? 1 : 0);
 		inventory.remainingTime -= processingSpeed;
 
 		if (inventory.remainingTime > 0)
@@ -131,119 +153,109 @@ public abstract class BeltMachineTile extends KineticTileEntity{
 		if (world.isRemote)
 			return;
 
-		if (inventory.remainingTime < 20 && !inventory.appliedRecipe) {
-			applyRecipe();
+		if (inventory.remainingTime <= 0 && !inventory.appliedRecipe) {
+			for(ItemStack output: applyRecipe()) {
+				ejectItems(output);
+			}
 			inventory.appliedRecipe = true;
 			sendData();
+			markDirty();
+			if (!inventory.isEmpty())
+				start(inventory.getStackInSlot(0));
 			return;
 		}
-
+		
+		if (inventory.remainingTime == -1) {
+			if (!inventory.isEmpty())
+				start(inventory.getStackInSlot(0));
+			return;
+		}
+	}
+	
+	protected void ejectItems(ItemStack outputStack) {
+		if(outputStack.isEmpty()) {
+			return;
+		}
+		
+		markDirty();
+		inventory.remainingTime = -1;
 		Vec3d itemMovement = getItemMovementVec();
 		Direction itemMovementFacing = Direction.getFacingFromVector(itemMovement.x, itemMovement.y, itemMovement.z);
 		Vec3d outPos = VecHelper.getCenterOf(pos).add(itemMovement.scale(.5f).add(0.0, .5, 0.0));
 		Vec3d outMotion = itemMovement.scale(.0625).add(0.0, .125, 0.0);
 
+		// Try moving items onto the belt
+		BlockPos nextPos = pos.add(itemMovement.x, itemMovement.y, itemMovement.z);
+		if (AllBlocks.BELT.typeOf(world.getBlockState(nextPos))) {
+			TileEntity te = world.getTileEntity(nextPos);
+			if (te != null && te instanceof BeltTileEntity) {
+				if(((BeltTileEntity) te).tryInsertingFromSide(itemMovementFacing, outputStack, false)) {
+					return;
+				}
+			}
+		}
 
-		if (inventory.remainingTime <= 0) {
-
-			// Try moving items onto the belt
-			BlockPos nextPos = pos.add(itemMovement.x, itemMovement.y, itemMovement.z);
-			if (AllBlocks.BELT.typeOf(world.getBlockState(nextPos))) {
-				TileEntity te = world.getTileEntity(nextPos);
-				if (te != null && te instanceof BeltTileEntity) {
-					for (int slot = 0; slot < inventory.getSlots(); slot++) {
-						ItemStack stack = inventory.getStackInSlot(slot);
-						if (stack.isEmpty())
-							continue;
-
-						if (((BeltTileEntity) te).tryInsertingFromSide(itemMovementFacing, stack, false))
-							inventory.setStackInSlot(slot, ItemStack.EMPTY);
-						else {
-							inventory.remainingTime = 0;
+		// Try moving items onto next saw/belt machine
+		if (AllBlocks.SAW.typeOf(world.getBlockState(nextPos)) || world.getBlockState(nextPos).getBlock() instanceof BeltMachine) {
+			TileEntity te = world.getTileEntity(nextPos);
+			if (te != null) {
+				if (te instanceof SawTileEntity) {
+					SawTileEntity sawTileEntity = (SawTileEntity) te;
+					Vec3d otherMovement = sawTileEntity.getItemMovementVec();
+					if (Direction.getFacingFromVector(otherMovement.x, otherMovement.y,
+							otherMovement.z) != itemMovementFacing.getOpposite()) {
+						ProcessingInventory sawInv = sawTileEntity.inventory;
+						if (sawInv.isEmpty()) {
+							sawInv.insertItem(0, outputStack, false);
 							return;
 						}
 					}
-					inventory.clear();
-					inventory.remainingTime = -1;
-					sendData();
 				}
-			}
-
-			// Try moving items onto next saw/belt machine
-			if (AllBlocks.SAW.typeOf(world.getBlockState(nextPos)) || world.getBlockState(nextPos).getBlock() instanceof BeltMachine) {
-				TileEntity te = world.getTileEntity(nextPos);
-				if (te != null) {
-					if (te instanceof SawTileEntity) {
-						SawTileEntity sawTileEntity = (SawTileEntity) te;
-						Vec3d otherMovement = sawTileEntity.getItemMovementVec();
-						if (Direction.getFacingFromVector(otherMovement.x, otherMovement.y,
-								otherMovement.z) != itemMovementFacing.getOpposite()) {
-							for (int slot = 0; slot < inventory.getSlots(); slot++) {
-								ItemStack stack = inventory.getStackInSlot(slot);
-								if (stack.isEmpty())
-									continue;
-	
-								ProcessingInventory sawInv = sawTileEntity.inventory;
-								if (sawInv.isEmpty()) {
-									sawInv.insertItem(0, stack, false);
-									inventory.setStackInSlot(slot, ItemStack.EMPTY);
-	
-								} else {
-									inventory.remainingTime = 0;
-									return;
-								}
-							}
-							inventory.clear();
-							inventory.remainingTime = -1;
-							sendData();
-						}
-					}
-					if (te instanceof BeltMachineTile) {
-						BeltMachineTile beltMachineTile = (BeltMachineTile) te;
-						Vec3d otherMovement = beltMachineTile.getItemMovementVec();
-						if (Direction.getFacingFromVector(otherMovement.x, otherMovement.y, otherMovement.z) != itemMovementFacing.getOpposite()) {
-							for (int slot = 0; slot < inventory.getSlots(); slot++) {
-								ItemStack stack = inventory.getStackInSlot(slot);
-								if (stack.isEmpty())
-									continue;
-	
-								ProcessingInventory beltMachineInv = beltMachineTile.inventory;
-								if (beltMachineInv.isEmpty()) {
-									beltMachineInv.insertItem(0, stack, false);
-									inventory.setStackInSlot(slot, ItemStack.EMPTY);
-	
-								} else {
-									inventory.remainingTime = 0;
-									return;
-								}
-							}
-							inventory.clear();
-							inventory.remainingTime = -1;
-							sendData();
+				if (te instanceof BeltMachineTile) {
+					BeltMachineTile beltMachineTile = (BeltMachineTile) te;
+					Vec3d otherMovement = beltMachineTile.getItemMovementVec();
+					if (Direction.getFacingFromVector(otherMovement.x, otherMovement.y, otherMovement.z) != itemMovementFacing.getOpposite()) {						
+						outputStack = beltMachineTile.mergeInsert(outputStack);
+						if(outputStack.isEmpty()) {
+							return;
 						}
 					}
 				}
 			}
-
-			// Eject Items
-			for (int slot = 0; slot < inventory.getSlots(); slot++) {
-				ItemStack stack = inventory.getStackInSlot(slot);
-				if (stack.isEmpty())
-					continue;
-				ItemEntity entityIn = new ItemEntity(world, outPos.x, outPos.y, outPos.z, stack);
-				entityIn.setMotion(outMotion);
-				world.addEntity(entityIn);
-			}
-			inventory.clear();
-			world.updateComparatorOutputLevel(pos, getBlockState().getBlock());
-			inventory.remainingTime = -1;
-			sendData();
-			return;
 		}
 
+		// Eject Items
+		ItemEntity entityIn = new ItemEntity(world, outPos.x, outPos.y, outPos.z, outputStack);
+		entityIn.setMotion(outMotion);
+		world.addEntity(entityIn);
+		world.updateComparatorOutputLevel(pos, getBlockState().getBlock());
 		return;
 	}
 	
+	protected boolean canProcess() {
+		return (!inventory.isEmpty()) && getSpeed() != 0;
+	}
+	
+	public ItemStack mergeInsert(ItemStack toInsert) {
+		ItemStack outputStack = toInsert.copy();
+		if(inventory.isEmpty()) {
+			inventory.insertItem(0, toInsert.copy(), false);
+			this.markDirty();
+			return ItemStack.EMPTY;
+		} else if(inventory.getStackInSlot(0).getItem().equals(toInsert.getItem())) {
+			if(inventory.getStackInSlot(0).getCount() + toInsert.getCount() > 64) {
+				outputStack.setCount(toInsert.getCount() + inventory.getStackInSlot(0).getCount() - 64);
+				inventory.getStackInSlot(0).setCount(64);
+				return outputStack;
+			} else {
+				inventory.getStackInSlot(0).setCount(inventory.getStackInSlot(0).getCount() + toInsert.getCount());
+				return ItemStack.EMPTY;
+			}
+		}
+		return toInsert;
+	}
+	
+
 	@Override
 	public void remove() {
 		invProvider.invalidate();
@@ -287,7 +299,7 @@ public abstract class BeltMachineTile extends KineticTileEntity{
 		return new Vec3d(offset * (alongX ? 1 : 0), 0, offset * (alongX ? 0 : -1));
 	}
 	
-	protected abstract void applyRecipe();
+	protected abstract List<ItemStack> applyRecipe();
 	
 	abstract List<? extends IRecipe<?>> getRecipes();
 	
@@ -310,6 +322,7 @@ public abstract class BeltMachineTile extends KineticTileEntity{
 		List<? extends IRecipe<?>> recipes = getRecipes();
 		boolean valid = !recipes.isEmpty();
 		int time = 100;
+		recipeNumber = inventory.getStackInSlot(0).getCount();
 
 		if (recipes.isEmpty()) {
 			inventory.remainingTime = inventory.recipeDuration = 10;
@@ -331,6 +344,7 @@ public abstract class BeltMachineTile extends KineticTileEntity{
 		inventory.remainingTime = time * Math.max(1, (inserted.getCount() / 5));
 		inventory.recipeDuration = inventory.remainingTime;
 		inventory.appliedRecipe = false;
+		
 		sendData();
 	}
 	

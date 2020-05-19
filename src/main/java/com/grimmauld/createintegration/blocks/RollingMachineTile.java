@@ -1,6 +1,7 @@
 package com.grimmauld.createintegration.blocks;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -10,7 +11,7 @@ import com.grimmauld.createintegration.recipes.RollingRecipe;
 
 import com.simibubi.create.foundation.item.ItemHelper;
 
-
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 
@@ -20,31 +21,38 @@ public class RollingMachineTile extends BeltMachineTile {
 		super(ModBlocks.ROLLING_MACHINE_TILE);
 	}
 	
-	protected void applyRecipe() {
+	protected List<ItemStack> applyRecipe() {
+		List<ItemStack> outputStacks = new ArrayList<>();
 		List<? extends IRecipe<?>> recipes = getRecipes();
-		if (recipes.isEmpty())
-			return;
 		if (recipeIndex >= recipes.size())
 			recipeIndex = 0;
-
-		IRecipe<?> recipe = recipes.get(recipeIndex);
-
-		int rolls = inventory.getStackInSlot(0).getCount();
-		inventory.clear();
-
-		List<ItemStack> list = new ArrayList<>();
-		for (int roll = 0; roll < rolls; roll++) {
-			List<ItemStack> results = new LinkedList<ItemStack>();
-			if (recipe instanceof RollingRecipe)
-				results.add(recipe.getRecipeOutput().copy());
-
-			for (int i = 0; i < results.size(); i++) {
-				ItemStack stack = results.get(i);
-				ItemHelper.addToList(stack, list);
+		if (recipes.isEmpty()) {  // no recipe for the inserted item
+			outputStacks.add(inventory.getStackInSlot(0).copy());
+			outputStacks.get(0).setCount(recipeNumber);
+			
+		}else {
+			IRecipe<?> recipe = recipes.get(recipeIndex);
+			
+			for (int roll = 0; roll < this.recipeNumber; roll++) {
+				List<ItemStack> results = new LinkedList<ItemStack>();
+				if (recipe instanceof RollingRecipe)
+					results.add(recipe.getRecipeOutput().copy());
+	
+				for (int i = 0; i < results.size(); i++) {
+					ItemStack stack = results.get(i);
+					ItemHelper.addToList(stack, outputStacks);
+				}
 			}
 		}
-		for (int slot = 0; slot < list.size() && slot + 1 < inventory.getSlots(); slot++)
-			inventory.setStackInSlot(slot + 1, list.get(slot));
+		
+		inventory.getStackInSlot(0).setCount(inventory.getStackInSlot(0).getCount() - recipeNumber);
+		if(inventory.getStackInSlot(0).getCount() == 0) {
+			inventory.setStackInSlot(0, ItemStack.EMPTY);
+			inventory.clear();
+		}
+		markDirty();
+		return outputStacks;
+		
 	}
 	
 	protected List<? extends IRecipe<?>> getRecipes() {
