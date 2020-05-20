@@ -1,3 +1,3 @@
 {
-    "parent": "createintegration:block/zinc_pressure_plate_up"
+    "parent": "createintegration:block/pressure_plate/zinc_pressure_plate_up"
 }

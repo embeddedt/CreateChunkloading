@@ -14,6 +14,7 @@ buildscript {
 
 plugins {
     id "com.wynprice.cursemaven" version "2.1.3"
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
 }
 
 
@@ -81,8 +82,17 @@ minecraft {
     }
 }
 
+configurations {
+    shade
+}
+
 configurations.all {
     resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+}
+
+shadowJar {
+    configurations = [project.configurations.shade]
+    relocate 'com.tterrag.registrate', 'com.mymod.repack.registrate'
 }
 
 
@@ -99,6 +109,9 @@ repositories {
         name "ModMaven"
         url "https://modmaven.k-4u.nl"
     }
+    maven { // Registrate
+        url "http://maven.tterrag.com/"
+    }
 }
 
 dependencies {
@@ -111,6 +124,10 @@ dependencies {
   	// runtimeOnly fg.deobf("mezz.jei:jei-1.14.4:6.0.0.26")
   	implementation fg.deobf("mezz.jei:jei-1.14.4:6.0.0.26")
 	implementation fg.deobf("curse.maven:create:2952509")
+	
+	def registrate = "com.tterrag.registrate:Registrate:MC1.14.4-28.2.11"
+    // implementation fg.deobf(registrate)
+    // shade registrate
 	}
 
 jar {

@@ -1,0 +1,6 @@
+{
+    "parent": "block/pressure_plate_up",
+    "textures": {
+        "texture": "create:block/oxidized/copper_block_3"
+    }
+}
