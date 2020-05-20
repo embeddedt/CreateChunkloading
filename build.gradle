@@ -52,12 +52,10 @@ minecraft {
         }
 
         server {
-            workingDirectory project.file('run')
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-            property 'forge.logging.console.level', 'debug'
-
+            workingDirectory project.file('run/server')
+            property 'forge.logging.console.level', 'info'
             mods {
-                createintegration {
+                create {
                     source sourceSets.main
                 }
             }
@@ -107,7 +105,7 @@ dependencies {
     minecraft 'net.minecraftforge:forge:1.14.4-28.2.11'
 	
 	
-	    // compile against the JEI API but do not include it at runtime
+    // compile against the JEI API but do not include it at runtime
  	// compileOnly fg.deobf("mezz.jei:jei-1.14.4:6.0.0.26:api")
   	// at runtime, use the full JEI jar
   	// runtimeOnly fg.deobf("mezz.jei:jei-1.14.4:6.0.0.26")
