@@ -22,4 +22,13 @@ public class ModBlocks {
 	
 	@ObjectHolder("createintegration:rolling_machine")
 	public static TileEntityType<RollingMachineTile> ROLLING_MACHINE_TILE;
+	
+	@ObjectHolder("createintegration:brass_pressure_plate")
+	public static BrassPressurePlate BRASS_PRESSURE_PLATE;
+	
+	@ObjectHolder("createintegration:zinc_pressure_plate")
+	public static ZincPressurePlate ZINC_PRESSURE_PLATE;
+	
+	@ObjectHolder("createintegration:copper_pressure_plate")
+	public static CopperPressurePlate COPPER_PRESSURE_PLATE;
 }

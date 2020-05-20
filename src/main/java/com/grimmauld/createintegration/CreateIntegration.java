@@ -6,6 +6,8 @@ import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.grimmauld.createintegration.blocks.BrassPressurePlate;
+import com.grimmauld.createintegration.blocks.CopperPressurePlate;
 import com.grimmauld.createintegration.blocks.Dynamo;
 import com.grimmauld.createintegration.blocks.DynamoTile;
 import com.grimmauld.createintegration.blocks.ModBlocks;
@@ -14,6 +16,7 @@ import com.grimmauld.createintegration.blocks.MotorTile;
 import com.grimmauld.createintegration.blocks.RollingMachine;
 import com.grimmauld.createintegration.blocks.RollingMachineTile;
 import com.grimmauld.createintegration.blocks.RollingMachineTileEntityRenderer;
+import com.grimmauld.createintegration.blocks.ZincPressurePlate;
 import com.grimmauld.createintegration.recipes.RecipeTypeRolling;
 import com.grimmauld.createintegration.recipes.RollingRecipe;
 import com.grimmauld.createintegration.setup.ClientProxy;
@@ -136,6 +139,9 @@ public class CreateIntegration {
 			event.getRegistry().register(new BlockItem(ModBlocks.DYNAMO, properties).setRegistryName("dynamo"));
 			event.getRegistry().register(new BlockItem(ModBlocks.MOTOR, properties).setRegistryName("motor"));
 			event.getRegistry().register(new BlockItem(ModBlocks.ROLLING_MACHINE, properties).setRegistryName("rolling_machine"));
+			event.getRegistry().register(new BlockItem(ModBlocks.BRASS_PRESSURE_PLATE, properties).setRegistryName("brass_pressure_plate"));
+			event.getRegistry().register(new BlockItem(ModBlocks.COPPER_PRESSURE_PLATE, properties).setRegistryName("copper_pressure_plate"));
+			event.getRegistry().register(new BlockItem(ModBlocks.ZINC_PRESSURE_PLATE, properties).setRegistryName("zinc_pressure_plate"));
 			logger.info("finished items registering");
 		}
 		
@@ -145,6 +151,9 @@ public class CreateIntegration {
 			event.getRegistry().register(new Dynamo());
 			event.getRegistry().register(new Motor());
 			event.getRegistry().register(new RollingMachine());
+			event.getRegistry().register(new BrassPressurePlate());
+			event.getRegistry().register(new CopperPressurePlate());
+			event.getRegistry().register(new ZincPressurePlate());
 			logger.info("finished blocks registering");
 			
 		}

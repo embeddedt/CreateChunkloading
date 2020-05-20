@@ -322,7 +322,7 @@ public abstract class BeltMachineTile extends KineticTileEntity{
 		List<? extends IRecipe<?>> recipes = getRecipes();
 		boolean valid = !recipes.isEmpty();
 		int time = 100;
-		recipeNumber = inventory.getStackInSlot(0).getCount();
+		recipeNumber = inserted.getCount();
 
 		if (recipes.isEmpty()) {
 			inventory.remainingTime = inventory.recipeDuration = 10;

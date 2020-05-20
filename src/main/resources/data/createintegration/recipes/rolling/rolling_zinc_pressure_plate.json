@@ -1,0 +1,10 @@
+{
+  "type": "createintegration:rolling",
+  "input": {
+    "tag": "forge:ingots/zinc"
+  },
+  "output": {
+    "item": "createintegration:zinc_pressure_plate"
+  },
+  "duration": 200  
+}
