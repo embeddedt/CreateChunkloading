@@ -119,7 +119,7 @@ public abstract class BeltMachineTile extends KineticTileEntity{
 			BeltTileEntity controllerTE = beltTE.getControllerTE();
 			if (controllerTE == null)
 				return;
-			controllerTE.getInventory().forEachWithin(beltTE.index, .2f , stack -> {
+			controllerTE.getInventory().forEachWithin(beltTE.index + .9f, .2f , stack -> {
 				ItemStack insertStack = stack.stack.copy();
 				List<TransportedItemStack> returnList = new ArrayList<TransportedItemStack>();
 				returnList.add(stack);
