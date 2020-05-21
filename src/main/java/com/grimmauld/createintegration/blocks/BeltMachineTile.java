@@ -118,7 +118,7 @@ public abstract class BeltMachineTile extends KineticTileEntity{
 			BeltTileEntity controllerTE = beltTE.getControllerTE();
 			if (controllerTE == null)
 				return;
-			controllerTE.getInventory().forEachWithin(beltTE.index + (Direction.getFacingFromVector(getItemMovementVec().getX(), getItemMovementVec().getY(), getItemMovementVec().getZ()) == Direction.EAST ? 1:0), .2f , stack -> {
+			controllerTE.getInventory().forEachWithin(beltTE.index, .1f , stack -> {
 				ItemStack insertStack = stack.stack.copy();
 				List<TransportedItemStack> returnList = new ArrayList<TransportedItemStack>();
 				returnList.add(stack);
@@ -294,9 +294,9 @@ public abstract class BeltMachineTile extends KineticTileEntity{
 	}
 	
 	public Vec3d getItemMovementVec() {
-		boolean alongX = getBlockState().get(BlockStateProperties.FACING).getZOffset() != 0;
-		int offset = getSpeed() < 0 ? -1 : 1;
-		return new Vec3d(offset * (alongX ? 1 : 0), 0, offset * (alongX ? 0 : -1));
+		boolean alongX = getBlockState().get(BlockStateProperties.FACING).getXOffset() != 0;
+		int offset = getSpeed() > 0 ? -1 : 1;
+		return new Vec3d(offset * (alongX ? 0 : -1), 0, offset * (alongX ? 1 : 0));
 	}
 	
 	protected abstract List<ItemStack> applyRecipe();
