@@ -19,7 +19,6 @@ import com.simibubi.create.modules.contraptions.relays.belt.BeltTileEntity;
 import com.simibubi.create.modules.contraptions.relays.belt.transport.TransportedItemStack;
 
 import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.inventory.Inventory;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -119,7 +118,7 @@ public abstract class BeltMachineTile extends KineticTileEntity{
 			BeltTileEntity controllerTE = beltTE.getControllerTE();
 			if (controllerTE == null)
 				return;
-			controllerTE.getInventory().forEachWithin(beltTE.index + .9f, .2f , stack -> {
+			controllerTE.getInventory().forEachWithin(beltTE.index + (Direction.getFacingFromVector(getItemMovementVec().getX(), getItemMovementVec().getY(), getItemMovementVec().getZ()) == Direction.EAST ? 1:0), .2f , stack -> {
 				ItemStack insertStack = stack.stack.copy();
 				List<TransportedItemStack> returnList = new ArrayList<TransportedItemStack>();
 				returnList.add(stack);
@@ -153,21 +152,22 @@ public abstract class BeltMachineTile extends KineticTileEntity{
 		if (world.isRemote)
 			return;
 
-		if (inventory.remainingTime <= 0 && !inventory.appliedRecipe) {
+		if (inventory.remainingTime <= 0 && !inventory.isEmpty()) {
 			for(ItemStack output: applyRecipe()) {
 				ejectItems(output);
 			}
-			inventory.appliedRecipe = true;
 			sendData();
 			markDirty();
 			if (!inventory.isEmpty())
 				start(inventory.getStackInSlot(0));
+				markDirty();
 			return;
 		}
 		
 		if (inventory.remainingTime == -1) {
 			if (!inventory.isEmpty())
 				start(inventory.getStackInSlot(0));
+				markDirty();
 			return;
 		}
 	}
@@ -314,6 +314,7 @@ public abstract class BeltMachineTile extends KineticTileEntity{
 	}
 	
 	public void start(ItemStack inserted) {
+		inserted = inventory.getStackInSlot(0);
 		if (inventory.isEmpty())
 			return;
 		if (world.isRemote)
@@ -341,7 +342,7 @@ public abstract class BeltMachineTile extends KineticTileEntity{
 			time = ((BeltMachineRecipe) recipe).getProcessingDuration();
 		} 
 
-		inventory.remainingTime = time * Math.max(1, (inserted.getCount() / 5));
+		inventory.remainingTime = time * Math.max(1, (recipeNumber / 5));
 		inventory.recipeDuration = inventory.remainingTime;
 		inventory.appliedRecipe = false;
 		
