@@ -23,6 +23,8 @@ public class Config {
     public static ForgeConfigSpec COMMON_CONFIG;
     public static ForgeConfigSpec CLIENT_CONFIG;
 
+    public static ForgeConfigSpec.BooleanValue CHUNK_CHAT;    
+    
     public static ForgeConfigSpec.IntValue ROLLER_SU;
     
     public static ForgeConfigSpec.IntValue DYNAMO_MAXPOWER;
@@ -43,6 +45,7 @@ public class Config {
         ForgeConfigSpec.Builder CLIENT_BUILDER = new ForgeConfigSpec.Builder();
 
         COMMON_BUILDER.comment("General settings").push(CATEGORY_GENERAL);
+        setupGeneralConfig(COMMON_BUILDER, CLIENT_BUILDER);
         COMMON_BUILDER.pop();
         
         COMMON_BUILDER.comment("Belt machines settings").push(CATEGORY_Belt_MACHINES);
@@ -63,6 +66,10 @@ public class Config {
     private static void setupBeltMachinesConfig(ForgeConfigSpec.Builder COMMON_BUILDER, ForgeConfigSpec.Builder CLIENT_BUILDER) {
     	ROLLER_SU = COMMON_BUILDER.comment("Base SU for the Rolling Machine")
                 .defineInRange("rollingMachineSU", 4, 0, Integer.MAX_VALUE);
+    }
+    
+    private static void setupGeneralConfig(ForgeConfigSpec.Builder COMMON_BUILDER, ForgeConfigSpec.Builder CLIENT_BUILDER) {
+    	CHUNK_CHAT = COMMON_BUILDER.comment("Do chat output of chunk loaders?").define("feedback", false);
     }    
     
 

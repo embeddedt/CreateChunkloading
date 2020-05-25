@@ -31,4 +31,10 @@ public class ModBlocks {
 	
 	@ObjectHolder("createintegration:copper_pressure_plate")
 	public static CopperPressurePlate COPPER_PRESSURE_PLATE;
+	
+	@ObjectHolder("createintegration:chunk_loader")
+	public static ChunkLoader CHUNK_LOADER;
+	
+	@ObjectHolder("createintegration:chunk_loader")
+	public static TileEntityType<ChunkLoaderTile> CHUNK_LOADER_TILE;
 }

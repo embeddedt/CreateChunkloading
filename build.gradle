@@ -27,7 +27,7 @@ apply plugin: 'com.wynprice.cursemaven'
 
 apply from: 'https://raw.githubusercontent.com/MinecraftModDevelopment/Gradle-Collection/master/generic/markdown-git-changelog.gradle'
 
-version = '0.1.4b'
+version = '0.1.5'
 group = 'com.grimmauld.createintegration'
 archivesBaseName = 'createintegration'
 
@@ -92,7 +92,7 @@ configurations.all {
 
 shadowJar {
     configurations = [project.configurations.shade]
-    relocate 'com.tterrag.registrate', 'com.mymod.repack.registrate'
+    relocate 'com.tterrag.registrate', 'com.grimmauld.createintegration.repack.registrate'
 }
 
 
@@ -125,9 +125,9 @@ dependencies {
   	implementation fg.deobf("mezz.jei:jei-1.14.4:6.0.0.26")
 	implementation fg.deobf("curse.maven:create:2952509")
 	
-	def registrate = "com.tterrag.registrate:Registrate:MC1.14.4-28.2.11"
-    // implementation fg.deobf(registrate)
-    // shade registrate
+	def registrate = "com.tterrag.registrate:Registrate:MC1.14.4-0.0.3.40"
+    implementation fg.deobf(registrate)
+    shade registrate
 	}
 
 jar {

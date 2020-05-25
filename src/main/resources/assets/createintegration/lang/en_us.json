@@ -3,6 +3,8 @@
 	"block.createintegration.motor":"Stressed Out Motor",
 	"block.createintegration.rolling_machine":"Rolling Machine",
 	
+	"block.createintegration.chunk_loader":"Chunk Loader",
+	
 	"block.createintegration.brass_pressure_plate":"Brass Pressure Plate",
 	"block.createintegration.copper_pressure_plate":"Copper Pressure Plate",
 	"block.createintegration.zinc_pressure_plate":"Zinc Pressure Plate",

@@ -2,11 +2,12 @@ package com.grimmauld.createintegration;
 
 import java.util.Map;
 
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.grimmauld.createintegration.blocks.BrassPressurePlate;
+import com.grimmauld.createintegration.blocks.ChunkLoader;
+import com.grimmauld.createintegration.blocks.ChunkLoaderTile;
 import com.grimmauld.createintegration.blocks.CopperPressurePlate;
 import com.grimmauld.createintegration.blocks.Dynamo;
 import com.grimmauld.createintegration.blocks.DynamoTile;
@@ -17,6 +18,8 @@ import com.grimmauld.createintegration.blocks.RollingMachine;
 import com.grimmauld.createintegration.blocks.RollingMachineTile;
 import com.grimmauld.createintegration.blocks.RollingMachineTileEntityRenderer;
 import com.grimmauld.createintegration.blocks.ZincPressurePlate;
+import com.grimmauld.createintegration.misc.ChunkLoaderList;
+import com.grimmauld.createintegration.misc.IChunkLoaderList;
 import com.grimmauld.createintegration.recipes.RecipeTypeRolling;
 import com.grimmauld.createintegration.recipes.RollingRecipe;
 import com.grimmauld.createintegration.setup.ClientProxy;
@@ -32,15 +35,26 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.item.crafting.RecipeManager;
+import net.minecraft.nbt.INBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityInject;
+import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.capabilities.ICapabilitySerializable;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.RegistryEvent.Register;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -53,7 +67,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
 
-@Mod("createintegration")
+@Mod(CreateIntegration.modid)
 public class CreateIntegration {
 	
 	public static IProxy proxy = DistExecutor.runForDist(() -> () -> new ClientProxy(), () -> () -> new ServerProxy());
@@ -62,9 +76,12 @@ public class CreateIntegration {
 	
 	public static CreateIntegration instance;
 	public static final String modid = "createintegration";
-	private static final Logger logger = LogManager.getLogger(modid);
+	public static final Logger logger = LogManager.getLogger(modid);
 	
 	public static final IRecipeType<RollingRecipe> ROLLING_RECIPE = new RecipeTypeRolling();
+	
+	@CapabilityInject(IChunkLoaderList.class)
+    public static Capability<IChunkLoaderList> CHUNK_LOADING_CAPABILITY = null;
 	
 	
 	public CreateIntegration() {
@@ -77,13 +94,18 @@ public class CreateIntegration {
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientRegistries);
 		FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(IRecipeSerializer.class, this::registerRecipeSerializers);
 		
+		
 		Config.loadConfig(Config.CLIENT_CONFIG, FMLPaths.CONFIGDIR.get().resolve("createintegration-client.toml"));
 		Config.loadConfig(Config.COMMON_CONFIG, FMLPaths.CONFIGDIR.get().resolve("createintegration-common.toml"));
 		
-		MinecraftForge.EVENT_BUS.register(this);		
+		MinecraftForge.EVENT_BUS.register(this);
+		// MinecraftForge.EVENT_BUS.addListener(this::onTick);
+		
 		
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(CreateIntegration::clientInit);
 	}
+	
+	
 	
     private void registerRecipeSerializers (Register<IRecipeSerializer<?>> event) {
         
@@ -113,11 +135,38 @@ public class CreateIntegration {
 	    final Map<IRecipeType<?>, Map<ResourceLocation, IRecipe<?>>> recipesMap = ObfuscationReflectionHelper.getPrivateValue(RecipeManager.class, manager, "field_199522_d");
 	    return recipesMap.get(recipeType);
 	}
+	
+	
+    @SubscribeEvent
+    public void attachWorldCaps(AttachCapabilitiesEvent<World> event) {
+        if (event.getObject().isRemote) return;
+        final LazyOptional<IChunkLoaderList> inst = LazyOptional.of(() -> new ChunkLoaderList((ServerWorld)event.getObject()));
+        final ICapabilitySerializable<INBT> provider = new ICapabilitySerializable<INBT>() {
+            @Override
+            public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
+                return CHUNK_LOADING_CAPABILITY.orEmpty(cap, inst);
+            }
+
+            @Override
+            public INBT serializeNBT() {
+                return CHUNK_LOADING_CAPABILITY.writeNBT(inst.orElse(null), null);
+            }
+
+            @Override
+            public void deserializeNBT(INBT nbt) {
+                CHUNK_LOADING_CAPABILITY.readNBT(inst.orElse(null), null, nbt);
+            }
+        };
+        event.addCapability(new ResourceLocation(modid, "create_integration_loader"), provider);
+        event.addListener(() -> inst.invalidate());
+    }
     
     
 	private void setup(final FMLCommonSetupEvent event) {
 		setup.init();
 		proxy.init();
+		
+		CapabilityManager.INSTANCE.register(IChunkLoaderList.class, new ChunkLoaderList.Storage(), () -> new ChunkLoaderList(null));
 		logger.info("Setup method registered.");
 	}
 	
@@ -142,6 +191,7 @@ public class CreateIntegration {
 			event.getRegistry().register(new BlockItem(ModBlocks.BRASS_PRESSURE_PLATE, properties).setRegistryName("brass_pressure_plate"));
 			event.getRegistry().register(new BlockItem(ModBlocks.COPPER_PRESSURE_PLATE, properties).setRegistryName("copper_pressure_plate"));
 			event.getRegistry().register(new BlockItem(ModBlocks.ZINC_PRESSURE_PLATE, properties).setRegistryName("zinc_pressure_plate"));
+			event.getRegistry().register(new BlockItem(ModBlocks.CHUNK_LOADER, properties).setRegistryName("chunk_loader"));
 			logger.info("finished items registering");
 		}
 		
@@ -154,6 +204,7 @@ public class CreateIntegration {
 			event.getRegistry().register(new BrassPressurePlate());
 			event.getRegistry().register(new CopperPressurePlate());
 			event.getRegistry().register(new ZincPressurePlate());
+			event.getRegistry().register(new ChunkLoader());
 			logger.info("finished blocks registering");
 			
 		}
@@ -164,6 +215,7 @@ public class CreateIntegration {
 			event.getRegistry().register(TileEntityType.Builder.create(DynamoTile::new, ModBlocks.DYNAMO).build(null).setRegistryName("dynamo"));
 			event.getRegistry().register(TileEntityType.Builder.create(MotorTile::new, ModBlocks.MOTOR).build(null).setRegistryName("motor"));
 			event.getRegistry().register(TileEntityType.Builder.create(RollingMachineTile::new, ModBlocks.ROLLING_MACHINE).build(null).setRegistryName("rolling_machine"));
+			event.getRegistry().register(TileEntityType.Builder.create(ChunkLoaderTile::new, ModBlocks.CHUNK_LOADER).build(null).setRegistryName("chunk_loader"));
 			logger.info("finished TEs registering");
 		}
 		
@@ -178,4 +230,13 @@ public class CreateIntegration {
 	private static <T extends TileEntity> void bind(Class<T> clazz, TileEntityRenderer<? super T> renderer) {
 		ClientRegistry.bindTileEntitySpecialRenderer(clazz, renderer);
 	}
+	
+	@SubscribeEvent
+	public void onTick(TickEvent.WorldTickEvent event) {  // FIXME
+		if(event.world != null && event.world.getGameTime() % 20 == 0) {
+			event.world.getCapability(CreateIntegration.CHUNK_LOADING_CAPABILITY, null).ifPresent(cap -> cap.tickDown());
+		}
+	}
+	
+	
 }

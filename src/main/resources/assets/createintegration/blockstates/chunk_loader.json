@@ -1,0 +1,5 @@
+{
+	"variants": {
+		"":{"model": "createintegration:block/chunk_loader"}
+	}
+}

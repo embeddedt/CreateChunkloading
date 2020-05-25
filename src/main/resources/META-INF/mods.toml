@@ -4,14 +4,12 @@ issueTrackerURL="https://github.com/LordGrimmauld/createintegration/issues"
 logoFile="createintegration_logo.png"
 [[mods]]
 modId="createintegration"
-version="0.1.4b"
+version="0.1.5"
 displayName="Create Integration"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/create-integration"
-credits="Thanks to Alexander2907 for the textures"
+credits="Thanks to Alexander2907 for the dynamo texture"
 authors="Grimmauld"
-description='''
-This mod adds an interface to convert mechanical energy provided from Create machinery to FE.
-'''
+description='''This mod adds an interface to convert mechanical energy provided from Create machinery to FE.'''
 [[dependencies.createintegration]] #optional
     modId="forge" #mandatory
     mandatory=true #mandatory
