@@ -2,12 +2,12 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "name": "createintegrationdynamo",
+      "name": "createintegrationchunkloader",
       "rolls": 1,
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "createintegration:dynamo"
+          "name": "createintegration:chunk_loader"
         }
       ],
       "conditions": [

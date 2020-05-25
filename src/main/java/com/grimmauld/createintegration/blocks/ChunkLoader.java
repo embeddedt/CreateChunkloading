@@ -5,7 +5,6 @@ import com.grimmauld.createintegration.misc.ChunkLoaderMovementBehaviour;
 import com.simibubi.create.modules.contraptions.components.contraptions.IPortableBlock;
 import com.simibubi.create.modules.contraptions.components.contraptions.MovementBehaviour;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.GlassBlock;

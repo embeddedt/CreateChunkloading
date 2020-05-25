@@ -6,9 +6,7 @@ import com.grimmauld.createintegration.CreateIntegration;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 
-public class ChunkLoaderTile extends TileEntity implements ITickableTileEntity{ 
-	private int resetTicking;
-	
+public class ChunkLoaderTile extends TileEntity implements ITickableTileEntity{ 	
 	public ChunkLoaderTile() {
 		super(ModBlocks.CHUNK_LOADER_TILE);
 	}

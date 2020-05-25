@@ -69,7 +69,7 @@ public class Config {
     }
     
     private static void setupGeneralConfig(ForgeConfigSpec.Builder COMMON_BUILDER, ForgeConfigSpec.Builder CLIENT_BUILDER) {
-    	CHUNK_CHAT = COMMON_BUILDER.comment("Do chat output of chunk loaders?").define("feedback", false);
+    	CHUNK_CHAT = COMMON_BUILDER.comment("Do chat output of chunk loaders?").define("feedback", true); // FIXME: default false if everything works
     }    
     
 
