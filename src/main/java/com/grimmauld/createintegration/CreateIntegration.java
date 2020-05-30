@@ -260,7 +260,7 @@ public class CreateIntegration {
         public static void onContainerRegistry(final RegistryEvent.Register<ContainerType<?>> event) {
             event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
                 BlockPos pos = data.readBlockPos();
-                return new EnderContainer(windowId, CreateIntegration.proxy.getClientWorld(), pos, inv, CreateIntegration.proxy.getClientPlayer());
+                return new EnderContainer(windowId, CreateIntegration.proxy.getClientWorld(), pos, inv);
             }).setRegistryName("ender_chest"));
         }
 		

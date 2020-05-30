@@ -1,5 +1,10 @@
 package com.grimmauld.createintegration.blocks;
 
+import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.grimmauld.createintegration.CreateIntegration;
 import com.simibubi.create.foundation.behaviour.CenteredSideValueBoxTransform;
 import com.simibubi.create.foundation.behaviour.base.SmartTileEntity;
@@ -21,15 +26,12 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.List;
+import net.minecraftforge.items.ItemStackHandler;
 
 
 public class EnderChestTile extends SmartTileEntity implements INamedContainerProvider {
 	ScrollValueBehaviour id;
-	private LazyOptional<IItemHandler> handler;
+	private LazyOptional<IItemHandler> handler = LazyOptional.of(this::getHandler);
 	private static final FlexcrateTileEntity dummyFlexCrate = new FlexcrateTileEntity();  // FIXME hack
 
 	public EnderChestTile() {
@@ -50,11 +52,12 @@ public class EnderChestTile extends SmartTileEntity implements INamedContainerPr
 		this.handler = itemHandler;
 	}
 
+	@Nonnull
 	@Override
 	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
 		if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-			if(handler == null) updateItemHandler();
-			if(handler != null) return handler.cast();
+			updateItemHandler();
+			return handler.cast();
 		}
 		return super.getCapability(cap, side);
 	}
@@ -126,7 +129,7 @@ public class EnderChestTile extends SmartTileEntity implements INamedContainerPr
 	@Nullable
 	@Override
 	public Container createMenu(int id, PlayerInventory playerInventory, PlayerEntity player) {
-		return new EnderContainer(id, world, pos, playerInventory, player);
+		return new EnderContainer(id, world, pos, playerInventory);
 	}
 
 	@Override
@@ -137,5 +140,11 @@ public class EnderChestTile extends SmartTileEntity implements INamedContainerPr
 	public int getId() {
 		return id.getValue();
 	}
+	
+	private IItemHandler getHandler() {
+		
+		
+        return new ItemStackHandler(9);  // TODO: Get handler from world
+    }
 	
 }

@@ -62,7 +62,7 @@ public class EnderChest extends Block implements ITE<EnderChestTile>{
 	            }
 	            return true;
 	        }
-		return super.onBlockActivated(state, world, pos, player, hand, result);
+		return false;
 	}
 	
 	
