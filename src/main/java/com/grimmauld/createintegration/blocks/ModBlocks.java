@@ -1,5 +1,6 @@
 package com.grimmauld.createintegration.blocks;
 
+import net.minecraft.tileentity.EnderChestTileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.registries.ObjectHolder;
 
@@ -37,4 +38,10 @@ public class ModBlocks {
 	
 	@ObjectHolder("createintegration:chunk_loader")
 	public static TileEntityType<ChunkLoaderTile> CHUNK_LOADER_TILE;
+	
+	@ObjectHolder("createintegration:ender_chest")
+	public static EnderChest ENDER_CHEST;
+	
+	@ObjectHolder("createintegration:ender_chest")
+	public static TileEntityType<EnderChestTile> ENDER_CHEST_TILE;
 }

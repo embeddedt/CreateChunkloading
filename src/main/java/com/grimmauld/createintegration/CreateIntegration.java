@@ -2,6 +2,7 @@ package com.grimmauld.createintegration;
 
 import java.util.Map;
 
+import com.grimmauld.createintegration.misc.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -11,6 +12,8 @@ import com.grimmauld.createintegration.blocks.ChunkLoaderTile;
 import com.grimmauld.createintegration.blocks.CopperPressurePlate;
 import com.grimmauld.createintegration.blocks.Dynamo;
 import com.grimmauld.createintegration.blocks.DynamoTile;
+import com.grimmauld.createintegration.blocks.EnderChest;
+import com.grimmauld.createintegration.blocks.EnderChestTile;
 import com.grimmauld.createintegration.blocks.ModBlocks;
 import com.grimmauld.createintegration.blocks.Motor;
 import com.grimmauld.createintegration.blocks.MotorTile;
@@ -18,14 +21,13 @@ import com.grimmauld.createintegration.blocks.RollingMachine;
 import com.grimmauld.createintegration.blocks.RollingMachineTile;
 import com.grimmauld.createintegration.blocks.RollingMachineTileEntityRenderer;
 import com.grimmauld.createintegration.blocks.ZincPressurePlate;
-import com.grimmauld.createintegration.misc.ChunkLoaderList;
-import com.grimmauld.createintegration.misc.IChunkLoaderList;
 import com.grimmauld.createintegration.recipes.RecipeTypeRolling;
 import com.grimmauld.createintegration.recipes.RollingRecipe;
 import com.grimmauld.createintegration.setup.ClientProxy;
 import com.grimmauld.createintegration.setup.IProxy;
 import com.grimmauld.createintegration.setup.ModSetup;
 import com.grimmauld.createintegration.setup.ServerProxy;
+import com.grimmauld.createintegration.misc.EnderList;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
@@ -82,6 +84,9 @@ public class CreateIntegration {
 	
 	@CapabilityInject(IChunkLoaderList.class)
     public static Capability<IChunkLoaderList> CHUNK_LOADING_CAPABILITY = null;
+
+	@CapabilityInject(EnderList.class)
+	public static Capability<EnderList> ENDER_CHEST_CAPABILITY = null;
 	
 	
 	public CreateIntegration() {
@@ -141,7 +146,7 @@ public class CreateIntegration {
     public void attachWorldCaps(AttachCapabilitiesEvent<World> event) {
         if (event.getObject().isRemote) return;
         final LazyOptional<IChunkLoaderList> inst = LazyOptional.of(() -> new ChunkLoaderList((ServerWorld)event.getObject()));
-        final ICapabilitySerializable<INBT> provider = new ICapabilitySerializable<INBT>() {
+        final ICapabilitySerializable<INBT> loadingCapability = new ICapabilitySerializable<INBT>() {
             @Override
             public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
                 return CHUNK_LOADING_CAPABILITY.orEmpty(cap, inst);
@@ -157,8 +162,29 @@ public class CreateIntegration {
                 CHUNK_LOADING_CAPABILITY.readNBT(inst.orElse(null), null, nbt);
             }
         };
-        event.addCapability(new ResourceLocation(modid, "create_integration_loader"), provider);
-        event.addListener(() -> inst.invalidate());
+
+		final LazyOptional<EnderList> enderInst = LazyOptional.of(EnderList::new);
+		final ICapabilitySerializable<INBT> enderCapability = new ICapabilitySerializable<INBT>() {
+			@Override
+			public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
+				return ENDER_CHEST_CAPABILITY.orEmpty(cap, enderInst);
+			}
+
+			@Override
+			public INBT serializeNBT() {
+				return ENDER_CHEST_CAPABILITY.writeNBT(enderInst.orElse(null), null);
+			}
+
+			@Override
+			public void deserializeNBT(INBT nbt) {
+				ENDER_CHEST_CAPABILITY.readNBT(enderInst.orElse(null), null, nbt);
+			}
+		};
+
+		event.addCapability(new ResourceLocation(modid, "create_integration_loader"), loadingCapability);
+		event.addCapability(new ResourceLocation(modid, "create_integration_ender"), enderCapability);
+        event.addListener(inst::invalidate);
+        event.addListener(enderInst::invalidate);
     }
     
     
@@ -167,6 +193,8 @@ public class CreateIntegration {
 		proxy.init();
 		
 		CapabilityManager.INSTANCE.register(IChunkLoaderList.class, new ChunkLoaderList.Storage(), () -> new ChunkLoaderList(null));
+		CapabilityManager.INSTANCE.register(EnderList.class, new EnderList.Storage(), EnderList::new);
+
 		logger.info("Setup method registered.");
 	}
 	
@@ -192,6 +220,7 @@ public class CreateIntegration {
 			event.getRegistry().register(new BlockItem(ModBlocks.COPPER_PRESSURE_PLATE, properties).setRegistryName("copper_pressure_plate"));
 			event.getRegistry().register(new BlockItem(ModBlocks.ZINC_PRESSURE_PLATE, properties).setRegistryName("zinc_pressure_plate"));
 			event.getRegistry().register(new BlockItem(ModBlocks.CHUNK_LOADER, properties).setRegistryName("chunk_loader"));
+			event.getRegistry().register(new BlockItem(ModBlocks.ENDER_CHEST, properties).setRegistryName("ender_chest"));
 			logger.info("finished items registering");
 		}
 		
@@ -205,6 +234,7 @@ public class CreateIntegration {
 			event.getRegistry().register(new CopperPressurePlate());
 			event.getRegistry().register(new ZincPressurePlate());
 			event.getRegistry().register(new ChunkLoader());
+			event.getRegistry().register(new EnderChest());
 			logger.info("finished blocks registering");
 			
 		}
@@ -216,6 +246,7 @@ public class CreateIntegration {
 			event.getRegistry().register(TileEntityType.Builder.create(MotorTile::new, ModBlocks.MOTOR).build(null).setRegistryName("motor"));
 			event.getRegistry().register(TileEntityType.Builder.create(RollingMachineTile::new, ModBlocks.ROLLING_MACHINE).build(null).setRegistryName("rolling_machine"));
 			event.getRegistry().register(TileEntityType.Builder.create(ChunkLoaderTile::new, ModBlocks.CHUNK_LOADER).build(null).setRegistryName("chunk_loader"));
+			event.getRegistry().register(TileEntityType.Builder.create(EnderChestTile::new, ModBlocks.ENDER_CHEST).build(null).setRegistryName("ender_chest"));
 			logger.info("finished TEs registering");
 		}
 		
