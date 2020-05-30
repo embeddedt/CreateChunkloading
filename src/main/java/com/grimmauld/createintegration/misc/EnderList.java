@@ -61,28 +61,4 @@ public class EnderList implements IEnderList{
 
         }
     }
-
-    /*
-    public static class Storage implements IStorage<IChunkLoaderList> {
-        @Override
-        public INBT writeNBT(Capability<IChunkLoaderList> capability, IChunkLoaderList instance, Direction side) {
-            if (!(instance instanceof ChunkLoaderList)) return null;
-            return new LongArrayNBT(((ChunkLoaderList) instance).getChunkNumbers());
-        }
-
-        @Override
-        public void readNBT(Capability<IChunkLoaderList> capability, IChunkLoaderList instance, Direction side, INBT nbt) {
-            if (!(instance instanceof ChunkLoaderList) || !(nbt instanceof LongArrayNBT)) return;
-            ChunkLoaderList list = (ChunkLoaderList) instance;
-            try {
-                for (long l : ((LongArrayNBT) nbt).getAsLongArray()) {
-                    list.add(BlockPos.fromLong(l));
-                }
-            } finally {
-                list.update();
-            }
-        }
-    }
-     */
-
 }

@@ -5,10 +5,11 @@ import com.simibubi.create.foundation.behaviour.CenteredSideValueBoxTransform;
 import com.simibubi.create.foundation.behaviour.base.SmartTileEntity;
 import com.simibubi.create.foundation.behaviour.base.TileEntityBehaviour;
 import com.simibubi.create.foundation.behaviour.scrollvalue.ScrollValueBehaviour;
-import com.simibubi.create.modules.contraptions.components.motor.MotorTileEntity;
+import com.simibubi.create.modules.logistics.block.inventories.FlexcrateTileEntity;
 
-import net.minecraft.block.ChestBlock;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
@@ -23,6 +24,7 @@ import java.util.List;
 public class EnderChestTile extends SmartTileEntity {
 	ScrollValueBehaviour id;
 	private LazyOptional<IItemHandler> handler;
+	private static final FlexcrateTileEntity dummyFlexCrate = new FlexcrateTileEntity();  // FIXME hack
 
 	public EnderChestTile() {
 		super(ModBlocks.ENDER_CHEST_TILE);
@@ -30,7 +32,6 @@ public class EnderChestTile extends SmartTileEntity {
 	}
 
 	public void updateItemHandler(){
-		System.out.println("Update handling!");
 		if(world==null) return;
 		world
 				.getCapability(CreateIntegration.ENDER_CHEST_CAPABILITY,
@@ -45,8 +46,6 @@ public class EnderChestTile extends SmartTileEntity {
 
 	@Override
 	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-
-
 		if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
 			if(handler == null) updateItemHandler();
 			if(handler != null) return handler.cast();
@@ -74,26 +73,30 @@ public class EnderChestTile extends SmartTileEntity {
 	@Override
 	public void addBehaviours(List<TileEntityBehaviour> behaviours) {
 		CenteredSideValueBoxTransform slot =
-				new CenteredSideValueBoxTransform((ender_chest, side) -> ender_chest.get(ChestBlock.FACING) == side);
+				new CenteredSideValueBoxTransform((ender_chest, side) -> ender_chest.get(BlockStateProperties.FACING) == side);
 
 		id = new ScrollValueBehaviour("Ender ID", this, slot);
 		id.between(0, 256);
 		id.value = 0;
 		id.scrollableValue = 0;
-		id.withStepFunction(MotorTileEntity::step);
+		id.withStepFunction(EnderChestTile::step);
 		id.withCallback(this::updateItemHandler);
 		behaviours.add(id);
-		System.out.println("PUT SCROLL HANDLER");
 	}
 
 	private void updateItemHandler(Integer integer) {
 		updateItemHandler();
 	}
+	
+	
+	@Override
+	public TileEntityType<?> getType() {
+	      return dummyFlexCrate.getType();  // hack!
+	}
 
 	
 	
-	
-	/* public static int step(ScrollValueBehaviour.StepContext context) {
+	public static int step(ScrollValueBehaviour.StepContext context) {
 		if (context.shift)
 			return 1;
 
@@ -108,6 +111,6 @@ public class EnderChestTile extends SmartTileEntity {
 		if (magnitude >= 128)
 			step *= 4;
 		return step;
-	} */
+	}
 
 }
