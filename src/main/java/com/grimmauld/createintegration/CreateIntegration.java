@@ -2,7 +2,6 @@ package com.grimmauld.createintegration;
 
 import java.util.Map;
 
-import com.grimmauld.createintegration.misc.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -14,6 +13,7 @@ import com.grimmauld.createintegration.blocks.Dynamo;
 import com.grimmauld.createintegration.blocks.DynamoTile;
 import com.grimmauld.createintegration.blocks.EnderChest;
 import com.grimmauld.createintegration.blocks.EnderChestTile;
+import com.grimmauld.createintegration.blocks.EnderContainer;
 import com.grimmauld.createintegration.blocks.ModBlocks;
 import com.grimmauld.createintegration.blocks.Motor;
 import com.grimmauld.createintegration.blocks.MotorTile;
@@ -21,16 +21,19 @@ import com.grimmauld.createintegration.blocks.RollingMachine;
 import com.grimmauld.createintegration.blocks.RollingMachineTile;
 import com.grimmauld.createintegration.blocks.RollingMachineTileEntityRenderer;
 import com.grimmauld.createintegration.blocks.ZincPressurePlate;
+import com.grimmauld.createintegration.misc.ChunkLoaderList;
+import com.grimmauld.createintegration.misc.EnderList;
+import com.grimmauld.createintegration.misc.IChunkLoaderList;
 import com.grimmauld.createintegration.recipes.RecipeTypeRolling;
 import com.grimmauld.createintegration.recipes.RollingRecipe;
 import com.grimmauld.createintegration.setup.ClientProxy;
 import com.grimmauld.createintegration.setup.IProxy;
 import com.grimmauld.createintegration.setup.ModSetup;
 import com.grimmauld.createintegration.setup.ServerProxy;
-import com.grimmauld.createintegration.misc.EnderList;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.crafting.IRecipe;
@@ -42,6 +45,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -52,6 +56,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
+import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegistryEvent;
@@ -250,6 +255,15 @@ public class CreateIntegration {
 			logger.info("finished TEs registering");
 		}
 		
+		
+        @SubscribeEvent
+        public static void onContainerRegistry(final RegistryEvent.Register<ContainerType<?>> event) {
+            event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
+                BlockPos pos = data.readBlockPos();
+                return new EnderContainer(windowId, CreateIntegration.proxy.getClientWorld(), pos, inv, CreateIntegration.proxy.getClientPlayer());
+            }).setRegistryName("ender_chest"));
+        }
+		
 	}
 	
 	@OnlyIn(Dist.CLIENT)
@@ -267,6 +281,10 @@ public class CreateIntegration {
 		if(event.world != null && event.world.getGameTime() % 20 == 0) {
 			event.world.getCapability(CreateIntegration.CHUNK_LOADING_CAPABILITY, null).ifPresent(cap -> cap.tickDown());
 		}
+	}
+
+	public static ResourceLocation generateResourceLocation(String resourceName){
+		return new ResourceLocation(modid, resourceName);
 	}
 	
 	

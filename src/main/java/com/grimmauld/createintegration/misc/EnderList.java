@@ -20,7 +20,7 @@ public class EnderList implements IEnderList{
         if(!ender_ids.containsKey(id)){
             ender_ids.put(id, LazyOptional.of(() -> new ItemStackHandler(9)));
         }
-        return ender_ids.get(id);
+        return ender_ids.get(id).cast();
     }
 
     public Set<Integer> getIDs(){

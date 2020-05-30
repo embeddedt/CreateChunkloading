@@ -7,10 +7,16 @@ import com.simibubi.create.foundation.behaviour.base.TileEntityBehaviour;
 import com.simibubi.create.foundation.behaviour.scrollvalue.ScrollValueBehaviour;
 import com.simibubi.create.modules.logistics.block.inventories.FlexcrateTileEntity;
 
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -21,7 +27,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 
-public class EnderChestTile extends SmartTileEntity {
+public class EnderChestTile extends SmartTileEntity implements INamedContainerProvider {
 	ScrollValueBehaviour id;
 	private LazyOptional<IItemHandler> handler;
 	private static final FlexcrateTileEntity dummyFlexCrate = new FlexcrateTileEntity();  // FIXME hack
@@ -91,7 +97,7 @@ public class EnderChestTile extends SmartTileEntity {
 	
 	@Override
 	public TileEntityType<?> getType() {
-		if(Thread.currentThread().getStackTrace()[2].toString().contains("com.simibubi.create.modules.contraptions.components.contraptions.MountedStorage")) {
+		if(Thread.currentThread().getStackTrace()[2].toString().contains("com.simibubi.create.modules.contraptions.components.contraptions.MountedStorage")) {  // FIXME: use StackTraceElement API (https://docs.oracle.com/javase/7/docs/api/java/lang/StackTraceElement.html)
 			return dummyFlexCrate.getType();  // hack!
 		}
 		else {
@@ -117,4 +123,19 @@ public class EnderChestTile extends SmartTileEntity {
 		return step;
 	}
 
+	@Nullable
+	@Override
+	public Container createMenu(int id, PlayerInventory playerInventory, PlayerEntity player) {
+		return new EnderContainer(id, world, pos, playerInventory, player);
+	}
+
+	@Override
+	public ITextComponent getDisplayName() {
+		return new StringTextComponent(getType().getRegistryName().getPath());  // Lang File
+	}
+
+	public int getId() {
+		return id.getValue();
+	}
+	
 }
