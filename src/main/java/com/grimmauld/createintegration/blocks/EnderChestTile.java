@@ -91,9 +91,13 @@ public class EnderChestTile extends SmartTileEntity {
 	
 	@Override
 	public TileEntityType<?> getType() {
-	      return dummyFlexCrate.getType();  // hack!
+		if(Thread.currentThread().getStackTrace()[2].toString().contains("com.simibubi.create.modules.contraptions.components.contraptions.MountedStorage")) {
+			return dummyFlexCrate.getType();  // hack!
+		}
+		else {
+			return super.getType();
+		}
 	}
-
 	
 	
 	public static int step(ScrollValueBehaviour.StepContext context) {
