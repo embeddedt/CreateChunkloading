@@ -1,10 +1,10 @@
 package com.grimmauld.createintegration.blocks;
 
-import com.grimmauld.createintegration.CreateIntegration;
-
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.Slot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -31,15 +31,12 @@ public class EnderContainer extends Container{
             }
         });
         
-        
-     
-        
         layoutPlayerInventorySlots(8, 84);
     }
     
-    private SlotItemHandler createSlotItemHandler(IItemHandler h, int index, int x, int y) {
-    	return new SlotItemHandler(h, index, x, y);
-    }
+    public int getEnderId() {
+		return tileEntity.getId();
+	}
     
 
     @Override
@@ -72,5 +69,36 @@ public class EnderContainer extends Container{
         // Hotbar
         topRow += 58;
         addSlotRange(playerInventory, 0, leftCol, topRow, 9, 18);
+    }
+
+    @Override
+    public ItemStack transferStackInSlot(PlayerEntity playerIn, int index) {
+        ItemStack itemstack = ItemStack.EMPTY;
+        Slot slot = this.inventorySlots.get(index);
+        if (slot != null && slot.getHasStack()) {
+            ItemStack itemstack1 = slot.getStack();
+            itemstack = itemstack1.copy();
+            if (index < 9) {
+                if (!this.mergeItemStack(itemstack1, 9, 45, true)) {
+                    return ItemStack.EMPTY;
+                }
+            } else if (!this.mergeItemStack(itemstack1, 0, 9, false)) {
+                return ItemStack.EMPTY;
+            }
+
+            if (itemstack1.isEmpty()) {
+                slot.putStack(ItemStack.EMPTY);
+            } else {
+                slot.onSlotChanged();
+            }
+
+            if (itemstack1.getCount() == itemstack.getCount()) {
+                return ItemStack.EMPTY;
+            }
+
+            slot.onTake(playerIn, itemstack1);
+        }
+
+        return itemstack;
     }
 }

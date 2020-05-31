@@ -1,5 +1,10 @@
 {
     "variants": {
-        "": { "model": "minecraft:block/chest" }
+        "facing=down": {"model": "createintegration:block/ender_chest"},
+        "facing=up": {"model": "createintegration:block/ender_chest", "y":180},
+        "facing=west": {"model": "createintegration:block/ender_chest", "x": -90, "y":90},
+        "facing=east": {"model": "createintegration:block/ender_chest", "x": 90, "y":90},
+        "facing=south": {"model": "createintegration:block/ender_chest", "x": -90},
+        "facing=north": {"model": "createintegration:block/ender_chest", "x": 90}
     }
 }

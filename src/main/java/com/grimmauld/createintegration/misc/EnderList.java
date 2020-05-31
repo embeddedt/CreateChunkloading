@@ -41,7 +41,6 @@ public class EnderList implements IEnderList{
                     }                   
                 });
             }
-            System.out.println(tag);
             return tag;
         }
 
@@ -58,7 +57,6 @@ public class EnderList implements IEnderList{
                 }
             }
             System.out.println(instance.ender_ids);
-
         }
     }
     

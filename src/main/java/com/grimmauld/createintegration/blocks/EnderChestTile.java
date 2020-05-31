@@ -142,9 +142,7 @@ public class EnderChestTile extends SmartTileEntity implements INamedContainerPr
 	}
 	
 	private IItemHandler getHandler() {
-		
-		
-        return new ItemStackHandler(9);  // TODO: Get handler from world
+        return new ItemStackHandler(9);
     }
 	
 }

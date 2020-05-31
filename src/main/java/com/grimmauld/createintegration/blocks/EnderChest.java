@@ -3,6 +3,8 @@ package com.grimmauld.createintegration.blocks;
 import javax.annotation.Nullable;
 
 import com.simibubi.create.foundation.block.ITE;
+import com.simibubi.create.modules.contraptions.IWrenchable;
+import com.simibubi.create.modules.contraptions.WrenchItem;
 import com.simibubi.create.modules.logistics.block.inventories.CrateBlock;
 
 import net.minecraft.block.Block;
@@ -25,7 +27,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-public class EnderChest extends Block implements ITE<EnderChestTile>{
+public class EnderChest extends Block implements ITE<EnderChestTile>, IWrenchable{
 	
 	public EnderChest() {
 		super(Properties.from(Blocks.OBSIDIAN));
@@ -53,16 +55,24 @@ public class EnderChest extends Block implements ITE<EnderChestTile>{
 	@Override
 	public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand,
 			BlockRayTraceResult result) {
-	       if (!world.isRemote) {
-	            TileEntity tileEntity = world.getTileEntity(pos);
-	            if (tileEntity instanceof INamedContainerProvider) {
-	                NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) tileEntity, tileEntity.getPos());
-	            } else {
-	                throw new IllegalStateException("Our named container provider is missing!");
-	            }
-	            return true;
-	        }
-		return false;
+		
+		
+		// System.out.println(player.getActiveItemStack().getItem());
+		/*if(player.getActiveItemStack().getItem() instanceof WrenchItem) {
+			System.out.println("wrench");
+		}*/
+		
+		
+       if (!world.isRemote) {
+            TileEntity tileEntity = world.getTileEntity(pos);
+            if (tileEntity instanceof INamedContainerProvider) {
+                NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) tileEntity, tileEntity.getPos());
+            } else {
+                throw new IllegalStateException("Our named container provider is missing!");
+            }
+            return true;
+        }
+		return super.onBlockActivated(state, world, pos, player, hand, result);
 	}
 	
 	

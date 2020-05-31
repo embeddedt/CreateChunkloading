@@ -26,7 +26,8 @@ public class EnderGui extends ContainerScreen<EnderContainer>{
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		drawString(Minecraft.getInstance().fontRenderer, "Ender ID: not implemented", 10, 10, 0xffffff);
+		// drawString(Minecraft.getInstance().fontRenderer, "Ender ID: "+String.valueOf(container.getEnderId()), 60, 5, 0xffffff);
+		drawCenteredString(Minecraft.getInstance().fontRenderer, "Ender ID: "+String.valueOf(container.getEnderId()), 60, 5, 0xffffff);
 	}
 
 	@Override
