@@ -11,10 +11,11 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import java.util.Hashtable;
+import java.util.Objects;
 import java.util.Set;
 
 public class EnderList implements IEnderList {
-    Hashtable<Integer, LazyOptional<IItemHandler>> ender_ids = new Hashtable<Integer, LazyOptional<IItemHandler>>();
+    Hashtable<Integer, LazyOptional<IItemHandler>> ender_ids = new Hashtable<>();
 
     public LazyOptional<IItemHandler> getOrCreate(int id) {
         if (!ender_ids.containsKey(id)) {
@@ -40,7 +41,7 @@ public class EnderList implements IEnderList {
             for (int id : instance.getIDs()) {
                 instance.ender_ids.get(id).ifPresent(h -> {
                     CompoundNBT compound = ((INBTSerializable<CompoundNBT>) h).serializeNBT();
-                    if (compound.contains("Items") && compound.get("Items") instanceof ListNBT && !((ListNBT) compound.get("Items")).isEmpty()) {
+                    if (compound.contains("Items") && compound.get("Items") instanceof ListNBT && !((ListNBT) Objects.requireNonNull(compound.get("Items"))).isEmpty()) {
                         tag.put(String.valueOf(id), compound);
                     }
                 });

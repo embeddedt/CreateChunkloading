@@ -20,6 +20,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public abstract class BeltMachine extends DirectionalAxisKineticBlock implements ITE<BeltMachineTile> {
@@ -29,10 +30,6 @@ public abstract class BeltMachine extends DirectionalAxisKineticBlock implements
         super(Properties.from(Blocks.ANDESITE));
         setRegistryName(registryName);
         setDefaultState(getDefaultState().with(RUNNING, false));
-    }
-
-    public static boolean isHorizontal(BlockState state) {
-        return true;
     }
 
     private static Direction getFacingFromEntity(BlockPos clickedBlock, LivingEntity entity) {
@@ -74,8 +71,9 @@ public abstract class BeltMachine extends DirectionalAxisKineticBlock implements
         return true;
     }
 
+    @Nonnull
     @Override
-    public PushReaction getPushReaction(BlockState state) {
+    public PushReaction getPushReaction(@Nonnull BlockState state) {
         return PushReaction.NORMAL;
     }
 

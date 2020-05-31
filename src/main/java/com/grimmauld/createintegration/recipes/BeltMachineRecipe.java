@@ -10,6 +10,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,15 +38,16 @@ public abstract class BeltMachineRecipe implements IRecipe<IInventory> {
 
 
     @Override
-    public boolean matches(IInventory inv, World worldIn) {
+    public boolean matches(IInventory inv, @Nonnull World worldIn) {
 
         // This method is ignored by our custom recipe system, and only has partial
         // functionality. isValid is used instead.
         return this.input.test(inv.getStackInSlot(0));
     }
 
+    @Nonnull
     @Override
-    public ItemStack getCraftingResult(IInventory inv) {
+    public ItemStack getCraftingResult(@Nonnull IInventory inv) {
 
         // This method is ignored by our custom recipe system. getRecipeOutput().copy()
         // is used
@@ -53,6 +55,7 @@ public abstract class BeltMachineRecipe implements IRecipe<IInventory> {
         return this.output.copy();
     }
 
+    @Nonnull
     @Override
     public ItemStack getRecipeOutput() {
         return this.output;
@@ -63,14 +66,17 @@ public abstract class BeltMachineRecipe implements IRecipe<IInventory> {
     }
 
 
+    @Nonnull
     @Override
     public ResourceLocation getId() {
 
         return this.id;
     }
 
+
     @Override
     public abstract IRecipeSerializer<?> getSerializer();
+
 
     @Override
     public abstract IRecipeType<?> getType();
@@ -90,7 +96,7 @@ public abstract class BeltMachineRecipe implements IRecipe<IInventory> {
     }
 
     public List<ItemStack> getRollableResults() {
-        List<ItemStack> out = new ArrayList<ItemStack>();
+        List<ItemStack> out = new ArrayList<>();
         out.add(this.getRecipeOutput().copy());
         return out;
     }

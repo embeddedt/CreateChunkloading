@@ -31,6 +31,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -42,7 +43,7 @@ public abstract class BeltMachineTile extends KineticTileEntity {
     public ProcessingInventory inventory;
     protected int recipeIndex;
     protected int recipeNumber;
-    protected LazyOptional<IItemHandler> invProvider = LazyOptional.empty();
+    protected LazyOptional<IItemHandler> invProvider;
     protected boolean destroyed;
 
     public BeltMachineTile(TileEntityType<?> TET) {
@@ -61,6 +62,7 @@ public abstract class BeltMachineTile extends KineticTileEntity {
 
     protected BeltTileEntity getTargetingBelt() {
         BlockPos targetPos = getTargetingBeltBlock();
+        assert world != null;
         if (!AllBlocks.BELT.typeOf(world.getBlockState(targetPos)))
             return null;
         return BeltHelper.getSegmentTE(world, targetPos);
@@ -82,8 +84,10 @@ public abstract class BeltMachineTile extends KineticTileEntity {
         super.onSpeedChanged(prevSpeed);
         boolean shouldRun = Math.abs(getSpeed()) > 1 / 64f;
         boolean running = getBlockState().get(RUNNING);
-        if (shouldRun != running && !destroyed)
+        if (shouldRun != running && !destroyed) {
+            assert world != null;
             world.setBlockState(pos, getBlockState().with(RUNNING, shouldRun), 2 | 16);
+        }
     }
 
     @Override
@@ -110,36 +114,39 @@ public abstract class BeltMachineTile extends KineticTileEntity {
 
 
         // insert from belt
-        if (inventory.getStackInSlot(0).getCount() < 64 && AllBlocks.BELT.typeOf(world.getBlockState(getTargetingBeltBlock()))) {
-            BeltTileEntity beltTE = getTargetingBelt();
-            if (beltTE == null)
-                return;
-            BeltTileEntity controllerTE = beltTE.getControllerTE();
-            if (controllerTE == null)
-                return;
-            controllerTE.getInventory().forEachWithin(beltTE.index, .1f, stack -> {
-                ItemStack insertStack = stack.stack.copy();
-                List<TransportedItemStack> returnList = new ArrayList<TransportedItemStack>();
-                returnList.add(stack);
-                if (inventory.isEmpty()) {
-                    inventory.insertItem(0, insertStack, false);
-                    this.markDirty();
-                    controllerTE.markDirty();
-                    return Collections.emptyList();
-                } else if (inventory.getStackInSlot(0).getItem().equals(insertStack.getItem())) {
-                    if (inventory.getStackInSlot(0).getCount() + insertStack.getCount() > 64) {
-                        stack.stack.setCount(stack.stack.getCount() + inventory.getStackInSlot(0).getCount() - 64);
-                        inventory.getStackInSlot(0).setCount(64);
-                        return returnList;
-                    } else {
-                        inventory.getStackInSlot(0).setCount(inventory.getStackInSlot(0).getCount() + insertStack.getCount());
+        if (inventory.getStackInSlot(0).getCount() < 64) {
+            assert world != null;
+            if (AllBlocks.BELT.typeOf(world.getBlockState(getTargetingBeltBlock()))) {
+                BeltTileEntity beltTE = getTargetingBelt();
+                if (beltTE == null)
+                    return;
+                BeltTileEntity controllerTE = beltTE.getControllerTE();
+                if (controllerTE == null)
+                    return;
+                controllerTE.getInventory().forEachWithin(beltTE.index, .1f, stack -> {
+                    ItemStack insertStack = stack.stack.copy();
+                    List<TransportedItemStack> returnList = new ArrayList<>();
+                    returnList.add(stack);
+                    if (inventory.isEmpty()) {
+                        inventory.insertItem(0, insertStack, false);
+                        this.markDirty();
+                        controllerTE.markDirty();
                         return Collections.emptyList();
+                    } else if (inventory.getStackInSlot(0).getItem().equals(insertStack.getItem())) {
+                        if (inventory.getStackInSlot(0).getCount() + insertStack.getCount() > 64) {
+                            stack.stack.setCount(stack.stack.getCount() + inventory.getStackInSlot(0).getCount() - 64);
+                            inventory.getStackInSlot(0).setCount(64);
+                            return returnList;
+                        } else {
+                            inventory.getStackInSlot(0).setCount(inventory.getStackInSlot(0).getCount() + insertStack.getCount());
+                            return Collections.emptyList();
+                        }
                     }
-                }
-                return returnList;
+                    return returnList;
 
 
-            });
+                });
+            }
         }
 
         float processingSpeed = MathHelper.clamp(Math.abs(getSpeed()) / 32, 1, 128) * (canProcess() ? 1 : 0);
@@ -148,6 +155,7 @@ public abstract class BeltMachineTile extends KineticTileEntity {
         if (inventory.remainingTime > 0)
             spawnParticles(inventory.getStackInSlot(0));
 
+        assert world != null;
         if (world.isRemote)
             return;
 
@@ -167,7 +175,6 @@ public abstract class BeltMachineTile extends KineticTileEntity {
             if (!inventory.isEmpty())
                 start(inventory.getStackInSlot(0));
             markDirty();
-            return;
         }
     }
 
@@ -185,9 +192,10 @@ public abstract class BeltMachineTile extends KineticTileEntity {
 
         // Try moving items onto the belt
         BlockPos nextPos = pos.add(itemMovement.x, itemMovement.y, itemMovement.z);
+        assert world != null;
         if (AllBlocks.BELT.typeOf(world.getBlockState(nextPos))) {
             TileEntity te = world.getTileEntity(nextPos);
-            if (te != null && te instanceof BeltTileEntity) {
+            if (te instanceof BeltTileEntity) {
                 if (((BeltTileEntity) te).tryInsertingFromSide(itemMovementFacing, outputStack, false)) {
                     return;
                 }
@@ -228,7 +236,6 @@ public abstract class BeltMachineTile extends KineticTileEntity {
         entityIn.setMotion(outMotion);
         world.addEntity(entityIn);
         world.updateComparatorOutputLevel(pos, getBlockState().getBlock());
-        return;
     }
 
     protected boolean canProcess() {
@@ -262,8 +269,9 @@ public abstract class BeltMachineTile extends KineticTileEntity {
         super.remove();
     }
 
+    @Nonnull
     @Override
-    public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
+    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, Direction side) {
         if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
             return invProvider.cast();
         return super.getCapability(cap, side);
@@ -273,7 +281,7 @@ public abstract class BeltMachineTile extends KineticTileEntity {
         if (stack == null || stack.isEmpty())
             return;
 
-        IParticleData particleData = null;
+        IParticleData particleData;
         float speed = 1;
         if (stack.getItem() instanceof BlockItem)
             particleData =
@@ -283,6 +291,7 @@ public abstract class BeltMachineTile extends KineticTileEntity {
             speed = .125f;
         }
 
+        assert world != null;
         Random r = world.rand;
         Vec3d vec = getItemMovementVec();
         Vec3d pos = VecHelper.getCenterOf(this.pos);
@@ -316,6 +325,7 @@ public abstract class BeltMachineTile extends KineticTileEntity {
         inserted = inventory.getStackInSlot(0);
         if (inventory.isEmpty())
             return;
+        assert world != null;
         if (world.isRemote)
             return;
 

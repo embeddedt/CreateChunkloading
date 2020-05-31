@@ -17,6 +17,8 @@ import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
+import javax.annotation.Nonnull;
+
 public class RollingRecipe extends BeltMachineRecipe {
     public static final Serializer SERIALIZER = new Serializer();
 
@@ -26,22 +28,18 @@ public class RollingRecipe extends BeltMachineRecipe {
     }
 
 
-    // keep
     @Override
     public String toString() {
-
-        // Overriding toString is not required, it's just useful for debugging.
         return "RollingRecipe [input=" + this.input + ", output=" + this.output + ", id=" + this.id + "]";
     }
 
-    // done, keep
     @Override
     public IRecipeType<?> getType() {
         return CreateIntegration.ROLLING_RECIPE;
     }
 
 
-    // keep
+    @Nonnull
     @Override
     public ItemStack getIcon() {
         return new ItemStack(new BlockItem(ModBlocks.ROLLING_MACHINE, new Item.Properties()));
@@ -56,13 +54,12 @@ public class RollingRecipe extends BeltMachineRecipe {
             implements IRecipeSerializer<RollingRecipe> {
 
         Serializer() {
-
-            // This registry name is what people will specify in their json files.
             this.setRegistryName(new ResourceLocation(CreateIntegration.modid, "rolling"));
         }
 
+        @Nonnull
         @Override
-        public RollingRecipe read(ResourceLocation recipeId, JsonObject json) {
+        public RollingRecipe read(@Nonnull ResourceLocation recipeId, @Nonnull JsonObject json) {
 
             // Reads a recipe from json.
 
@@ -84,7 +81,7 @@ public class RollingRecipe extends BeltMachineRecipe {
         }
 
         @Override
-        public RollingRecipe read(ResourceLocation recipeId, PacketBuffer buffer) {
+        public RollingRecipe read(@Nonnull ResourceLocation recipeId, @Nonnull PacketBuffer buffer) {
 
             // Reads a recipe from a packet buffer. This code is called on the client.
             final Ingredient input = Ingredient.read(buffer);
@@ -95,7 +92,7 @@ public class RollingRecipe extends BeltMachineRecipe {
         }
 
         @Override
-        public void write(PacketBuffer buffer, RollingRecipe recipe) {
+        public void write(@Nonnull PacketBuffer buffer, RollingRecipe recipe) {
 
             // Writes the recipe to a packet buffer. This is called on the server when a
             // player

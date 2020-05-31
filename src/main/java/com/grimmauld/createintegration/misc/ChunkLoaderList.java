@@ -22,10 +22,10 @@ public class ChunkLoaderList implements IChunkLoaderList {
 
     public ChunkLoaderList(@Nullable ServerWorld world) {
         this.world = world;
-        chunkLoaders = new HashMap<BlockPos, Integer>();
+        chunkLoaders = new HashMap<>();
     }
 
-    public static final long toChunk(BlockPos pos) {
+    public static long toChunk(BlockPos pos) {
         return ChunkPos.asLong(pos.getX() >> 4, pos.getZ() >> 4);
     }
 
@@ -40,7 +40,7 @@ public class ChunkLoaderList implements IChunkLoaderList {
 
     @Override
     public void tickDown() {
-        if (!chunkLoaders.isEmpty() && chunkLoaders.keySet() != null) {
+        if (!chunkLoaders.isEmpty()) {
             for (BlockPos pos : chunkLoaders.keySet()) {
                 if (chunkLoaders.get(pos) > -1) {  // prevent overflows
                     chunkLoaders.put(pos, chunkLoaders.get(pos) - 1);
@@ -59,7 +59,7 @@ public class ChunkLoaderList implements IChunkLoaderList {
     }
 
     private void forceload(BlockPos pos, String action) {
-        if (this.world == null || this.world.getServer() == null) return;
+        if (this.world == null) return;
 
         CommandSource source = (this.world.getServer().getCommandSource().withWorld(this.world));
         if (!Config.CHUNK_CHAT.get()) {
@@ -86,7 +86,7 @@ public class ChunkLoaderList implements IChunkLoaderList {
     private void update() {
         try {
             if (world != null && chunkLoaders != null) {
-                if (!chunkLoaders.isEmpty() && chunkLoaders.keySet() != null) {
+                if (!chunkLoaders.isEmpty()) {
                     for (BlockPos pos : chunkLoaders.keySet()) {
                         if (chunkLoaders.get(pos) <= 0) {  // TODO: only check 0 ?
                             chunkLoaders.remove(pos);
@@ -103,8 +103,8 @@ public class ChunkLoaderList implements IChunkLoaderList {
     }
 
     public ArrayList<Long> getChunkNumbers() {
-        ArrayList<Long> chunkNumbers = new ArrayList<Long>();
-        if (!chunkLoaders.isEmpty() && chunkLoaders.keySet() != null) {
+        ArrayList<Long> chunkNumbers = new ArrayList<>();
+        if (!chunkLoaders.isEmpty()) {
             for (BlockPos pos : chunkLoaders.keySet()) {
                 if (chunkLoaders.get(pos) > 0) {  // only active chunk loaders are saved
                     chunkNumbers.add(toChunk(pos));

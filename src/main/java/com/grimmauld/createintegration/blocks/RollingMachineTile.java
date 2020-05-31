@@ -18,7 +18,7 @@ public class RollingMachineTile extends BeltMachineTile {
     }
 
     protected List<ItemStack> applyRecipe() {
-        List<ItemStack> outputStacks = new ArrayList<ItemStack>();
+        List<ItemStack> outputStacks = new ArrayList<>();
         List<? extends IRecipe<?>> recipes = getRecipes();
         if (recipeIndex >= recipes.size())
             recipeIndex = 0;
@@ -30,12 +30,12 @@ public class RollingMachineTile extends BeltMachineTile {
             IRecipe<?> recipe = recipes.get(recipeIndex);
 
             for (int roll = 0; roll < this.recipeNumber; roll++) {
-                List<ItemStack> results = new LinkedList<ItemStack>();
+                List<ItemStack> results = new LinkedList<>();
                 if (recipe instanceof RollingRecipe)
                     results.add(recipe.getRecipeOutput().copy());
 
-                for (int i = 0; i < results.size(); i++) {
-                    ItemStack stack = results.get(i).copy();
+                for (ItemStack result : results) {
+                    ItemStack stack = result.copy();
                     ItemHelper.addToList(stack, outputStacks);
                 }
             }
@@ -52,7 +52,8 @@ public class RollingMachineTile extends BeltMachineTile {
     }
 
     protected List<? extends IRecipe<?>> getRecipes() {
-        List<IRecipe<?>> recipeList = new ArrayList<IRecipe<?>>();
+        List<IRecipe<?>> recipeList = new ArrayList<>();
+        assert world != null;
         for (IRecipe<?> recipe : CreateIntegration.getRecipes(CreateIntegration.ROLLING_RECIPE, world.getRecipeManager()).values()) {
 
             if (((RollingRecipe) recipe).isValid(inventory.getStackInSlot(0))) {

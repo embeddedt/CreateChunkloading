@@ -44,17 +44,17 @@ public class Config {
         ForgeConfigSpec.Builder CLIENT_BUILDER = new ForgeConfigSpec.Builder();
 
         COMMON_BUILDER.comment("General settings").push(CATEGORY_GENERAL);
-        setupGeneralConfig(COMMON_BUILDER, CLIENT_BUILDER);
+        setupGeneralConfig(COMMON_BUILDER);
         COMMON_BUILDER.pop();
 
         COMMON_BUILDER.comment("Belt machines settings").push(CATEGORY_Belt_MACHINES);
-        setupBeltMachinesConfig(COMMON_BUILDER, CLIENT_BUILDER);
+        setupBeltMachinesConfig(COMMON_BUILDER);
         COMMON_BUILDER.pop();
 
         COMMON_BUILDER.comment("Power settings").push(CATEGORY_POWER);
 
-        setupDynamoConfig(COMMON_BUILDER, CLIENT_BUILDER);
-        setupMotorConfig(COMMON_BUILDER, CLIENT_BUILDER);
+        setupDynamoConfig(COMMON_BUILDER);
+        setupMotorConfig(COMMON_BUILDER);
         COMMON_BUILDER.pop();
 
 
@@ -62,17 +62,17 @@ public class Config {
         CLIENT_CONFIG = CLIENT_BUILDER.build();
     }
 
-    private static void setupBeltMachinesConfig(ForgeConfigSpec.Builder COMMON_BUILDER, ForgeConfigSpec.Builder CLIENT_BUILDER) {
+    private static void setupBeltMachinesConfig(ForgeConfigSpec.Builder COMMON_BUILDER) {
         ROLLER_SU = COMMON_BUILDER.comment("Base SU for the Rolling Machine")
                 .defineInRange("rollingMachineSU", 4, 0, Integer.MAX_VALUE);
     }
 
-    private static void setupGeneralConfig(ForgeConfigSpec.Builder COMMON_BUILDER, ForgeConfigSpec.Builder CLIENT_BUILDER) {
+    private static void setupGeneralConfig(ForgeConfigSpec.Builder COMMON_BUILDER) {
         CHUNK_CHAT = COMMON_BUILDER.comment("Do chat output of chunk loaders?").define("feedback", true); // FIXME: default false if everything works
     }
 
 
-    private static void setupDynamoConfig(ForgeConfigSpec.Builder COMMON_BUILDER, ForgeConfigSpec.Builder CLIENT_BUILDER) {
+    private static void setupDynamoConfig(ForgeConfigSpec.Builder COMMON_BUILDER) {
         COMMON_BUILDER.comment("Dynamo settings").push(SUBCATEGORY_DYNAMO);
 
         DYNAMO_MAXPOWER = COMMON_BUILDER.comment("Maximum power buffer for the Stressed Out Dynamo generator")
@@ -87,7 +87,7 @@ public class Config {
         COMMON_BUILDER.pop();
     }
 
-    private static void setupMotorConfig(ForgeConfigSpec.Builder COMMON_BUILDER, ForgeConfigSpec.Builder CLIENT_BUILDER) {
+    private static void setupMotorConfig(ForgeConfigSpec.Builder COMMON_BUILDER) {
         COMMON_BUILDER.comment("Motor settings").push(SUBCATEGORY_MOTOR);
 
         MOTOR_CAPACITY = COMMON_BUILDER.comment("Maximum power buffer for the Stressed Out Motor")
@@ -111,6 +111,7 @@ public class Config {
     }
 
     @SubscribeEvent
+    @SuppressWarnings("unused")
     public static void onLoad(final ModConfig.Loading configEvent) {
 
     }

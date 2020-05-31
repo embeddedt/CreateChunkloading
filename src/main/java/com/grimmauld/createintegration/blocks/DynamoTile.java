@@ -47,6 +47,7 @@ public class DynamoTile extends KineticTileEntity implements ITickableTileEntity
         damageCooldown++;
         if (damageCooldown % 20 == 0) {
             boolean attacked = false;
+            assert world != null;
             for (Entity entityIn : world.getEntitiesWithinAABB(LivingEntity.class, new AxisAlignedBB(pos.getX() - 0.3, pos.getY() - 1, pos.getZ() - 0.3, pos.getX() + 1.3, pos.getY() + 2, pos.getZ() + 1.3), new Predicate<Entity>() {
                 @Override
                 public boolean test(Entity testEntity) {
@@ -69,6 +70,7 @@ public class DynamoTile extends KineticTileEntity implements ITickableTileEntity
             AtomicInteger capacity = new AtomicInteger(energy.getEnergyStored());
             if (capacity.get() > 0) {
                 Direction direction = getBlockState().get(BlockStateProperties.FACING).getOpposite();
+                assert world != null;
                 TileEntity te = world.getTileEntity(pos.offset(direction));
                 if (te != null) {
                     boolean doContinue = te.getCapability(CapabilityEnergy.ENERGY, direction).map(handler -> {

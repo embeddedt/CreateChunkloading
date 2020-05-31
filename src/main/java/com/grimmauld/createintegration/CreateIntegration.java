@@ -55,11 +55,11 @@ import net.minecraftforge.fml.loading.FMLPaths;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.annotation.Nonnull;
 import java.util.Map;
 
 @Mod(CreateIntegration.modid)
 public class CreateIntegration {
-
     public static final String modid = "createintegration";
     public static final Logger logger = LogManager.getLogger(modid);
     public static final IRecipeType<RollingRecipe> ROLLING_RECIPE = new RecipeTypeRolling();
@@ -90,24 +90,12 @@ public class CreateIntegration {
         MinecraftForge.EVENT_BUS.register(this);
         // MinecraftForge.EVENT_BUS.addListener(this::onTick);
 
-
         FMLJavaModLoadingContext.get().getModEventBus().addListener(CreateIntegration::clientInit);
     }
 
-    /**
-     * This method lets you get all of the recipe data for a given recipe type. The existing
-     * methods for this require an IInventory, and this allows you to skip that overhead. This
-     * method uses reflection to get the recipes map, but an access transformer would also
-     * work.
-     *
-     * @param recipeType The type of recipe to grab.
-     * @param manager    The recipe manager. This is generally taken from a World.
-     * @return A map containing all recipes for the passed recipe type. This map is immutable
-     * and can not be modified.
-     */
     public static Map<ResourceLocation, IRecipe<?>> getRecipes(IRecipeType<?> recipeType, RecipeManager manager) {
-
         final Map<IRecipeType<?>, Map<ResourceLocation, IRecipe<?>>> recipesMap = ObfuscationReflectionHelper.getPrivateValue(RecipeManager.class, manager, "field_199522_d");
+        assert recipesMap != null;
         return recipesMap.get(recipeType);
     }
 
@@ -130,23 +118,18 @@ public class CreateIntegration {
     }
 
     private void registerRecipeSerializers(Register<IRecipeSerializer<?>> event) {
-
-        // Vanilla has a registry for recipe types, but it does not actively use this registry.
-        // While this makes registering your recipe type an optional step, I recommend
-        // registering it anyway to allow other mods to discover your custom recipe types.
         Registry.register(Registry.RECIPE_TYPE, new ResourceLocation(ROLLING_RECIPE.toString()), ROLLING_RECIPE);
-
-        // Register the recipe serializer. This handles from json, from packet, and to packet.
         event.getRegistry().register(RollingRecipe.SERIALIZER);
     }
 
     @SubscribeEvent
+    @SuppressWarnings("unused")
     public void attachWorldCaps(AttachCapabilitiesEvent<World> event) {
         if (event.getObject().isRemote) return;
         final LazyOptional<IChunkLoaderList> inst = LazyOptional.of(() -> new ChunkLoaderList((ServerWorld) event.getObject()));
         final ICapabilitySerializable<INBT> loadingCapability = new ICapabilitySerializable<INBT>() {
             @Override
-            public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
+            public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, Direction side) {
                 return CHUNK_LOADING_CAPABILITY.orEmpty(cap, inst);
             }
 
@@ -164,7 +147,7 @@ public class CreateIntegration {
         final LazyOptional<EnderList> enderInst = LazyOptional.of(EnderList::new);
         final ICapabilitySerializable<INBT> enderCapability = new ICapabilitySerializable<INBT>() {
             @Override
-            public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
+            public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, Direction side) {
                 return ENDER_CHEST_CAPABILITY.orEmpty(cap, enderInst);
             }
 
@@ -200,15 +183,17 @@ public class CreateIntegration {
     }
 
     @SubscribeEvent
+    @SuppressWarnings("unused")
     public void onTick(TickEvent.WorldTickEvent event) {  // FIXME
         if (event.world != null && event.world.getGameTime() % 20 == 0) {
-            event.world.getCapability(CreateIntegration.CHUNK_LOADING_CAPABILITY, null).ifPresent(cap -> cap.tickDown());
+            event.world.getCapability(CreateIntegration.CHUNK_LOADING_CAPABILITY, null).ifPresent(IChunkLoaderList::tickDown);
         }
     }
 
     @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class RegistryEvents {
         @SubscribeEvent
+        @SuppressWarnings("unused")
         public static void registerItems(final RegistryEvent.Register<Item> event) {
             logger.info("items registering");
             Item.Properties properties = new Item.Properties().group(ModSetup.itemGroup);
@@ -225,6 +210,7 @@ public class CreateIntegration {
         }
 
         @SubscribeEvent
+        @SuppressWarnings("unused")
         public static void registerBlocks(final RegistryEvent.Register<Block> event) {
             logger.info("blocks registering");
             event.getRegistry().register(new Dynamo());
@@ -240,6 +226,7 @@ public class CreateIntegration {
         }
 
         @SubscribeEvent
+        @SuppressWarnings("unused")
         public static void onTileEntityRegistry(final RegistryEvent.Register<TileEntityType<?>> event) {
             logger.info("TEs registering");
             event.getRegistry().register(TileEntityType.Builder.create(DynamoTile::new, ModBlocks.DYNAMO).build(null).setRegistryName("dynamo"));
@@ -252,14 +239,12 @@ public class CreateIntegration {
 
 
         @SubscribeEvent
+        @SuppressWarnings("unused")
         public static void onContainerRegistry(final RegistryEvent.Register<ContainerType<?>> event) {
             event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
                 BlockPos pos = data.readBlockPos();
                 return new EnderContainer(windowId, CreateIntegration.proxy.getClientWorld(), pos, inv);
             }).setRegistryName("ender_chest"));
         }
-
     }
-
-
 }

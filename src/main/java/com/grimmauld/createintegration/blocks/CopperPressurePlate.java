@@ -16,6 +16,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
 import java.util.LinkedList;
 import java.util.OptionalDouble;
 import java.util.Random;
@@ -35,12 +36,12 @@ public class CopperPressurePlate extends WeightedPressurePlateBlock {
     }
 
     @Override
-    public boolean ticksRandomly(BlockState state) {
+    public boolean ticksRandomly(@Nonnull BlockState state) {
         return super.ticksRandomly(state) || state.get(OXIDIZATION) < 7;
     }
 
     @Override
-    public void randomTick(BlockState state, World worldIn, BlockPos pos, Random random) {
+    public void randomTick(@Nonnull BlockState state, World worldIn, @Nonnull BlockPos pos, @Nonnull Random random) {
         if (worldIn.getRandom().nextFloat() <= 1 / 32f) {
             int currentState = state.get(OXIDIZATION);
             boolean canIncrease = false;
@@ -67,23 +68,23 @@ public class CopperPressurePlate extends WeightedPressurePlateBlock {
     }
 
     @Override
-    public float getBlockHardness(BlockState blockState, IBlockReader worldIn, BlockPos pos) {
+    public float getBlockHardness(BlockState blockState, @Nonnull IBlockReader worldIn, @Nonnull BlockPos pos) {
         return this.blockHardness - 0.2f * blockState.get(OXIDIZATION);
     }
 
     @Override
-    protected int computeRedstoneStrength(World worldIn, BlockPos pos) {
+    protected int computeRedstoneStrength(World worldIn, @Nonnull BlockPos pos) {
         return (int) Math.min(worldIn.getEntitiesWithinAABB(CreatureEntity.class, PRESSURE_AABB.offset(pos)).stream().filter(e -> !(e instanceof MonsterEntity)).count(), 15);
     }
 
 
     @Override
-    protected void playClickOnSound(IWorld world, BlockPos pos) {
+    protected void playClickOnSound(IWorld world, @Nonnull BlockPos pos) {
         world.playSound(null, pos, SoundEvents.BLOCK_METAL_PRESSURE_PLATE_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.8F);
     }
 
     @Override
-    protected void playClickOffSound(IWorld world, BlockPos pos) {
+    protected void playClickOffSound(IWorld world, @Nonnull BlockPos pos) {
         world.playSound(null, pos, SoundEvents.BLOCK_METAL_PRESSURE_PLATE_CLICK_OFF, SoundCategory.BLOCKS, 0.3F, 0.7F);
     }
 }

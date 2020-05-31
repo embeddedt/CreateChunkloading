@@ -12,6 +12,7 @@ public class ChunkLoaderTile extends TileEntity implements ITickableTileEntity {
 
     @Override
     public void tick() {
+        assert world != null;
         world.getCapability(CreateIntegration.CHUNK_LOADING_CAPABILITY, null).ifPresent(cap -> cap.resetForBlock(getPos()));
     }
 }

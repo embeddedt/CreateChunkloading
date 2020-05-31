@@ -9,6 +9,6 @@ public interface IProxy {
 
     World getClientWorld();
 
+    @SuppressWarnings("unused")
     PlayerEntity getClientPlayer();
-
 }

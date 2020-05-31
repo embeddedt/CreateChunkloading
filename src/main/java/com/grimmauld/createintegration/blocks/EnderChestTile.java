@@ -110,6 +110,7 @@ public class EnderChestTile extends SmartTileEntity implements INamedContainerPr
         updateItemHandler();
     }
 
+    @Nonnull
     @Override
     public TileEntityType<?> getType() {
         if (Thread.currentThread().getStackTrace()[2].toString().contains("com.simibubi.create.modules.contraptions.components.contraptions.MountedStorage")) {  // FIXME: use StackTraceElement API (https://docs.oracle.com/javase/7/docs/api/java/lang/StackTraceElement.html)
@@ -121,13 +122,15 @@ public class EnderChestTile extends SmartTileEntity implements INamedContainerPr
 
     @Nullable
     @Override
-    public Container createMenu(int id, PlayerInventory playerInventory, PlayerEntity player) {
+    public Container createMenu(int id, @Nonnull PlayerInventory playerInventory, @Nonnull PlayerEntity player) {
+        assert world != null;
         return new EnderContainer(id, world, pos, playerInventory);
     }
 
+    @Nonnull
     @Override
     public ITextComponent getDisplayName() {
-        return new StringTextComponent(getType().getRegistryName().getPath());  // Lang File
+        return new StringTextComponent(getType().getRegistryName() != null ? getType().getRegistryName().getPath() : "createintegration:ender_chest");  // Lang File
     }
 
     public int getId() {

@@ -23,6 +23,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class EnderChest extends Block implements ITE<EnderChestTile>, IWrenchable {
@@ -38,7 +39,7 @@ public class EnderChest extends Block implements ITE<EnderChestTile>, IWrenchabl
     }
 
     @Override
-    public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, @Nullable LivingEntity entity, ItemStack stack) {
+    public void onBlockPlacedBy(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull BlockState state, @Nullable LivingEntity entity, @Nonnull ItemStack stack) {
         if (entity != null) {
             world.setBlockState(pos, state.with(BlockStateProperties.FACING, getFacingFromEntity(pos, entity)).with(CrateBlock.DOUBLE, false), 2);
         }
@@ -50,8 +51,8 @@ public class EnderChest extends Block implements ITE<EnderChestTile>, IWrenchabl
     }
 
     @Override
-    public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand,
-                                    BlockRayTraceResult result) {
+    public boolean onBlockActivated(@Nonnull BlockState state, World world, @Nonnull BlockPos pos, @Nonnull PlayerEntity player, @Nonnull Hand hand,
+                                    @Nonnull BlockRayTraceResult result) {
 
 
         // System.out.println(player.getActiveItemStack().getItem());
@@ -69,7 +70,7 @@ public class EnderChest extends Block implements ITE<EnderChestTile>, IWrenchabl
             }
             return true;
         }
-        return super.onBlockActivated(state, world, pos, player, hand, result);
+        return false;
     }
 
 

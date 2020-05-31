@@ -5,7 +5,7 @@ import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.energy.EnergyStorage;
 
 public class CustomEnergyStorage extends EnergyStorage implements INBTSerializable<CompoundNBT> {
-
+    @SuppressWarnings("unused")
     public CustomEnergyStorage(int capacity, int maxTransfer) {
         super(capacity, maxTransfer);
     }
@@ -35,7 +35,6 @@ public class CustomEnergyStorage extends EnergyStorage implements INBTSerializab
     @Override
     public void deserializeNBT(CompoundNBT nbt) {
         setEnergy(nbt.getInt("energy"));
-
     }
 
     @Override
@@ -45,8 +44,8 @@ public class CustomEnergyStorage extends EnergyStorage implements INBTSerializab
         return tag;
     }
 
+    @SuppressWarnings("unused")
     public void setEnery(int energy) {
         this.energy = energy;
     }
-
 }

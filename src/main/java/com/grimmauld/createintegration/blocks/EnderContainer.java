@@ -1,5 +1,6 @@
 package com.grimmauld.createintegration.blocks;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
@@ -13,6 +14,9 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
+
 public class EnderContainer extends Container {
     private final EnderChestTile tileEntity;
     private final IItemHandler playerInventory;
@@ -23,6 +27,7 @@ public class EnderContainer extends Container {
         this.playerInventory = new InvWrapper(playerInventory);
 
 
+        assert tileEntity != null;
         tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
             for (int i = 0; i < 3; ++i) {
                 for (int j = 0; j < 3; ++j) {
@@ -40,8 +45,9 @@ public class EnderContainer extends Container {
 
 
     @Override
+    @ParametersAreNonnullByDefault
     public boolean canInteractWith(PlayerEntity playerIn) {
-        return isWithinUsableDistance(IWorldPosCallable.of(tileEntity.getWorld(), tileEntity.getPos()), playerIn, ModBlocks.ENDER_CHEST);
+        return tileEntity.getWorld() == null || isWithinUsableDistance(IWorldPosCallable.of(tileEntity.getWorld(), tileEntity.getPos()), playerIn, ModBlocks.ENDER_CHEST);
     }
 
 
@@ -71,7 +77,9 @@ public class EnderContainer extends Container {
         addSlotRange(playerInventory, 0, leftCol, topRow, 9, 18);
     }
 
+    @Nonnull
     @Override
+    @ParametersAreNonnullByDefault
     public ItemStack transferStackInSlot(PlayerEntity playerIn, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.inventorySlots.get(index);

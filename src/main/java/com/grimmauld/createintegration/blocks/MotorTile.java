@@ -63,6 +63,7 @@ public class MotorTile extends GeneratingKineticTileEntity {
 
         if (damageCooldown % 20 == 0) {
             boolean attacked = false;
+            assert world != null;
             for (Entity entityIn : world.getEntitiesWithinAABB(LivingEntity.class, new AxisAlignedBB(pos.getX() - 0.3, pos.getY() - 1, pos.getZ() - 0.3, pos.getX() + 1.3, pos.getY() + 2, pos.getZ() + 1.3), new Predicate<Entity>() {
                 @Override
                 public boolean test(Entity testEntity) {
@@ -135,9 +136,7 @@ public class MotorTile extends GeneratingKineticTileEntity {
     }
 
     private void setEnergy(int value) {
-        energy.ifPresent(energy -> {
-            ((CustomEnergyStorage) energy).setEnergy(0);
-        });
+        energy.ifPresent(energy -> ((CustomEnergyStorage) energy).setEnergy(0));
     }
 
 }
