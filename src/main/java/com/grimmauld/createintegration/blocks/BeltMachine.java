@@ -1,10 +1,7 @@
 package com.grimmauld.createintegration.blocks;
 
-import javax.annotation.Nullable;
-
 import com.simibubi.create.foundation.block.ITE;
 import com.simibubi.create.modules.contraptions.base.DirectionalAxisKineticBlock;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -23,30 +20,33 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
-public abstract class BeltMachine extends DirectionalAxisKineticBlock implements ITE<BeltMachineTile> { 
-	public static final BooleanProperty RUNNING = BooleanProperty.create("running");
+import javax.annotation.Nullable;
 
-	public BeltMachine(String registryName) {
-		super(Properties.from(Blocks.ANDESITE));
-		setRegistryName(registryName);
-		setDefaultState(getDefaultState().with(RUNNING, false));
-	}
-	
-	@Override
-	public boolean hasTileEntity(BlockState state) {
-		return true;
-	}
-	
-	@Override
-	public abstract TileEntity createTileEntity(BlockState state, IBlockReader world);
-	
-	@Override
-	protected boolean hasStaticPart() {
-		return true;
-	}
-	
-	
-	// drop handling 
+public abstract class BeltMachine extends DirectionalAxisKineticBlock implements ITE<BeltMachineTile> {
+    public static final BooleanProperty RUNNING = BooleanProperty.create("running");
+
+    public BeltMachine(String registryName) {
+        super(Properties.from(Blocks.ANDESITE));
+        setRegistryName(registryName);
+        setDefaultState(getDefaultState().with(RUNNING, false));
+    }
+
+    public static boolean isHorizontal(BlockState state) {
+        return true;
+    }
+
+    private static Direction getFacingFromEntity(BlockPos clickedBlock, LivingEntity entity) {
+        Vec3d vec = entity.getPositionVec();
+        return Direction.getFacingFromVector((float) (entity.isSneaking() ? -1 : 1) * (vec.x - clickedBlock.getX()), .0f, (float) (entity.isSneaking() ? -1 : 1) * (vec.z - clickedBlock.getZ()));
+    }
+
+    @Override
+    public boolean hasTileEntity(BlockState state) {
+        return true;
+    }
+
+
+    // drop handling
 	/*	@Override
 	public void onLanded(IBlockReader worldIn, Entity entityIn) {
 		super.onLanded(worldIn, entityIn);
@@ -65,47 +65,46 @@ public abstract class BeltMachine extends DirectionalAxisKineticBlock implements
 			te.insertItem((ItemEntity) entityIn);
 		});
 	}*/
-	
-	@Override
-	public PushReaction getPushReaction(BlockState state) {
-		return PushReaction.NORMAL;
-	}
-	
-	public static boolean isHorizontal(BlockState state) {
-		return true;
-	}
-	
-	@Override
-	protected void fillStateContainer(Builder<Block, BlockState> builder) {
-		builder.add(RUNNING);
-		super.fillStateContainer(builder);
-	}
-	
-	@Override
-	public Class<BeltMachineTile> getTileEntityClass(){
-		return BeltMachineTile.class;
-	}
-	
-  	@Override
-	public boolean hasShaftTowards(IWorldReader world, BlockPos pos, BlockState state, Direction face) {
-		return face == state.get(BlockStateProperties.FACING) || face == state.get(BlockStateProperties.FACING).getOpposite();
-	}
-  	
+
+    @Override
+    public abstract TileEntity createTileEntity(BlockState state, IBlockReader world);
+
+    @Override
+    protected boolean hasStaticPart() {
+        return true;
+    }
+
+    @Override
+    public PushReaction getPushReaction(BlockState state) {
+        return PushReaction.NORMAL;
+    }
+
+    @Override
+    protected void fillStateContainer(Builder<Block, BlockState> builder) {
+        builder.add(RUNNING);
+        super.fillStateContainer(builder);
+    }
+
+    @Override
+    public Class<BeltMachineTile> getTileEntityClass() {
+        return BeltMachineTile.class;
+    }
+
+    @Override
+    public boolean hasShaftTowards(IWorldReader world, BlockPos pos, BlockState state, Direction face) {
+        return face == state.get(BlockStateProperties.FACING) || face == state.get(BlockStateProperties.FACING).getOpposite();
+    }
+
     @Override
     public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, @Nullable LivingEntity entity, ItemStack stack) {
         if (entity != null) {
             world.setBlockState(pos, state.with(BlockStateProperties.FACING, getFacingFromEntity(pos, entity)), 2);
         }
     }
-	
-	private static Direction getFacingFromEntity(BlockPos clickedBlock, LivingEntity entity) {
-        Vec3d vec = entity.getPositionVec();
-        return Direction.getFacingFromVector((float) (entity.isSneaking()?-1:1)*(vec.x - clickedBlock.getX()), .0f, (float) (entity.isSneaking()?-1:1)*(vec.z - clickedBlock.getZ()));
+
+    @Override
+    public Axis getRotationAxis(BlockState state) {
+        return state.get(BlockStateProperties.FACING).getAxis();
     }
-	
-	@Override
-	public Axis getRotationAxis(BlockState state) {
-		return state.get(BlockStateProperties.FACING).getAxis();
-	}
-  	
+
 }

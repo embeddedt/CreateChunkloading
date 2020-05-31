@@ -1,15 +1,14 @@
 package com.grimmauld.createintegration;
 
 
-import java.nio.file.Path;
-
 import com.electronwill.nightconfig.core.file.CommentedFileConfig;
 import com.electronwill.nightconfig.core.io.WritingMode;
-
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
+
+import java.nio.file.Path;
 
 @Mod.EventBusSubscriber
 public class Config {
@@ -23,15 +22,15 @@ public class Config {
     public static ForgeConfigSpec COMMON_CONFIG;
     public static ForgeConfigSpec CLIENT_CONFIG;
 
-    public static ForgeConfigSpec.BooleanValue CHUNK_CHAT;    
-    
+    public static ForgeConfigSpec.BooleanValue CHUNK_CHAT;
+
     public static ForgeConfigSpec.IntValue ROLLER_SU;
-    
+
     public static ForgeConfigSpec.IntValue DYNAMO_MAXPOWER;
     public static ForgeConfigSpec.IntValue DYNAMO_GENERATE_MULTIPLIER;
     public static ForgeConfigSpec.IntValue DYNAMO_SEND;
     public static ForgeConfigSpec.IntValue DYNAMO_SU;
-    
+
     public static ForgeConfigSpec.IntValue MOTOR_CAPACITY;
     public static ForgeConfigSpec.IntValue MOTOR_MAXINPUT;
     public static ForgeConfigSpec.IntValue MOTOR_SPEED;
@@ -47,7 +46,7 @@ public class Config {
         COMMON_BUILDER.comment("General settings").push(CATEGORY_GENERAL);
         setupGeneralConfig(COMMON_BUILDER, CLIENT_BUILDER);
         COMMON_BUILDER.pop();
-        
+
         COMMON_BUILDER.comment("Belt machines settings").push(CATEGORY_Belt_MACHINES);
         setupBeltMachinesConfig(COMMON_BUILDER, CLIENT_BUILDER);
         COMMON_BUILDER.pop();
@@ -62,16 +61,16 @@ public class Config {
         COMMON_CONFIG = COMMON_BUILDER.build();
         CLIENT_CONFIG = CLIENT_BUILDER.build();
     }
-    
+
     private static void setupBeltMachinesConfig(ForgeConfigSpec.Builder COMMON_BUILDER, ForgeConfigSpec.Builder CLIENT_BUILDER) {
-    	ROLLER_SU = COMMON_BUILDER.comment("Base SU for the Rolling Machine")
+        ROLLER_SU = COMMON_BUILDER.comment("Base SU for the Rolling Machine")
                 .defineInRange("rollingMachineSU", 4, 0, Integer.MAX_VALUE);
     }
-    
+
     private static void setupGeneralConfig(ForgeConfigSpec.Builder COMMON_BUILDER, ForgeConfigSpec.Builder CLIENT_BUILDER) {
-    	CHUNK_CHAT = COMMON_BUILDER.comment("Do chat output of chunk loaders?").define("feedback", true); // FIXME: default false if everything works
-    }    
-    
+        CHUNK_CHAT = COMMON_BUILDER.comment("Do chat output of chunk loaders?").define("feedback", true); // FIXME: default false if everything works
+    }
+
 
     private static void setupDynamoConfig(ForgeConfigSpec.Builder COMMON_BUILDER, ForgeConfigSpec.Builder CLIENT_BUILDER) {
         COMMON_BUILDER.comment("Dynamo settings").push(SUBCATEGORY_DYNAMO);
@@ -87,7 +86,7 @@ public class Config {
 
         COMMON_BUILDER.pop();
     }
-    
+
     private static void setupMotorConfig(ForgeConfigSpec.Builder COMMON_BUILDER, ForgeConfigSpec.Builder CLIENT_BUILDER) {
         COMMON_BUILDER.comment("Motor settings").push(SUBCATEGORY_MOTOR);
 
@@ -104,11 +103,11 @@ public class Config {
 
         COMMON_BUILDER.pop();
     }
-    
+
     public static void loadConfig(ForgeConfigSpec spec, Path path) {
-    	final CommentedFileConfig configData = CommentedFileConfig.builder(path).sync().autosave().writingMode(WritingMode.REPLACE).build();
-    	configData.load();
-    	spec.setConfig(configData);
+        final CommentedFileConfig configData = CommentedFileConfig.builder(path).sync().autosave().writingMode(WritingMode.REPLACE).build();
+        configData.load();
+        spec.setConfig(configData);
     }
 
     @SubscribeEvent

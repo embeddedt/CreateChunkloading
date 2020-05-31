@@ -1,12 +1,8 @@
 package com.grimmauld.createintegration.blocks;
 
-import javax.annotation.Nullable;
-
 import com.simibubi.create.foundation.block.ITE;
 import com.simibubi.create.modules.contraptions.IWrenchable;
-import com.simibubi.create.modules.contraptions.WrenchItem;
 import com.simibubi.create.modules.logistics.block.inventories.CrateBlock;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -27,43 +23,44 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-public class EnderChest extends Block implements ITE<EnderChestTile>, IWrenchable{
-	
-	public EnderChest() {
-		super(Properties.from(Blocks.OBSIDIAN));
-		setRegistryName("ender_chest");
-	}
-	
-	
-	@Override
+import javax.annotation.Nullable;
+
+public class EnderChest extends Block implements ITE<EnderChestTile>, IWrenchable {
+
+    public EnderChest() {
+        super(Properties.from(Blocks.OBSIDIAN));
+        setRegistryName("ender_chest");
+    }
+
+    private static Direction getFacingFromEntity(BlockPos clickedBlock, LivingEntity entity) {
+        Vec3d vec = entity.getPositionVec();
+        return Direction.getFacingFromVector((float) (entity.isSneaking() ? -1 : 1) * (vec.x - clickedBlock.getX()), (float) (entity.isSneaking() ? -1 : 1) * (vec.y - clickedBlock.getY()), (float) (entity.isSneaking() ? -1 : 1) * (vec.z - clickedBlock.getZ()));
+    }
+
+    @Override
     public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, @Nullable LivingEntity entity, ItemStack stack) {
         if (entity != null) {
             world.setBlockState(pos, state.with(BlockStateProperties.FACING, getFacingFromEntity(pos, entity)).with(CrateBlock.DOUBLE, false), 2);
         }
     }
-	
-	private static Direction getFacingFromEntity(BlockPos clickedBlock, LivingEntity entity) {
-        Vec3d vec = entity.getPositionVec();
-        return Direction.getFacingFromVector((float) (entity.isSneaking()?-1:1)*(vec.x - clickedBlock.getX()), (float) (entity.isSneaking()?-1:1)*(vec.y - clickedBlock.getY()), (float) (entity.isSneaking()?-1:1)*(vec.z - clickedBlock.getZ()));
-    }
-	
-	@Override
+
+    @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
         builder.add(BlockStateProperties.FACING, CrateBlock.DOUBLE);
     }
-	
-	@Override
-	public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand,
-			BlockRayTraceResult result) {
-		
-		
-		// System.out.println(player.getActiveItemStack().getItem());
+
+    @Override
+    public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand,
+                                    BlockRayTraceResult result) {
+
+
+        // System.out.println(player.getActiveItemStack().getItem());
 		/*if(player.getActiveItemStack().getItem() instanceof WrenchItem) {
 			System.out.println("wrench");
 		}*/
-		
-		
-       if (!world.isRemote) {
+
+
+        if (!world.isRemote) {
             TileEntity tileEntity = world.getTileEntity(pos);
             if (tileEntity instanceof INamedContainerProvider) {
                 NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) tileEntity, tileEntity.getPos());
@@ -72,23 +69,23 @@ public class EnderChest extends Block implements ITE<EnderChestTile>, IWrenchabl
             }
             return true;
         }
-		return super.onBlockActivated(state, world, pos, player, hand, result);
-	}
-	
-	
-	@Override
-	public boolean hasTileEntity(BlockState state) {
-		return true;
-	}
-	
-	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new EnderChestTile();
-	}
+        return super.onBlockActivated(state, world, pos, player, hand, result);
+    }
 
 
-	@Override
-	public Class<EnderChestTile> getTileEntityClass() {
-		return EnderChestTile.class;
-	}
+    @Override
+    public boolean hasTileEntity(BlockState state) {
+        return true;
+    }
+
+    @Override
+    public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+        return new EnderChestTile();
+    }
+
+
+    @Override
+    public Class<EnderChestTile> getTileEntityClass() {
+        return EnderChestTile.class;
+    }
 }

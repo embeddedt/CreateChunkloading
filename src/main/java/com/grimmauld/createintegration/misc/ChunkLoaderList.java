@@ -16,13 +16,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ChunkLoaderList implements IChunkLoaderList {
-    public HashMap<BlockPos, Integer> chunkLoaders;
     @Nullable
     private final ServerWorld world;
+    public HashMap<BlockPos, Integer> chunkLoaders;
 
     public ChunkLoaderList(@Nullable ServerWorld world) {
         this.world = world;
         chunkLoaders = new HashMap<BlockPos, Integer>();
+    }
+
+    public static final long toChunk(BlockPos pos) {
+        return ChunkPos.asLong(pos.getX() >> 4, pos.getZ() >> 4);
     }
 
     @Override
@@ -98,11 +102,6 @@ public class ChunkLoaderList implements IChunkLoaderList {
         }
     }
 
-    public static final long toChunk(BlockPos pos) {
-        return ChunkPos.asLong(pos.getX() >> 4, pos.getZ() >> 4);
-    }
-
-
     public ArrayList<Long> getChunkNumbers() {
         ArrayList<Long> chunkNumbers = new ArrayList<Long>();
         if (!chunkLoaders.isEmpty() && chunkLoaders.keySet() != null) {
@@ -115,6 +114,10 @@ public class ChunkLoaderList implements IChunkLoaderList {
         return chunkNumbers;
     }
 
+    @Override
+    public boolean contains(BlockPos pos) {
+        return chunkLoaders.containsKey(pos) && chunkLoaders.get(pos) > 0;
+    }
 
     public static class Storage implements IStorage<IChunkLoaderList> {
         @Override
@@ -135,11 +138,5 @@ public class ChunkLoaderList implements IChunkLoaderList {
                 list.update();
             }
         }
-    }
-
-
-    @Override
-    public boolean contains(BlockPos pos) {
-        return chunkLoaders.containsKey(pos) && chunkLoaders.get(pos) > 0;
     }
 }

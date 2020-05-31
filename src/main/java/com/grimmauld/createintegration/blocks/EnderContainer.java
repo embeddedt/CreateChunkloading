@@ -13,31 +13,31 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
-public class EnderContainer extends Container{
-	private EnderChestTile tileEntity;
-    private IItemHandler playerInventory;
+public class EnderContainer extends Container {
+    private final EnderChestTile tileEntity;
+    private final IItemHandler playerInventory;
 
     public EnderContainer(int windowId, World world, BlockPos pos, PlayerInventory playerInventory) {
         super(ModBlocks.ENDER_CONTAINER, windowId);
         tileEntity = (EnderChestTile) world.getTileEntity(pos);
         this.playerInventory = new InvWrapper(playerInventory);
 
-        
+
         tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-        	for(int i = 0; i < 3; ++i) {
-                for(int j = 0; j < 3; ++j) {
+            for (int i = 0; i < 3; ++i) {
+                for (int j = 0; j < 3; ++j) {
                     addSlot(new SlotItemHandler(h, j + i * 3, 62 + j * 18, 17 + i * 18));
                 }
             }
         });
-        
+
         layoutPlayerInventorySlots(8, 84);
     }
-    
+
     public int getEnderId() {
-		return tileEntity.getId();
-	}
-    
+        return tileEntity.getId();
+    }
+
 
     @Override
     public boolean canInteractWith(PlayerEntity playerIn) {
@@ -46,7 +46,7 @@ public class EnderContainer extends Container{
 
 
     private int addSlotRange(IItemHandler handler, int index, int x, int y, int amount, int dx) {
-        for (int i = 0 ; i < amount ; i++) {
+        for (int i = 0; i < amount; i++) {
             addSlot(new SlotItemHandler(handler, index, x, y));
             x += dx;
             index++;
@@ -55,7 +55,7 @@ public class EnderContainer extends Container{
     }
 
     private int addSlotBox(IItemHandler handler, int index, int x, int y, int horAmount, int dx, int verAmount, int dy) {
-        for (int j = 0 ; j < verAmount ; j++) {
+        for (int j = 0; j < verAmount; j++) {
             index = addSlotRange(handler, index, x, y, horAmount, dx);
             y += dy;
         }

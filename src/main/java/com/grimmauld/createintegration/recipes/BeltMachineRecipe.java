@@ -1,8 +1,5 @@
 package com.grimmauld.createintegration.recipes;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -13,93 +10,96 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
-public abstract class BeltMachineRecipe implements IRecipe<IInventory>{
+import java.util.ArrayList;
+import java.util.List;
 
-	protected final Ingredient input;
-	protected final ItemStack output;
-	protected final int processingDuration;
-	protected final ResourceLocation id;
-	
-	
-	public BeltMachineRecipe(ResourceLocation id, Ingredient input, ItemStack output, int processingTime) {
+public abstract class BeltMachineRecipe implements IRecipe<IInventory> {
 
-		this.id = id;
-		this.input = input;
-		this.output = output;
-		this.processingDuration = processingTime;
-		
-		
+    protected final Ingredient input;
+    protected final ItemStack output;
+    protected final int processingDuration;
+    protected final ResourceLocation id;
 
-		// This output is not required, but it can be used to detect when a recipe has
-		// been
-		// loaded into the game.
-		System.out.println("Loaded " + this.toString());
-	}
-	
-	
-	@Override
-	public boolean matches(IInventory inv, World worldIn) {
 
-		// This method is ignored by our custom recipe system, and only has partial
-		// functionality. isValid is used instead.
-		return this.input.test(inv.getStackInSlot(0));
-	}
-	
-	@Override
-	public ItemStack getCraftingResult(IInventory inv) {
+    public BeltMachineRecipe(ResourceLocation id, Ingredient input, ItemStack output, int processingTime) {
 
-		// This method is ignored by our custom recipe system. getRecipeOutput().copy()
-		// is used
-		// instead.
-		return this.output.copy();
-	}
-	
-	@Override
-	public ItemStack getRecipeOutput() {
-		return this.output;
-	}
-	
-    public Ingredient getInput () {
+        this.id = id;
+        this.input = input;
+        this.output = output;
+        this.processingDuration = processingTime;
+
+
+        // This output is not required, but it can be used to detect when a recipe has
+        // been
+        // loaded into the game.
+        System.out.println("Loaded " + this.toString());
+    }
+
+
+    @Override
+    public boolean matches(IInventory inv, World worldIn) {
+
+        // This method is ignored by our custom recipe system, and only has partial
+        // functionality. isValid is used instead.
+        return this.input.test(inv.getStackInSlot(0));
+    }
+
+    @Override
+    public ItemStack getCraftingResult(IInventory inv) {
+
+        // This method is ignored by our custom recipe system. getRecipeOutput().copy()
+        // is used
+        // instead.
+        return this.output.copy();
+    }
+
+    @Override
+    public ItemStack getRecipeOutput() {
+        return this.output;
+    }
+
+    public Ingredient getInput() {
         return this.input;
     }
-	
 
-	@Override
-	public ResourceLocation getId() {
 
-		return this.id;
-	}
+    @Override
+    public ResourceLocation getId() {
 
-	@Override
-	public abstract IRecipeSerializer<?> getSerializer();
-	
-	@Override
-	public abstract IRecipeType<?> getType();
-	
-	
-	public boolean isValid(ItemStack input) {
-		return this.input.test(input);
-	}
-	
-	abstract static class Serializer extends ForgeRegistryEntry<IRecipeSerializer<?>>
-			implements IRecipeSerializer<BeltMachineRecipe>{};
+        return this.id;
+    }
 
-	@Override
-	public boolean canFit(int width, int height) {
-		return true;
-	}
+    @Override
+    public abstract IRecipeSerializer<?> getSerializer();
 
-	public int getProcessingDuration() {
-		return processingDuration;
-	}
+    @Override
+    public abstract IRecipeType<?> getType();
 
-	public List<ItemStack> getRollableResults() {
-		List<ItemStack> out = new ArrayList<ItemStack>();
-		out.add(this.getRecipeOutput().copy());
-		return out;
-	}
 
-	public List<ItemStack> getPossibleOutputs() {
-		return getRollableResults();
-	}
+    public boolean isValid(ItemStack input) {
+        return this.input.test(input);
+    }
+
+    @Override
+    public boolean canFit(int width, int height) {
+        return true;
+    }
+
+    public int getProcessingDuration() {
+        return processingDuration;
+    }
+
+    public List<ItemStack> getRollableResults() {
+        List<ItemStack> out = new ArrayList<ItemStack>();
+        out.add(this.getRecipeOutput().copy());
+        return out;
+    }
+
+    public List<ItemStack> getPossibleOutputs() {
+        return getRollableResults();
+    }
+
+    abstract static class Serializer extends ForgeRegistryEntry<IRecipeSerializer<?>>
+            implements IRecipeSerializer<BeltMachineRecipe> {
+    }
 }
