@@ -4,6 +4,9 @@ import com.grimmauld.createintegration.Config;
 import com.grimmauld.createintegration.tools.CustomEnergyStorage;
 import com.grimmauld.createintegration.tools.ModUtil;
 import com.simibubi.create.modules.contraptions.base.KineticTileEntity;
+import com.simibubi.create.modules.contraptions.components.actors.DrillTileEntity;
+import com.simibubi.create.modules.contraptions.components.motor.MotorBlock;
+import com.simibubi.create.modules.contraptions.components.motor.MotorTileEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -36,6 +39,7 @@ public class DynamoTile extends KineticTileEntity implements ITickableTileEntity
     public DynamoTile() {
         super(DYNAMO_TILE);
         damageCooldown = 0;
+        updateSpeed = true;
     }
 
 
@@ -60,29 +64,23 @@ public class DynamoTile extends KineticTileEntity implements ITickableTileEntity
     }
 
 
+
     private void sendOutPower() {
         energy.ifPresent(energy -> {
-            AtomicInteger capacity = new AtomicInteger(energy.getEnergyStored());
-            if (capacity.get() > 0) {
+            if (energy.getEnergyStored() > 0) {
                 Direction direction = getBlockState().get(BlockStateProperties.FACING).getOpposite();
                 assert world != null;
                 TileEntity te = world.getTileEntity(pos.offset(direction));
                 if (te != null) {
-                    te.getCapability(CapabilityEnergy.ENERGY, direction).map(handler -> {
-                                if (handler.canReceive()) {
-                                    int received = handler.receiveEnergy(Math.min(capacity.get(), Config.DYNAMO_SEND.get()), false);
-                                    capacity.addAndGet(-received);
-                                    ((CustomEnergyStorage) energy).consumeEnergy(received);
-                                    markDirty();
-                                    return capacity.get() > 0;
-                                } else {
-                                    return true;
-                                }
-                            }
+                    te.getCapability(CapabilityEnergy.ENERGY, direction).ifPresent(handler -> {
+                        if (handler.canReceive())
+                            ((CustomEnergyStorage) energy).consumeEnergy(handler.receiveEnergy(Math.min(energy.getEnergyStored(), Config.DYNAMO_SEND.get()), false));
+                        }
                     );
                 }
             }
         });
+        markDirty();
     }
 
 

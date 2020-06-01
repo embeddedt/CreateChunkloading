@@ -126,21 +126,22 @@ public class CreateIntegration {
     @SuppressWarnings("unused")
     public void attachWorldCaps(AttachCapabilitiesEvent<World> event) {
         if (event.getObject().isRemote) return;
-        final LazyOptional<IChunkLoaderList> inst = LazyOptional.of(() -> new ChunkLoaderList((ServerWorld) event.getObject()));
+        final LazyOptional<IChunkLoaderList> loaderInst = LazyOptional.of(() -> new ChunkLoaderList((ServerWorld) event.getObject()));
         final ICapabilitySerializable<INBT> loadingCapability = new ICapabilitySerializable<INBT>() {
             @Override
             public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, Direction side) {
-                return CHUNK_LOADING_CAPABILITY.orEmpty(cap, inst);
+                return CHUNK_LOADING_CAPABILITY.orEmpty(cap, loaderInst);
             }
 
             @Override
             public INBT serializeNBT() {
-                return CHUNK_LOADING_CAPABILITY.writeNBT(inst.orElse(null), null);
+                return CHUNK_LOADING_CAPABILITY.writeNBT(loaderInst.orElse(null), null);
             }
 
             @Override
             public void deserializeNBT(INBT nbt) {
-                CHUNK_LOADING_CAPABILITY.readNBT(inst.orElse(null), null, nbt);
+                loaderInst.ifPresent(h -> CHUNK_LOADING_CAPABILITY.readNBT(h, null, nbt));
+                // CHUNK_LOADING_CAPABILITY.readNBT(inst.orElse(null), null, nbt);
             }
         };
 
@@ -153,18 +154,20 @@ public class CreateIntegration {
 
             @Override
             public INBT serializeNBT() {
+                // enderInst.ifPresent(h -> ENDER_CRATE_CAPABILITY.writeNBT(h, null));
                 return ENDER_CRATE_CAPABILITY.writeNBT(enderInst.orElse(null), null);
             }
 
             @Override
             public void deserializeNBT(INBT nbt) {
-                ENDER_CRATE_CAPABILITY.readNBT(enderInst.orElse(null), null, nbt);
+                enderInst.ifPresent(h -> ENDER_CRATE_CAPABILITY.readNBT(h, null, nbt));
+                // ENDER_CRATE_CAPABILITY.readNBT(enderInst.orElse(null), null, nbt);
             }
         };
 
         event.addCapability(new ResourceLocation(modid, "create_integration_loader"), loadingCapability);
         event.addCapability(new ResourceLocation(modid, "create_integration_ender"), enderCapability);
-        event.addListener(inst::invalidate);
+        event.addListener(loaderInst::invalidate);
         event.addListener(enderInst::invalidate);
     }
 
@@ -184,7 +187,7 @@ public class CreateIntegration {
 
     @SubscribeEvent
     @SuppressWarnings("unused")
-    public void onTick(TickEvent.WorldTickEvent event) {  // FIXME
+    public void onTick(TickEvent.WorldTickEvent event) {
         if (event.world != null && event.world.getGameTime() % 20 == 0) {
             event.world.getCapability(CreateIntegration.CHUNK_LOADING_CAPABILITY, null).ifPresent(IChunkLoaderList::tickDown);
         }
@@ -224,6 +227,7 @@ public class CreateIntegration {
             logger.info("finished blocks registering");
 
         }
+
 
         @SubscribeEvent
         @SuppressWarnings("unused")
