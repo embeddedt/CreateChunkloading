@@ -1,11 +1,11 @@
 package com.grimmauld.createintegration.misc;
 
+import com.grimmauld.createintegration.tools.ModUtil;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
@@ -40,7 +40,7 @@ public class EnderList implements IEnderList {
             if (instance == null) return null;
             for (int id : instance.getIDs()) {
                 instance.ender_ids.get(id).ifPresent(h -> {
-                    CompoundNBT compound = ((INBTSerializable<CompoundNBT>) h).serializeNBT();
+                    CompoundNBT compound = ModUtil.safeNBTCast(h).serializeNBT();
                     if (compound.contains("Items") && compound.get("Items") instanceof ListNBT && !((ListNBT) Objects.requireNonNull(compound.get("Items"))).isEmpty()) {
                         tag.put(String.valueOf(id), compound);
                     }
@@ -55,12 +55,11 @@ public class EnderList implements IEnderList {
             CompoundNBT tag = (CompoundNBT) nbt;
             for (String id : tag.keySet()) {
                 try {
-                    instance.getOrCreate(Integer.parseInt(id)).ifPresent(h -> ((INBTSerializable<CompoundNBT>) h).deserializeNBT(tag.getCompound(id)));
+                    instance.getOrCreate(Integer.parseInt(id)).ifPresent(h -> ModUtil.safeNBTCast(h).deserializeNBT(tag.getCompound(id)));
                 } catch (NumberFormatException e) {
                     // fixme: Add invalid NBT handling here!
                 }
             }
-            System.out.println(instance.ender_ids);
         }
     }
 }

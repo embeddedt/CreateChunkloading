@@ -1,18 +1,15 @@
 {
-	"block.createintegration.dynamo":"Stressed Out Dynamo",
-	"block.createintegration.motor":"Stressed Out Motor",
-	"block.createintegration.rolling_machine":"Rolling Machine",
-	
-	"block.createintegration.chunk_loader":"Chunk Loader",
-	"block.createintegration.ender_chest":"Ender Crate",
-	
-	"block.createintegration.brass_pressure_plate":"Brass Pressure Plate",
-	"block.createintegration.copper_pressure_plate":"Copper Pressure Plate",
-	"block.createintegration.zinc_pressure_plate":"Zinc Pressure Plate",
-	
-	"death.attack.createintegration.dynamo": "%1$s was zapped to death by Stressed Out Dynamo",
-	"death.attack.createintegration.motor": "%1$s was zapped to death by Stressed Out Motor",
-	
-	"itemGroup.createintegration": "Create Integration",
-	"createintegration.category.rolling": "Rolling"
+  "block.createintegration.dynamo": "Stressed Out Dynamo",
+  "block.createintegration.motor": "Stressed Out Motor",
+  "block.createintegration.rolling_machine": "Rolling Machine",
+  "block.createintegration.chunk_loader": "Chunk Loader",
+  "block.createintegration.ender_crate": "Movable Ender Crate",
+  "block.createintegration.brass_pressure_plate": "Brass Pressure Plate",
+  "block.createintegration.copper_pressure_plate": "Copper Pressure Plate",
+  "block.createintegration.zinc_pressure_plate": "Zinc Pressure Plate",
+  "death.attack.createintegration.dynamo": "%1$s was zapped to death by Stressed Out Dynamo",
+  "death.attack.createintegration.motor": "%1$s was zapped to death by Stressed Out Motor",
+  "itemGroup.createintegration": "Create Integration",
+  "createintegration.category.rolling": "Rolling",
+  "createintegration.generic.ender_id": "Ender ID"
 }

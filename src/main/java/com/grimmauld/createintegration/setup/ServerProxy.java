@@ -10,7 +10,8 @@ public class ServerProxy implements IProxy {
     }
 
     @Override
-    public void init() {}
+    public void init() {
+    }
 
     @Override
     public PlayerEntity getClientPlayer() {

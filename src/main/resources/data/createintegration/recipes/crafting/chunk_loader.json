@@ -1,20 +1,20 @@
 {
-    "type": "minecraft:crafting_shaped",
-    "pattern": [
-        " # ",
-        "#B#",
-        " # "
-    ],
-    "key": {
-        "#": {
-            "item": "minecraft:emerald"
-        },
-        "B": {
-            "item": "minecraft:beacon"
-        }
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " # ",
+    "#B#",
+    " # "
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:emerald"
     },
-    "result": {
-        "item": "createintegration:chunk_loader",
-        "count": 1
+    "B": {
+      "item": "minecraft:beacon"
     }
+  },
+  "result": {
+    "item": "createintegration:chunk_loader",
+    "count": 1
+  }
 }

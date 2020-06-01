@@ -1,29 +1,29 @@
 {
-    "type": "minecraft:crafting_shaped",
-    "pattern": [
-        " # ",
-        "HSH",
-        "NBN"
-    ],
-    "key": {
-        "#": {
-            "item": "create:shaft"
-        },
-        "H": {
-            "tag": "forge:plates/iron"
-        },
-        "S": {
-            "item": "create:copper_casing"
-        },
-        "N": {
-            "item": "create:electron_tube"
-        },
-        "B": {
-            "tag": "forge:storage_blocks/copper"
-        }
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " # ",
+    "HSH",
+    "NBN"
+  ],
+  "key": {
+    "#": {
+      "item": "create:shaft"
     },
-    "result": {
-        "item": "createintegration:dynamo",
-        "count": 1
+    "H": {
+      "tag": "forge:plates/iron"
+    },
+    "S": {
+      "item": "create:copper_casing"
+    },
+    "N": {
+      "item": "create:electron_tube"
+    },
+    "B": {
+      "tag": "forge:storage_blocks/copper"
     }
+  },
+  "result": {
+    "item": "createintegration:dynamo",
+    "count": 1
+  }
 }

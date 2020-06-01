@@ -39,12 +39,12 @@ public class ModBlocks {
     @ObjectHolder("createintegration:chunk_loader")
     public static TileEntityType<ChunkLoaderTile> CHUNK_LOADER_TILE;
 
-    @ObjectHolder("createintegration:ender_chest")
-    public static EnderChest ENDER_CHEST;
+    @ObjectHolder("createintegration:ender_crate")
+    public static EnderCrate ENDER_CRATE;
 
-    @ObjectHolder("createintegration:ender_chest")
-    public static TileEntityType<EnderChestTile> ENDER_CHEST_TILE;
+    @ObjectHolder("createintegration:ender_crate")
+    public static TileEntityType<EnderCrateTile> ENDER_CRATE_TILE;
 
-    @ObjectHolder("createintegration:ender_chest")
+    @ObjectHolder("createintegration:ender_crate")
     public static ContainerType<EnderContainer> ENDER_CONTAINER;
 }

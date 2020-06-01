@@ -1,6 +1,5 @@
 package com.grimmauld.createintegration.blocks;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
@@ -18,12 +17,12 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 public class EnderContainer extends Container {
-    private final EnderChestTile tileEntity;
+    private final EnderCrateTile tileEntity;
     private final IItemHandler playerInventory;
 
     public EnderContainer(int windowId, World world, BlockPos pos, PlayerInventory playerInventory) {
         super(ModBlocks.ENDER_CONTAINER, windowId);
-        tileEntity = (EnderChestTile) world.getTileEntity(pos);
+        tileEntity = (EnderCrateTile) world.getTileEntity(pos);
         this.playerInventory = new InvWrapper(playerInventory);
 
 
@@ -47,7 +46,7 @@ public class EnderContainer extends Container {
     @Override
     @ParametersAreNonnullByDefault
     public boolean canInteractWith(PlayerEntity playerIn) {
-        return tileEntity.getWorld() == null || isWithinUsableDistance(IWorldPosCallable.of(tileEntity.getWorld(), tileEntity.getPos()), playerIn, ModBlocks.ENDER_CHEST);
+        return tileEntity.getWorld() == null || isWithinUsableDistance(IWorldPosCallable.of(tileEntity.getWorld(), tileEntity.getPos()), playerIn, ModBlocks.ENDER_CRATE);
     }
 
 

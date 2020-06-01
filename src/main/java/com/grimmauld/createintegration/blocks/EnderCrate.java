@@ -14,11 +14,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
@@ -26,16 +24,13 @@ import net.minecraftforge.fml.network.NetworkHooks;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class EnderChest extends Block implements ITE<EnderChestTile>, IWrenchable {
+import static com.grimmauld.createintegration.tools.ModUtil.getFacingFromEntity;
 
-    public EnderChest() {
+public class EnderCrate extends Block implements ITE<EnderCrateTile>, IWrenchable {
+
+    public EnderCrate() {
         super(Properties.from(Blocks.OBSIDIAN));
-        setRegistryName("ender_chest");
-    }
-
-    private static Direction getFacingFromEntity(BlockPos clickedBlock, LivingEntity entity) {
-        Vec3d vec = entity.getPositionVec();
-        return Direction.getFacingFromVector((float) (entity.isSneaking() ? -1 : 1) * (vec.x - clickedBlock.getX()), (float) (entity.isSneaking() ? -1 : 1) * (vec.y - clickedBlock.getY()), (float) (entity.isSneaking() ? -1 : 1) * (vec.z - clickedBlock.getZ()));
+        setRegistryName("ender_crate");
     }
 
     @Override
@@ -81,12 +76,12 @@ public class EnderChest extends Block implements ITE<EnderChestTile>, IWrenchabl
 
     @Override
     public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-        return new EnderChestTile();
+        return new EnderCrateTile();
     }
 
 
     @Override
-    public Class<EnderChestTile> getTileEntityClass() {
-        return EnderChestTile.class;
+    public Class<EnderCrateTile> getTileEntityClass() {
+        return EnderCrateTile.class;
     }
 }

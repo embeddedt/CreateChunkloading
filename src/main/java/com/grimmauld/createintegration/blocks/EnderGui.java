@@ -1,6 +1,7 @@
 package com.grimmauld.createintegration.blocks;
 
 import com.grimmauld.createintegration.CreateIntegration;
+import com.grimmauld.createintegration.tools.Lang;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
@@ -9,12 +10,10 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 
 public class EnderGui extends ContainerScreen<EnderContainer> {
-    private final ResourceLocation GUI = CreateIntegration.generateResourceLocation("textures/gui/ender_chest.png");
-
+    private final ResourceLocation GUI = CreateIntegration.generateResourceLocation("textures/gui/ender_crate.png");
 
     public EnderGui(EnderContainer screenContainer, PlayerInventory inv, ITextComponent name) {
         super(screenContainer, inv, name);
-
     }
 
     @Override
@@ -26,8 +25,7 @@ public class EnderGui extends ContainerScreen<EnderContainer> {
 
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        // drawString(Minecraft.getInstance().fontRenderer, "Ender ID: "+String.valueOf(container.getEnderId()), 60, 5, 0xffffff);
-        drawCenteredString(Minecraft.getInstance().fontRenderer, "Ender ID: " + container.getEnderId(), 60, 5, 0xffffff);
+        drawCenteredString(Minecraft.getInstance().fontRenderer, Lang.translate("generic.ender_id") + ": " + container.getEnderId(), 60, 5, 0xffffff);
     }
 
     @Override

@@ -1,29 +1,29 @@
 {
-    "type": "minecraft:crafting_shaped",
-    "pattern": [
-        " # ",
-        "HSH",
-        "NBN"
-    ],
-    "key": {
-        "#": {
-            "item": "create:shaft"
-        },
-        "H": {
-            "tag": "forge:plates/brass"
-        },
-        "S": {
-            "item": "create:brass_casing"
-        },
-        "N": {
-            "item": "create:electron_tube"
-        },
-        "B": {
-            "item": "create:integrated_circuit"
-        }
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " # ",
+    "HSH",
+    "NBN"
+  ],
+  "key": {
+    "#": {
+      "item": "create:shaft"
     },
-    "result": {
-        "item": "createintegration:motor",
-        "count": 1
+    "H": {
+      "tag": "forge:plates/brass"
+    },
+    "S": {
+      "item": "create:brass_casing"
+    },
+    "N": {
+      "item": "create:electron_tube"
+    },
+    "B": {
+      "item": "create:integrated_circuit"
     }
+  },
+  "result": {
+    "item": "createintegration:motor",
+    "count": 1
+  }
 }

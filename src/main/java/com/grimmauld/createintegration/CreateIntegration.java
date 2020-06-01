@@ -70,7 +70,7 @@ public class CreateIntegration {
     public static Capability<IChunkLoaderList> CHUNK_LOADING_CAPABILITY = null;
 
     @CapabilityInject(EnderList.class)
-    public static Capability<EnderList> ENDER_CHEST_CAPABILITY = null;
+    public static Capability<EnderList> ENDER_CRATE_CAPABILITY = null;
 
 
     public CreateIntegration() {
@@ -148,17 +148,17 @@ public class CreateIntegration {
         final ICapabilitySerializable<INBT> enderCapability = new ICapabilitySerializable<INBT>() {
             @Override
             public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, Direction side) {
-                return ENDER_CHEST_CAPABILITY.orEmpty(cap, enderInst);
+                return ENDER_CRATE_CAPABILITY.orEmpty(cap, enderInst);
             }
 
             @Override
             public INBT serializeNBT() {
-                return ENDER_CHEST_CAPABILITY.writeNBT(enderInst.orElse(null), null);
+                return ENDER_CRATE_CAPABILITY.writeNBT(enderInst.orElse(null), null);
             }
 
             @Override
             public void deserializeNBT(INBT nbt) {
-                ENDER_CHEST_CAPABILITY.readNBT(enderInst.orElse(null), null, nbt);
+                ENDER_CRATE_CAPABILITY.readNBT(enderInst.orElse(null), null, nbt);
             }
         };
 
@@ -205,7 +205,7 @@ public class CreateIntegration {
             event.getRegistry().register(new BlockItem(ModBlocks.COPPER_PRESSURE_PLATE, properties).setRegistryName("copper_pressure_plate"));
             event.getRegistry().register(new BlockItem(ModBlocks.ZINC_PRESSURE_PLATE, properties).setRegistryName("zinc_pressure_plate"));
             event.getRegistry().register(new BlockItem(ModBlocks.CHUNK_LOADER, properties).setRegistryName("chunk_loader"));
-            event.getRegistry().register(new BlockItem(ModBlocks.ENDER_CHEST, properties).setRegistryName("ender_chest"));
+            event.getRegistry().register(new BlockItem(ModBlocks.ENDER_CRATE, properties).setRegistryName("ender_crate"));
             logger.info("finished items registering");
         }
 
@@ -220,7 +220,7 @@ public class CreateIntegration {
             event.getRegistry().register(new CopperPressurePlate());
             event.getRegistry().register(new ZincPressurePlate());
             event.getRegistry().register(new ChunkLoader());
-            event.getRegistry().register(new EnderChest());
+            event.getRegistry().register(new EnderCrate());
             logger.info("finished blocks registering");
 
         }
@@ -233,7 +233,7 @@ public class CreateIntegration {
             event.getRegistry().register(TileEntityType.Builder.create(MotorTile::new, ModBlocks.MOTOR).build(null).setRegistryName("motor"));
             event.getRegistry().register(TileEntityType.Builder.create(RollingMachineTile::new, ModBlocks.ROLLING_MACHINE).build(null).setRegistryName("rolling_machine"));
             event.getRegistry().register(TileEntityType.Builder.create(ChunkLoaderTile::new, ModBlocks.CHUNK_LOADER).build(null).setRegistryName("chunk_loader"));
-            event.getRegistry().register(TileEntityType.Builder.create(EnderChestTile::new, ModBlocks.ENDER_CHEST).build(null).setRegistryName("ender_chest"));
+            event.getRegistry().register(TileEntityType.Builder.create(EnderCrateTile::new, ModBlocks.ENDER_CRATE).build(null).setRegistryName("ender_crate"));
             logger.info("finished TEs registering");
         }
 
@@ -244,7 +244,7 @@ public class CreateIntegration {
             event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
                 BlockPos pos = data.readBlockPos();
                 return new EnderContainer(windowId, CreateIntegration.proxy.getClientWorld(), pos, inv);
-            }).setRegistryName("ender_chest"));
+            }).setRegistryName("ender_crate"));
         }
     }
 }

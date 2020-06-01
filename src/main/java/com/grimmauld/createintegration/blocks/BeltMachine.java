@@ -15,13 +15,14 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Direction.Axis;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import static com.grimmauld.createintegration.tools.ModUtil.getFacingFromEntity;
 
 public abstract class BeltMachine extends DirectionalAxisKineticBlock implements ITE<BeltMachineTile> {
     public static final BooleanProperty RUNNING = BooleanProperty.create("running");
@@ -30,11 +31,6 @@ public abstract class BeltMachine extends DirectionalAxisKineticBlock implements
         super(Properties.from(Blocks.ANDESITE));
         setRegistryName(registryName);
         setDefaultState(getDefaultState().with(RUNNING, false));
-    }
-
-    private static Direction getFacingFromEntity(BlockPos clickedBlock, LivingEntity entity) {
-        Vec3d vec = entity.getPositionVec();
-        return Direction.getFacingFromVector((float) (entity.isSneaking() ? -1 : 1) * (vec.x - clickedBlock.getX()), .0f, (float) (entity.isSneaking() ? -1 : 1) * (vec.z - clickedBlock.getZ()));
     }
 
     @Override
@@ -96,7 +92,7 @@ public abstract class BeltMachine extends DirectionalAxisKineticBlock implements
     @Override
     public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, @Nullable LivingEntity entity, ItemStack stack) {
         if (entity != null) {
-            world.setBlockState(pos, state.with(BlockStateProperties.FACING, getFacingFromEntity(pos, entity)), 2);
+            world.setBlockState(pos, state.with(BlockStateProperties.FACING, getFacingFromEntity(pos, entity, true)), 2);
         }
     }
 

@@ -1,6 +1,7 @@
 package com.grimmauld.createintegration.blocks;
 
 import com.grimmauld.createintegration.CreateIntegration;
+import com.grimmauld.createintegration.tools.Lang;
 import com.simibubi.create.foundation.behaviour.CenteredSideValueBoxTransform;
 import com.simibubi.create.foundation.behaviour.base.SmartTileEntity;
 import com.simibubi.create.foundation.behaviour.base.TileEntityBehaviour;
@@ -27,13 +28,13 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 
-public class EnderChestTile extends SmartTileEntity implements INamedContainerProvider {
+public class EnderCrateTile extends SmartTileEntity implements INamedContainerProvider {
     private static final FlexcrateTileEntity dummyFlexCrate = new FlexcrateTileEntity();  // FIXME hack
     ScrollValueBehaviour id;
     private LazyOptional<IItemHandler> handler = LazyOptional.of(this::getHandler);
 
-    public EnderChestTile() {
-        super(ModBlocks.ENDER_CHEST_TILE);
+    public EnderCrateTile() {
+        super(ModBlocks.ENDER_CRATE_TILE);
         updateItemHandler();
     }
 
@@ -57,7 +58,7 @@ public class EnderChestTile extends SmartTileEntity implements INamedContainerPr
     public void updateItemHandler() {
         if (world == null) return;
         world
-                .getCapability(CreateIntegration.ENDER_CHEST_CAPABILITY,
+                .getCapability(CreateIntegration.ENDER_CRATE_CAPABILITY,
                         null)
                 .ifPresent(worldCap ->
                         setItemHandler(worldCap.getOrCreate(id.getValue())));
@@ -95,13 +96,13 @@ public class EnderChestTile extends SmartTileEntity implements INamedContainerPr
     @Override
     public void addBehaviours(List<TileEntityBehaviour> behaviours) {
         CenteredSideValueBoxTransform slot =
-                new CenteredSideValueBoxTransform((ender_chest, side) -> ender_chest.get(BlockStateProperties.FACING) == side);
+                new CenteredSideValueBoxTransform((ender_crate, side) -> ender_crate.get(BlockStateProperties.FACING) == side);
 
-        id = new ScrollValueBehaviour("Ender ID", this, slot);
+        id = new ScrollValueBehaviour(Lang.translate("generic.ender_id"), this, slot);
         id.between(0, 256);
         id.value = 0;
         id.scrollableValue = 0;
-        id.withStepFunction(EnderChestTile::step);
+        id.withStepFunction(EnderCrateTile::step);
         id.withCallback(this::updateItemHandler);
         behaviours.add(id);
     }
@@ -130,7 +131,7 @@ public class EnderChestTile extends SmartTileEntity implements INamedContainerPr
     @Nonnull
     @Override
     public ITextComponent getDisplayName() {
-        return new StringTextComponent(getType().getRegistryName() != null ? getType().getRegistryName().getPath() : "createintegration:ender_chest");  // Lang File
+        return new StringTextComponent(getType().getRegistryName() != null ? getType().getRegistryName().getPath() : "createintegration:ender_crate");  // Lang File ?
     }
 
     public int getId() {

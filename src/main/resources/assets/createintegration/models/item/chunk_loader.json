@@ -1,3 +1,3 @@
 {
-    "parent": "createintegration:block/chunk_loader"
+  "parent": "createintegration:block/chunk_loader"
 }

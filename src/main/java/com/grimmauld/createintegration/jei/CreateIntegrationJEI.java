@@ -23,7 +23,8 @@ public class CreateIntegrationJEI implements IModPlugin {
     private static final ResourceLocation ID = new ResourceLocation(CreateIntegration.modid, "jei_plugin");
 
     @SuppressWarnings("unused")
-    public CreateIntegrationJEI() {}
+    public CreateIntegrationJEI() {
+    }
 
     @Nonnull
     @Override

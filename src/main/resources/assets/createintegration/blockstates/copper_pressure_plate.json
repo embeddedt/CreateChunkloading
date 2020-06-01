@@ -1,388 +1,388 @@
 {
-	"variants": {
-		"power=0,oxidization=0": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_up_oxidation_0"
-		},
-		"power=0,oxidization=1": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_up_oxidation_1"
-		},
-		"power=0,oxidization=2": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_up_oxidation_2"
-		},
-		"power=0,oxidization=3": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_up_oxidation_3"
-		},
-		"power=0,oxidization=4": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_up_oxidation_4"
-		},
-		"power=0,oxidization=5": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_up_oxidation_5"
-		},
-		"power=0,oxidization=6": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_up_oxidation_6"
-		},
-		"power=0,oxidization=7": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_up_oxidation_7"
-		},
-		"power=1,oxidization=0": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_0"
-		},
-		"power=1,oxidization=1": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_1"
-		},
-		"power=1,oxidization=2": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_2"
-		},
-		"power=1,oxidization=3": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_3"
-		},
-		"power=1,oxidization=4": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_4"
-		},
-		"power=1,oxidization=5": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_5"
-		},
-		"power=1,oxidization=6": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_6"
-		},
-		"power=1,oxidization=7": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_7"
-		},
-		"power=2,oxidization=0": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_0"
-		},
-		"power=2,oxidization=1": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_1"
-		},
-		"power=2,oxidization=2": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_2"
-		},
-		"power=2,oxidization=3": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_3"
-		},
-		"power=2,oxidization=4": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_4"
-		},
-		"power=2,oxidization=5": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_5"
-		},
-		"power=2,oxidization=6": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_6"
-		},
-		"power=2,oxidization=7": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_7"
-		},
-		"power=3,oxidization=0": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_0"
-		},
-		"power=3,oxidization=1": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_1"
-		},
-		"power=3,oxidization=2": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_2"
-		},
-		"power=3,oxidization=3": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_3"
-		},
-		"power=3,oxidization=4": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_4"
-		},
-		"power=3,oxidization=5": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_5"
-		},
-		"power=3,oxidization=6": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_6"
-		},
-		"power=3,oxidization=7": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_7"
-		},
-		"power=4,oxidization=0": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_0"
-		},
-		"power=4,oxidization=1": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_1"
-		},
-		"power=4,oxidization=2": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_2"
-		},
-		"power=4,oxidization=3": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_3"
-		},
-		"power=4,oxidization=4": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_4"
-		},
-		"power=4,oxidization=5": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_5"
-		},
-		"power=4,oxidization=6": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_6"
-		},
-		"power=4,oxidization=7": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_7"
-		},
-		"power=5,oxidization=0": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_0"
-		},
-		"power=5,oxidization=1": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_1"
-		},
-		"power=5,oxidization=2": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_2"
-		},
-		"power=5,oxidization=3": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_3"
-		},
-		"power=5,oxidization=4": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_4"
-		},
-		"power=5,oxidization=5": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_5"
-		},
-		"power=5,oxidization=6": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_6"
-		},
-		"power=5,oxidization=7": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_7"
-		},
-		"power=6,oxidization=0": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_0"
-		},
-		"power=6,oxidization=1": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_1"
-		},
-		"power=6,oxidization=2": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_2"
-		},
-		"power=6,oxidization=3": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_3"
-		},
-		"power=6,oxidization=4": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_4"
-		},
-		"power=6,oxidization=5": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_5"
-		},
-		"power=6,oxidization=6": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_6"
-		},
-		"power=6,oxidization=7": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_7"
-		},
-		"power=7,oxidization=0": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_0"
-		},
-		"power=7,oxidization=1": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_1"
-		},
-		"power=7,oxidization=2": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_2"
-		},
-		"power=7,oxidization=3": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_3"
-		},
-		"power=7,oxidization=4": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_4"
-		},
-		"power=7,oxidization=5": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_5"
-		},
-		"power=7,oxidization=6": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_6"
-		},
-		"power=7,oxidization=7": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_7"
-		},
-		"power=8,oxidization=0": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_0"
-		},
-		"power=8,oxidization=1": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_1"
-		},
-		"power=8,oxidization=2": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_2"
-		},
-		"power=8,oxidization=3": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_3"
-		},
-		"power=8,oxidization=4": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_4"
-		},
-		"power=8,oxidization=5": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_5"
-		},
-		"power=8,oxidization=6": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_6"
-		},
-		"power=8,oxidization=7": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_7"
-		},
-		"power=9,oxidization=0": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_0"
-		},
-		"power=9,oxidization=1": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_1"
-		},
-		"power=9,oxidization=2": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_2"
-		},
-		"power=9,oxidization=3": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_3"
-		},
-		"power=9,oxidization=4": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_4"
-		},
-		"power=9,oxidization=5": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_5"
-		},
-		"power=9,oxidization=6": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_6"
-		},
-		"power=9,oxidization=7": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_7"
-		},
-		"power=10,oxidization=0": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_0"
-		},
-		"power=10,oxidization=1": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_1"
-		},
-		"power=10,oxidization=2": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_2"
-		},
-		"power=10,oxidization=3": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_3"
-		},
-		"power=10,oxidization=4": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_4"
-		},
-		"power=10,oxidization=5": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_5"
-		},
-		"power=10,oxidization=6": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_6"
-		},
-		"power=10,oxidization=7": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_7"
-		},
-		"power=11,oxidization=0": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_0"
-		},
-		"power=11,oxidization=1": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_1"
-		},
-		"power=11,oxidization=2": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_2"
-		},
-		"power=11,oxidization=3": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_3"
-		},
-		"power=11,oxidization=4": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_4"
-		},
-		"power=11,oxidization=5": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_5"
-		},
-		"power=11,oxidization=6": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_6"
-		},
-		"power=11,oxidization=7": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_7"
-		},
-		"power=12,oxidization=0": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_0"
-		},
-		"power=12,oxidization=1": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_1"
-		},
-		"power=12,oxidization=2": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_2"
-		},
-		"power=12,oxidization=3": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_3"
-		},
-		"power=12,oxidization=4": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_4"
-		},
-		"power=12,oxidization=5": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_5"
-		},
-		"power=12,oxidization=6": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_6"
-		},
-		"power=12,oxidization=7": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_7"
-		},
-		"power=13,oxidization=0": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_0"
-		},
-		"power=13,oxidization=1": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_1"
-		},
-		"power=13,oxidization=2": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_2"
-		},
-		"power=13,oxidization=3": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_3"
-		},
-		"power=13,oxidization=4": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_4"
-		},
-		"power=13,oxidization=5": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_5"
-		},
-		"power=13,oxidization=6": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_6"
-		},
-		"power=13,oxidization=7": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_7"
-		},
-		"power=14,oxidization=0": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_0"
-		},
-		"power=14,oxidization=1": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_1"
-		},
-		"power=14,oxidization=2": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_2"
-		},
-		"power=14,oxidization=3": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_3"
-		},
-		"power=14,oxidization=4": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_4"
-		},
-		"power=14,oxidization=5": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_5"
-		},
-		"power=14,oxidization=6": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_6"
-		},
-		"power=14,oxidization=7": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_7"
-		},
-		"power=15,oxidization=0": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_0"
-		},
-		"power=15,oxidization=1": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_1"
-		},
-		"power=15,oxidization=2": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_2"
-		},
-		"power=15,oxidization=3": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_3"
-		},
-		"power=15,oxidization=4": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_4"
-		},
-		"power=15,oxidization=5": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_5"
-		},
-		"power=15,oxidization=6": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_6"
-		},
-		"power=15,oxidization=7": {
-			"model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_7"
-		}
-	}
+  "variants": {
+    "power=0,oxidization=0": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_up_oxidation_0"
+    },
+    "power=0,oxidization=1": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_up_oxidation_1"
+    },
+    "power=0,oxidization=2": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_up_oxidation_2"
+    },
+    "power=0,oxidization=3": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_up_oxidation_3"
+    },
+    "power=0,oxidization=4": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_up_oxidation_4"
+    },
+    "power=0,oxidization=5": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_up_oxidation_5"
+    },
+    "power=0,oxidization=6": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_up_oxidation_6"
+    },
+    "power=0,oxidization=7": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_up_oxidation_7"
+    },
+    "power=1,oxidization=0": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_0"
+    },
+    "power=1,oxidization=1": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_1"
+    },
+    "power=1,oxidization=2": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_2"
+    },
+    "power=1,oxidization=3": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_3"
+    },
+    "power=1,oxidization=4": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_4"
+    },
+    "power=1,oxidization=5": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_5"
+    },
+    "power=1,oxidization=6": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_6"
+    },
+    "power=1,oxidization=7": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_7"
+    },
+    "power=2,oxidization=0": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_0"
+    },
+    "power=2,oxidization=1": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_1"
+    },
+    "power=2,oxidization=2": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_2"
+    },
+    "power=2,oxidization=3": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_3"
+    },
+    "power=2,oxidization=4": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_4"
+    },
+    "power=2,oxidization=5": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_5"
+    },
+    "power=2,oxidization=6": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_6"
+    },
+    "power=2,oxidization=7": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_7"
+    },
+    "power=3,oxidization=0": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_0"
+    },
+    "power=3,oxidization=1": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_1"
+    },
+    "power=3,oxidization=2": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_2"
+    },
+    "power=3,oxidization=3": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_3"
+    },
+    "power=3,oxidization=4": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_4"
+    },
+    "power=3,oxidization=5": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_5"
+    },
+    "power=3,oxidization=6": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_6"
+    },
+    "power=3,oxidization=7": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_7"
+    },
+    "power=4,oxidization=0": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_0"
+    },
+    "power=4,oxidization=1": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_1"
+    },
+    "power=4,oxidization=2": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_2"
+    },
+    "power=4,oxidization=3": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_3"
+    },
+    "power=4,oxidization=4": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_4"
+    },
+    "power=4,oxidization=5": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_5"
+    },
+    "power=4,oxidization=6": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_6"
+    },
+    "power=4,oxidization=7": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_7"
+    },
+    "power=5,oxidization=0": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_0"
+    },
+    "power=5,oxidization=1": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_1"
+    },
+    "power=5,oxidization=2": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_2"
+    },
+    "power=5,oxidization=3": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_3"
+    },
+    "power=5,oxidization=4": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_4"
+    },
+    "power=5,oxidization=5": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_5"
+    },
+    "power=5,oxidization=6": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_6"
+    },
+    "power=5,oxidization=7": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_7"
+    },
+    "power=6,oxidization=0": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_0"
+    },
+    "power=6,oxidization=1": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_1"
+    },
+    "power=6,oxidization=2": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_2"
+    },
+    "power=6,oxidization=3": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_3"
+    },
+    "power=6,oxidization=4": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_4"
+    },
+    "power=6,oxidization=5": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_5"
+    },
+    "power=6,oxidization=6": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_6"
+    },
+    "power=6,oxidization=7": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_7"
+    },
+    "power=7,oxidization=0": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_0"
+    },
+    "power=7,oxidization=1": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_1"
+    },
+    "power=7,oxidization=2": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_2"
+    },
+    "power=7,oxidization=3": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_3"
+    },
+    "power=7,oxidization=4": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_4"
+    },
+    "power=7,oxidization=5": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_5"
+    },
+    "power=7,oxidization=6": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_6"
+    },
+    "power=7,oxidization=7": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_7"
+    },
+    "power=8,oxidization=0": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_0"
+    },
+    "power=8,oxidization=1": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_1"
+    },
+    "power=8,oxidization=2": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_2"
+    },
+    "power=8,oxidization=3": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_3"
+    },
+    "power=8,oxidization=4": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_4"
+    },
+    "power=8,oxidization=5": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_5"
+    },
+    "power=8,oxidization=6": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_6"
+    },
+    "power=8,oxidization=7": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_7"
+    },
+    "power=9,oxidization=0": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_0"
+    },
+    "power=9,oxidization=1": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_1"
+    },
+    "power=9,oxidization=2": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_2"
+    },
+    "power=9,oxidization=3": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_3"
+    },
+    "power=9,oxidization=4": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_4"
+    },
+    "power=9,oxidization=5": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_5"
+    },
+    "power=9,oxidization=6": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_6"
+    },
+    "power=9,oxidization=7": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_7"
+    },
+    "power=10,oxidization=0": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_0"
+    },
+    "power=10,oxidization=1": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_1"
+    },
+    "power=10,oxidization=2": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_2"
+    },
+    "power=10,oxidization=3": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_3"
+    },
+    "power=10,oxidization=4": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_4"
+    },
+    "power=10,oxidization=5": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_5"
+    },
+    "power=10,oxidization=6": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_6"
+    },
+    "power=10,oxidization=7": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_7"
+    },
+    "power=11,oxidization=0": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_0"
+    },
+    "power=11,oxidization=1": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_1"
+    },
+    "power=11,oxidization=2": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_2"
+    },
+    "power=11,oxidization=3": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_3"
+    },
+    "power=11,oxidization=4": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_4"
+    },
+    "power=11,oxidization=5": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_5"
+    },
+    "power=11,oxidization=6": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_6"
+    },
+    "power=11,oxidization=7": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_7"
+    },
+    "power=12,oxidization=0": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_0"
+    },
+    "power=12,oxidization=1": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_1"
+    },
+    "power=12,oxidization=2": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_2"
+    },
+    "power=12,oxidization=3": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_3"
+    },
+    "power=12,oxidization=4": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_4"
+    },
+    "power=12,oxidization=5": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_5"
+    },
+    "power=12,oxidization=6": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_6"
+    },
+    "power=12,oxidization=7": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_7"
+    },
+    "power=13,oxidization=0": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_0"
+    },
+    "power=13,oxidization=1": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_1"
+    },
+    "power=13,oxidization=2": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_2"
+    },
+    "power=13,oxidization=3": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_3"
+    },
+    "power=13,oxidization=4": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_4"
+    },
+    "power=13,oxidization=5": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_5"
+    },
+    "power=13,oxidization=6": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_6"
+    },
+    "power=13,oxidization=7": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_7"
+    },
+    "power=14,oxidization=0": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_0"
+    },
+    "power=14,oxidization=1": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_1"
+    },
+    "power=14,oxidization=2": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_2"
+    },
+    "power=14,oxidization=3": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_3"
+    },
+    "power=14,oxidization=4": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_4"
+    },
+    "power=14,oxidization=5": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_5"
+    },
+    "power=14,oxidization=6": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_6"
+    },
+    "power=14,oxidization=7": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_7"
+    },
+    "power=15,oxidization=0": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_0"
+    },
+    "power=15,oxidization=1": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_1"
+    },
+    "power=15,oxidization=2": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_2"
+    },
+    "power=15,oxidization=3": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_3"
+    },
+    "power=15,oxidization=4": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_4"
+    },
+    "power=15,oxidization=5": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_5"
+    },
+    "power=15,oxidization=6": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_6"
+    },
+    "power=15,oxidization=7": {
+      "model": "createintegration:block/pressure_plate/copper_pressure_plate_down_oxidation_7"
+    }
+  }
 }

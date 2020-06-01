@@ -12,13 +12,14 @@ import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ToolType;
 
 import javax.annotation.Nullable;
+
+import static com.grimmauld.createintegration.tools.ModUtil.getFacingFromEntity;
 
 public class Dynamo extends KineticBlock {
 
@@ -32,11 +33,6 @@ public class Dynamo extends KineticBlock {
                 .harvestLevel(2)
         );
         setRegistryName("dynamo");
-    }
-
-    public static Direction getFacingFromEntity(BlockPos clickedBlock, LivingEntity entity) {
-        Vec3d vec = entity.getPositionVec();
-        return Direction.getFacingFromVector((float) (entity.isSneaking() ? -1 : 1) * (vec.x - clickedBlock.getX()), (float) (entity.isSneaking() ? -1 : 1) * (vec.y - clickedBlock.getY()), (float) (entity.isSneaking() ? -1 : 1) * (vec.z - clickedBlock.getZ()));
     }
 
     @Override

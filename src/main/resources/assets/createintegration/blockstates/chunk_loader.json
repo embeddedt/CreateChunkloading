@@ -1,5 +1,7 @@
 {
-	"variants": {
-		"":{"model": "createintegration:block/chunk_loader"}
-	}
+  "variants": {
+    "": {
+      "model": "createintegration:block/chunk_loader"
+    }
+  }
 }

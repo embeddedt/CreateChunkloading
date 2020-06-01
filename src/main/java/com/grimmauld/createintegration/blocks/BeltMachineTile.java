@@ -312,9 +312,7 @@ public abstract class BeltMachineTile extends KineticTileEntity {
     abstract List<? extends IRecipe<?>> getRecipes();
 
     public void insertItem(ItemEntity entity) {
-        if (!inventory.isEmpty())
-            return;
-        if (world.isRemote)
+        if (!inventory.isEmpty() || world == null || world.isRemote)
             return;
         inventory.clear();
         inventory.insertItem(0, entity.getItem().copy(), false);
@@ -330,7 +328,6 @@ public abstract class BeltMachineTile extends KineticTileEntity {
             return;
 
         List<? extends IRecipe<?>> recipes = getRecipes();
-        boolean valid = !recipes.isEmpty();
         int time = 100;
         recipeNumber = inserted.getCount();
 
@@ -341,10 +338,8 @@ public abstract class BeltMachineTile extends KineticTileEntity {
             return;
         }
 
-        if (valid) {
-            recipeIndex++;
-            recipeIndex %= recipes.size();
-        }
+        recipeIndex++;
+        recipeIndex %= recipes.size();
 
         IRecipe<?> recipe = recipes.get(recipeIndex);
         if (recipe instanceof BeltMachineRecipe) {
