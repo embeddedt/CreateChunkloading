@@ -91,6 +91,4 @@ public class RollingMachineTileEntityRenderer extends SafeTileEntityRenderer<Rol
         BlockState state = te.getBlockState();
         return AllBlocks.SHAFT.get().getDefaultState().with(AXIS, ((IRotate) state.getBlock()).getRotationAxis(state));
     }
-
-
 }

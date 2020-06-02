@@ -4,9 +4,6 @@ import com.grimmauld.createintegration.Config;
 import com.grimmauld.createintegration.tools.CustomEnergyStorage;
 import com.grimmauld.createintegration.tools.ModUtil;
 import com.simibubi.create.modules.contraptions.base.KineticTileEntity;
-import com.simibubi.create.modules.contraptions.components.actors.DrillTileEntity;
-import com.simibubi.create.modules.contraptions.components.motor.MotorBlock;
-import com.simibubi.create.modules.contraptions.components.motor.MotorTileEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -64,7 +61,6 @@ public class DynamoTile extends KineticTileEntity implements ITickableTileEntity
     }
 
 
-
     private void sendOutPower() {
         energy.ifPresent(energy -> {
             if (energy.getEnergyStored() > 0) {
@@ -73,9 +69,9 @@ public class DynamoTile extends KineticTileEntity implements ITickableTileEntity
                 TileEntity te = world.getTileEntity(pos.offset(direction));
                 if (te != null) {
                     te.getCapability(CapabilityEnergy.ENERGY, direction).ifPresent(handler -> {
-                        if (handler.canReceive())
-                            ((CustomEnergyStorage) energy).consumeEnergy(handler.receiveEnergy(Math.min(energy.getEnergyStored(), Config.DYNAMO_SEND.get()), false));
-                        }
+                                if (handler.canReceive())
+                                    ((CustomEnergyStorage) energy).consumeEnergy(handler.receiveEnergy(Math.min(energy.getEnergyStored(), Config.DYNAMO_SEND.get()), false));
+                            }
                     );
                 }
             }

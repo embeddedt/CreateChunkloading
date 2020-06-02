@@ -70,7 +70,7 @@ public abstract class BeltMachineTile extends KineticTileEntity {
 
     private BlockPos getTargetingBeltBlock() {
         Vec3d itemMovement = getItemMovementVec();
-        return pos.add(-itemMovement.x, -itemMovement.y, -itemMovement.z);
+        return pos.add(-itemMovement.x + .5f, -itemMovement.y + .5f, -itemMovement.z + .5f);
     }
 
 
@@ -123,7 +123,7 @@ public abstract class BeltMachineTile extends KineticTileEntity {
                 BeltTileEntity controllerTE = beltTE.getControllerTE();
                 if (controllerTE == null)
                     return;
-                controllerTE.getInventory().forEachWithin(beltTE.index, .1f, stack -> {
+                controllerTE.getInventory().forEachWithin(beltTE.index + (beltTE.index > 0 ? 1 : 0), .1f, stack -> {
                     ItemStack insertStack = stack.stack.copy();
                     List<TransportedItemStack> returnList = new ArrayList<>();
                     returnList.add(stack);
@@ -166,14 +166,14 @@ public abstract class BeltMachineTile extends KineticTileEntity {
             sendData();
             markDirty();
             if (!inventory.isEmpty())
-                start(inventory.getStackInSlot(0));
+                start();
             markDirty();
             return;
         }
 
         if (inventory.remainingTime == -1) {
             if (!inventory.isEmpty())
-                start(inventory.getStackInSlot(0));
+                start();
             markDirty();
         }
     }
@@ -311,16 +311,12 @@ public abstract class BeltMachineTile extends KineticTileEntity {
 
     abstract List<? extends IRecipe<?>> getRecipes();
 
-    public void insertItem(ItemEntity entity) {
-        if (!inventory.isEmpty() || world == null || world.isRemote)
-            return;
-        inventory.clear();
-        inventory.insertItem(0, entity.getItem().copy(), false);
-        entity.remove();
+    public void start(ItemStack inserted) {
+        start();
     }
 
-    public void start(ItemStack inserted) {
-        inserted = inventory.getStackInSlot(0);
+    public void start() {
+        ItemStack inserted = inventory.getStackInSlot(0);
         if (inventory.isEmpty())
             return;
         assert world != null;
@@ -333,7 +329,6 @@ public abstract class BeltMachineTile extends KineticTileEntity {
 
         if (recipes.isEmpty()) {
             inventory.remainingTime = inventory.recipeDuration = 10;
-            inventory.appliedRecipe = false;
             sendData();
             return;
         }
@@ -348,7 +343,6 @@ public abstract class BeltMachineTile extends KineticTileEntity {
 
         inventory.remainingTime = time * Math.max(1, (recipeNumber / 5));
         inventory.recipeDuration = inventory.remainingTime;
-        inventory.appliedRecipe = false;
 
         sendData();
     }
