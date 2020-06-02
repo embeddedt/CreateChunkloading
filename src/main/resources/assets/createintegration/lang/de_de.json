@@ -1,0 +1,15 @@
+{
+  "block.createintegration.dynamo": "Dynamo",
+  "block.createintegration.motor": "Motor",
+  "block.createintegration.rolling_machine": "Walzmaschiene",
+  "block.createintegration.chunk_loader": "Chunk Loader",
+  "block.createintegration.ender_crate": "Bewegliche Ender-Kiste",
+  "block.createintegration.brass_pressure_plate": "Messingdruckplatte",
+  "block.createintegration.copper_pressure_plate": "Kupferdruckplatte",
+  "block.createintegration.zinc_pressure_plate": "Zinkdruckplatte",
+  "death.attack.createintegration.dynamo": "%1$s wurde durch Dynamo zu tode geschockt",
+  "death.attack.createintegration.motor": "%1$s wurde durch Motor zu tode geschockt.",
+  "itemGroup.createintegration": "Create Integration",
+  "createintegration.category.rolling": "Walzen",
+  "createintegration.generic.ender_id": "Ender ID"
+}
