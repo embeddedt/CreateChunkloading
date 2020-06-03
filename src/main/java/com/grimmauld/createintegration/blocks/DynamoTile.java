@@ -42,6 +42,7 @@ public class DynamoTile extends KineticTileEntity implements ITickableTileEntity
 
     @Override
     public void tick() {
+        super.tick();
         energy.ifPresent(e -> ((CustomEnergyStorage) e).addEnergy((int) Math.abs(Config.DYNAMO_GENERATE_MULTIPLIER.get() * getSpeed())));
         markDirty();
         sendOutPower();

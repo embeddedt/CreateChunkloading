@@ -61,6 +61,7 @@ import java.util.Map;
 @Mod(CreateIntegration.modid)
 public class CreateIntegration {
     public static final String modid = "createintegration";
+    public static final String version = "0.1.6b";
     public static final Logger logger = LogManager.getLogger(modid);
     public static final IRecipeType<RollingRecipe> ROLLING_RECIPE = new RecipeTypeRolling();
     public static IProxy proxy = DistExecutor.runForDist(() -> () -> new ClientProxy(), () -> () -> new ServerProxy());

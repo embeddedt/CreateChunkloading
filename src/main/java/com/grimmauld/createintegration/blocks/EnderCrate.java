@@ -6,11 +6,10 @@ import com.simibubi.create.modules.logistics.block.inventories.CrateBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
@@ -22,7 +21,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import static com.grimmauld.createintegration.tools.ModUtil.getFacingFromEntity;
 
@@ -34,10 +32,8 @@ public class EnderCrate extends Block implements ITE<EnderCrateTile>, IWrenchabl
     }
 
     @Override
-    public void onBlockPlacedBy(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull BlockState state, @Nullable LivingEntity entity, @Nonnull ItemStack stack) {
-        if (entity != null) {
-            world.setBlockState(pos, state.with(BlockStateProperties.FACING, getFacingFromEntity(pos, entity)).with(CrateBlock.DOUBLE, false), 2);
-        }
+    public BlockState getStateForPlacement(@Nonnull BlockItemUseContext context) {
+        return this.getDefaultState().with(BlockStateProperties.FACING, getFacingFromEntity(context.getPos(), context.getPlayer()));
     }
 
     @Override
@@ -61,13 +57,12 @@ public class EnderCrate extends Block implements ITE<EnderCrateTile>, IWrenchabl
             if (tileEntity instanceof INamedContainerProvider) {
                 NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) tileEntity, tileEntity.getPos());
             } else {
-                throw new IllegalStateException("Our named container provider is missing!");
+                throw new IllegalStateException("Ender Container Provider is missing!");
             }
             return true;
         }
         return false;
     }
-
 
     @Override
     public boolean hasTileEntity(BlockState state) {

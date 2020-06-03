@@ -6,8 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.material.PushReaction;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.state.properties.BlockStateProperties;
@@ -17,10 +16,8 @@ import net.minecraft.util.Direction.Axis;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import static com.grimmauld.createintegration.tools.ModUtil.getFacingFromEntity;
 
@@ -37,27 +34,6 @@ public abstract class BeltMachine extends DirectionalAxisKineticBlock implements
     public boolean hasTileEntity(BlockState state) {
         return true;
     }
-
-
-    // drop handling
-	/*	@Override
-	public void onLanded(IBlockReader worldIn, Entity entityIn) {
-		super.onLanded(worldIn, entityIn);
-		if (!(entityIn instanceof ItemEntity)) {
-			return;
-		}
-		if (entityIn.world.isRemote) {
-			return;
-		}
-
-		BlockPos pos = entityIn.getPosition();
-		withTileEntityDo(entityIn.world, pos, te -> {
-			if (te.getSpeed() == 0) {
-				return;
-			}
-			te.insertItem((ItemEntity) entityIn);
-		});
-	}*/
 
     @Override
     public abstract TileEntity createTileEntity(BlockState state, IBlockReader world);
@@ -90,10 +66,8 @@ public abstract class BeltMachine extends DirectionalAxisKineticBlock implements
     }
 
     @Override
-    public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, @Nullable LivingEntity entity, ItemStack stack) {
-        if (entity != null) {
-            world.setBlockState(pos, state.with(BlockStateProperties.FACING, getFacingFromEntity(pos, entity, true)), 2);
-        }
+    public BlockState getStateForPlacement(@Nonnull BlockItemUseContext context) {
+        return this.getDefaultState().with(BlockStateProperties.FACING, getFacingFromEntity(context.getPos(), context.getPlayer()));
     }
 
     @Override

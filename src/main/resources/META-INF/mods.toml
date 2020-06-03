@@ -4,7 +4,7 @@ issueTrackerURL="https://github.com/LordGrimmauld/createintegration/issues"
 logoFile="createintegration_logo.png"
 [[mods]]
 modId="createintegration"
-version="0.1.6"
+version="0.1.6b"
 displayName="Create Integration"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/create-integration"
 credits="Thanks to Alexander2907 for the Dynamo texture, Thanks to Joe for the Ender Crate texture"

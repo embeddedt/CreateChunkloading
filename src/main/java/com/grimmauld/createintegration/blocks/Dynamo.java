@@ -5,8 +5,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
@@ -14,16 +13,13 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
 import net.minecraftforge.common.ToolType;
 
-import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 
 import static com.grimmauld.createintegration.tools.ModUtil.getFacingFromEntity;
 
 public class Dynamo extends KineticBlock {
-
-
     public Dynamo() {
         super(Properties.create(Material.IRON)
                 .sound(SoundType.METAL)
@@ -46,10 +42,8 @@ public class Dynamo extends KineticBlock {
     }
 
     @Override
-    public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, @Nullable LivingEntity entity, ItemStack stack) {
-        if (entity != null) {
-            world.setBlockState(pos, state.with(BlockStateProperties.FACING, getFacingFromEntity(pos, entity)), 2);
-        }
+    public BlockState getStateForPlacement(@Nonnull BlockItemUseContext context) {
+        return this.getDefaultState().with(BlockStateProperties.FACING, getFacingFromEntity(context.getPos(), context.getPlayer()));
     }
 
     @Override
