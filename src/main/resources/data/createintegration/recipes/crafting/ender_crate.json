@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#E#",
+    "EDE",
+    "#E#"
+  ],
+  "key": {
+    "#": {
+      "item": "create:brass_casing"
+    },
+    "E": {
+      "item": "minecraft:end_stone"
+    },
+    "D": {
+      "item": "minecraft:ender_chest"
+    }
+  },
+  "result": {
+    "item": "createintegration:ender_crate",
+    "count": 1
+  }
+}
