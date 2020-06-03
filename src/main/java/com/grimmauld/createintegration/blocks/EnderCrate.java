@@ -2,6 +2,7 @@ package com.grimmauld.createintegration.blocks;
 
 import com.simibubi.create.foundation.block.ITE;
 import com.simibubi.create.modules.contraptions.IWrenchable;
+import com.simibubi.create.modules.contraptions.WrenchItem;
 import com.simibubi.create.modules.logistics.block.inventories.CrateBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -44,15 +45,7 @@ public class EnderCrate extends Block implements ITE<EnderCrateTile>, IWrenchabl
     @Override
     public boolean onBlockActivated(@Nonnull BlockState state, World world, @Nonnull BlockPos pos, @Nonnull PlayerEntity player, @Nonnull Hand hand,
                                     @Nonnull BlockRayTraceResult result) {
-
-
-        // System.out.println(player.getActiveItemStack().getItem());
-		/*if(player.getActiveItemStack().getItem() instanceof WrenchItem) {
-			System.out.println("wrench");
-		}*/
-
-
-        if (!world.isRemote) {
+        if (!(world.isRemote || player.getHeldItemOffhand().getItem().getClass() == WrenchItem.class || player.getHeldItemMainhand().getItem().getClass() == WrenchItem.class)) {
             TileEntity tileEntity = world.getTileEntity(pos);
             if (tileEntity instanceof INamedContainerProvider) {
                 NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) tileEntity, tileEntity.getPos());
