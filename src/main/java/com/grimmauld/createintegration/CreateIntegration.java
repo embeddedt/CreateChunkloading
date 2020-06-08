@@ -10,8 +10,8 @@ import com.grimmauld.createintegration.setup.ClientProxy;
 import com.grimmauld.createintegration.setup.IProxy;
 import com.grimmauld.createintegration.setup.ModSetup;
 import com.grimmauld.createintegration.setup.ServerProxy;
+
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -20,7 +20,6 @@ import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.item.crafting.RecipeManager;
 import net.minecraft.nbt.INBT;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
@@ -57,6 +56,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
 import java.util.Map;
+import java.util.function.Function;
 
 @Mod(CreateIntegration.modid)
 public class CreateIntegration {
@@ -106,13 +106,9 @@ public class CreateIntegration {
 
     @OnlyIn(Dist.CLIENT)
     public static void registerRenderers() {
-        bind(RollingMachineTile.class, new RollingMachineTileEntityRenderer());
+    	ClientRegistry.bindTileEntityRenderer(ModBlocks.ROLLING_MACHINE_TILE, RollingMachineTileEntityRenderer::new);
     }
 
-    @OnlyIn(Dist.CLIENT)
-    private static <T extends TileEntity> void bind(Class<T> clazz, TileEntityRenderer<? super T> renderer) {
-        ClientRegistry.bindTileEntitySpecialRenderer(clazz, renderer);
-    }
 
     public static ResourceLocation generateResourceLocation(String resourceName) {
         return new ResourceLocation(modid, resourceName);

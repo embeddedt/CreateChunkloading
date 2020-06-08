@@ -1,12 +1,21 @@
 package com.grimmauld.createintegration.blocks;
 
+import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.grimmauld.createintegration.CreateIntegration;
 import com.grimmauld.createintegration.tools.Lang;
-import com.simibubi.create.foundation.behaviour.CenteredSideValueBoxTransform;
-import com.simibubi.create.foundation.behaviour.base.SmartTileEntity;
-import com.simibubi.create.foundation.behaviour.base.TileEntityBehaviour;
-import com.simibubi.create.foundation.behaviour.scrollvalue.ScrollValueBehaviour;
-import com.simibubi.create.modules.logistics.block.inventories.FlexcrateTileEntity;
+import com.simibubi.create.AllTileEntities;
+import com.simibubi.create.content.logistics.block.inventories.AdjustableCrateTileEntity;
+import com.simibubi.create.content.logistics.block.inventories.CrateBlock;
+import com.simibubi.create.content.logistics.block.inventories.CrateTileEntity;
+import com.simibubi.create.foundation.tileEntity.SmartTileEntity;
+import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
+import com.simibubi.create.foundation.tileEntity.behaviour.CenteredSideValueBoxTransform;
+import com.simibubi.create.foundation.tileEntity.behaviour.scrollvalue.ScrollValueBehaviour;
+
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
@@ -23,13 +32,8 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.List;
-
 
 public class EnderCrateTile extends SmartTileEntity implements INamedContainerProvider {
-    private static final FlexcrateTileEntity dummyFlexCrate = new FlexcrateTileEntity();  // FIXME hack
     ScrollValueBehaviour id;
     private LazyOptional<IItemHandler> handler = LazyOptional.of(this::getHandler);
 
@@ -114,8 +118,8 @@ public class EnderCrateTile extends SmartTileEntity implements INamedContainerPr
     @Nonnull
     @Override
     public TileEntityType<?> getType() {
-        if (Thread.currentThread().getStackTrace()[2].toString().contains("com.simibubi.create.modules.contraptions.components.contraptions.MountedStorage")) {  // FIXME: use StackTraceElement API (https://docs.oracle.com/javase/7/docs/api/java/lang/StackTraceElement.html)
-            return dummyFlexCrate.getType();  // hack!
+        if (Thread.currentThread().getStackTrace()[2].toString().contains("com.simibubi.create.content.contraptions.components.structureMovement.MountedStorage")) {  // FIXME: use StackTraceElement API (https://docs.oracle.com/javase/7/docs/api/java/lang/StackTraceElement.html)
+        	return super.getType();  // hack!
         } else {
             return super.getType();
         }

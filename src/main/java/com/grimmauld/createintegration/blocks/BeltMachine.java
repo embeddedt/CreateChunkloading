@@ -1,8 +1,14 @@
 package com.grimmauld.createintegration.blocks;
 
+import static com.grimmauld.createintegration.tools.ModUtil.getFacingFromEntity;
+
+import javax.annotation.Nonnull;
+
+import com.simibubi.create.content.contraptions.base.DirectionalAxisKineticBlock;
 import com.simibubi.create.foundation.block.ITE;
-import com.simibubi.create.modules.contraptions.base.DirectionalAxisKineticBlock;
+
 import net.minecraft.block.Block;
+import net.minecraft.block.Block.Properties;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.material.PushReaction;
@@ -16,10 +22,6 @@ import net.minecraft.util.Direction.Axis;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
-
-import javax.annotation.Nonnull;
-
-import static com.grimmauld.createintegration.tools.ModUtil.getFacingFromEntity;
 
 public abstract class BeltMachine extends DirectionalAxisKineticBlock implements ITE<BeltMachineTile> {
     public static final BooleanProperty RUNNING = BooleanProperty.create("running");

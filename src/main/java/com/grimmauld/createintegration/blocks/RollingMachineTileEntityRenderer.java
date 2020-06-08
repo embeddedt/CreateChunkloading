@@ -1,56 +1,59 @@
 package com.grimmauld.createintegration.blocks;
 
-import com.mojang.blaze3d.platform.GlStateManager;
-import com.simibubi.create.AllBlockPartials;
-import com.simibubi.create.AllBlocks;
-import com.simibubi.create.CreateClient;
-import com.simibubi.create.foundation.block.SafeTileEntityRenderer;
-import com.simibubi.create.foundation.utility.SuperByteBuffer;
-import com.simibubi.create.foundation.utility.TessellatorHelper;
-import com.simibubi.create.modules.contraptions.base.IRotate;
-import com.simibubi.create.modules.contraptions.base.KineticTileEntity;
-import com.simibubi.create.modules.contraptions.base.KineticTileEntityRenderer;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ItemRenderer;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.client.renderer.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.MathHelper;
-
 import static net.minecraft.state.properties.BlockStateProperties.AXIS;
 import static net.minecraft.state.properties.BlockStateProperties.FACING;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.simibubi.create.AllBlockPartials;
+import com.simibubi.create.AllBlocks;
+import com.simibubi.create.CreateClient;
+import com.simibubi.create.content.contraptions.base.IRotate;
+import com.simibubi.create.content.contraptions.base.KineticTileEntity;
+import com.simibubi.create.content.contraptions.base.KineticTileEntityRenderer;
+import com.simibubi.create.foundation.tileEntity.renderer.SafeTileEntityRenderer;
+import com.simibubi.create.foundation.utility.SuperByteBuffer;
+
+import net.minecraft.block.BlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.ItemRenderer;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.Vector3f;
+import net.minecraft.client.renderer.model.IBakedModel;
+import net.minecraft.client.renderer.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
+import net.minecraft.item.ItemStack;
+import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.util.Rotation;
+import net.minecraft.util.math.MathHelper;
+
 public class RollingMachineTileEntityRenderer extends SafeTileEntityRenderer<RollingMachineTile> {
 
-    @Override
-    public void renderWithGL(RollingMachineTile te, double x, double y, double z, float partialTicks, int destroyStage) {
-        renderItems(te, x, y, z, partialTicks);
-        renderShaft(te, x, y, z);
-    }
+    public RollingMachineTileEntityRenderer(TileEntityRendererDispatcher dispatcher) {
+		super(dispatcher);
+	}
 
-    protected void renderShaft(RollingMachineTile te, double x, double y, double z) {
-        TessellatorHelper.prepareFastRender();
-        TessellatorHelper.begin(DefaultVertexFormats.BLOCK);
-        KineticTileEntityRenderer.renderRotatingBuffer(te, getWorld(), getRotatedModel(te), x, y, z,
-                Tessellator.getInstance().getBuffer());
+	@Override
+	protected void renderSafe(RollingMachineTile te, float partialTicks, MatrixStack ms, IRenderTypeBuffer buffer, int light,
+			int overlay) {
+    	renderItems(te, partialTicks, ms, buffer, light, overlay);
+    	renderShaft(te, ms, buffer, light, overlay);
+	}
 
-        Direction direction = te.getBlockState().get(BlockStateProperties.FACING);
 
-        KineticTileEntityRenderer.renderRotatingBuffer(te, getWorld(), getRotatedModel(te), x + 0.5f * direction.getXOffset(), y, z + 0.5f * direction.getZOffset(),
-                Tessellator.getInstance().getBuffer());
-        TessellatorHelper.draw();
-    }
 
-    protected void renderItems(RollingMachineTile te, double x, double y, double z, float partialTicks) {
+    protected void renderShaft(RollingMachineTile te, MatrixStack ms, IRenderTypeBuffer buffer, int light,
+			int overlay) {
+		KineticTileEntityRenderer.renderRotatingBuffer(te, getRotatedModel(te), ms, buffer.getBuffer(RenderType.getSolid()), light);
+	}
+
+    private void renderItems(RollingMachineTile te, float partialTicks, MatrixStack ms, IRenderTypeBuffer buffer,
+			int light, int overlay) {
+    	
+    	
         if (!te.inventory.isEmpty()) {
             boolean alongZ = te.getBlockState().get(BlockStateProperties.FACING).getXOffset() == 0;
-            GlStateManager.pushMatrix();
+            ms.push();
 
             boolean moving = te.inventory.recipeDuration != 0;
             float offset = moving ? te.inventory.remainingTime / te.inventory.recipeDuration : 0;
@@ -64,18 +67,17 @@ public class RollingMachineTileEntityRenderer extends SafeTileEntityRenderer<Rol
 
             ItemStack stack = te.inventory.getStackInSlot(0);
             ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
-            IBakedModel modelWithOverrides = itemRenderer.getModelWithOverrides(stack);
-            boolean blockItem = modelWithOverrides.isGui3d();
+            IBakedModel modelWithOverrides = itemRenderer.getItemModelWithOverrides(stack, te.getWorld(), null);
+			boolean blockItem = modelWithOverrides.isGui3d();
 
-            GlStateManager.translated(x + (alongZ ? offset : .5), y + (blockItem ? .925f : 14f / 16f),
-                    z + (alongZ ? .5 : offset));
+            ms.translate(alongZ ? offset : .5, blockItem ? .925f : 13f / 16f, alongZ ? .5 : offset);
 
-            GlStateManager.scaled(.5, .5, .5);
+            ms.scale(.5f, .5f, .5f);
             if (alongZ)
-                GlStateManager.rotated(90, 0, 1, 0);
-            GlStateManager.rotated(90, 1, 0, 0);
-            itemRenderer.renderItem(stack, ItemCameraTransforms.TransformType.FIXED);
-            GlStateManager.popMatrix();
+				ms.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(90));
+			ms.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(90));
+            itemRenderer.renderItem(stack, ItemCameraTransforms.TransformType.FIXED, light, overlay, ms, buffer);
+            ms.pop();
         }
     }
 
@@ -91,4 +93,6 @@ public class RollingMachineTileEntityRenderer extends SafeTileEntityRenderer<Rol
         BlockState state = te.getBlockState();
         return AllBlocks.SHAFT.get().getDefaultState().with(AXIS, ((IRotate) state.getBlock()).getRotationAxis(state));
     }
+
+	
 }

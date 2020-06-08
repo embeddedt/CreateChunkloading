@@ -1,6 +1,11 @@
 package com.grimmauld.createintegration.blocks;
 
-import com.simibubi.create.modules.contraptions.base.KineticBlock;
+import static com.grimmauld.createintegration.tools.ModUtil.getFacingFromEntity;
+
+import javax.annotation.Nonnull;
+
+import com.simibubi.create.content.contraptions.base.KineticBlock;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
@@ -10,14 +15,11 @@ import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.util.Direction.Axis;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraftforge.common.ToolType;
-
-import javax.annotation.Nonnull;
-
-import static com.grimmauld.createintegration.tools.ModUtil.getFacingFromEntity;
 
 public class Dynamo extends KineticBlock {
     public Dynamo() {
@@ -65,4 +67,9 @@ public class Dynamo extends KineticBlock {
     public boolean hideStressImpact() {
         return true;
     }
+
+	@Override
+	public Axis getRotationAxis(BlockState state) {
+		return state.get(BlockStateProperties.AXIS);
+	}
 }

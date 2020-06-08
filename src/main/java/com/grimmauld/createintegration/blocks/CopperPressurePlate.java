@@ -15,6 +15,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 
 import javax.annotation.Nonnull;
 import java.util.LinkedList;
@@ -39,9 +40,10 @@ public class CopperPressurePlate extends WeightedPressurePlateBlock {
     public boolean ticksRandomly(@Nonnull BlockState state) {
         return super.ticksRandomly(state) || state.get(OXIDIZATION) < 7;
     }
+    
 
     @Override
-    public void randomTick(@Nonnull BlockState state, World worldIn, @Nonnull BlockPos pos, @Nonnull Random random) {
+    public void randomTick(@Nonnull BlockState state, ServerWorld worldIn, @Nonnull BlockPos pos, @Nonnull Random random) {
         if (worldIn.getRandom().nextFloat() <= 1 / 32f) {
             int currentState = state.get(OXIDIZATION);
             boolean canIncrease = false;

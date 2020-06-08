@@ -1,9 +1,18 @@
 package com.grimmauld.createintegration.blocks;
 
+import static com.grimmauld.createintegration.blocks.ModBlocks.MOTOR_TILE;
+
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Predicate;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.grimmauld.createintegration.Config;
 import com.grimmauld.createintegration.tools.CustomEnergyStorage;
 import com.grimmauld.createintegration.tools.ModUtil;
-import com.simibubi.create.modules.contraptions.base.GeneratingKineticTileEntity;
+import com.simibubi.create.content.contraptions.base.GeneratingKineticTileEntity;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -15,13 +24,6 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Predicate;
-
-import static com.grimmauld.createintegration.blocks.ModBlocks.MOTOR_TILE;
 
 public class MotorTile extends GeneratingKineticTileEntity {
 

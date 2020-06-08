@@ -34,7 +34,7 @@ archivesBaseName = 'createintegration'
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 
 minecraft {
-    mappings channel: 'snapshot', version: '20190719-1.14.3'
+    mappings channel: 'snapshot', version: '20200301-mixed-1.15.2'
     runs {
         client {
             workingDirectory project.file('run')
@@ -115,17 +115,12 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.14.4-28.2.11'
+    minecraft 'net.minecraftforge:forge:1.15.2-31.2.9'
 	
+  	implementation fg.deobf("mezz.jei:jei-1.15.2:6.0.0.4")
+	implementation fg.deobf("curse.maven:create:2974919")
 	
-    // compile against the JEI API but do not include it at runtime
- 	// compileOnly fg.deobf("mezz.jei:jei-1.14.4:6.0.0.26:api")
-  	// at runtime, use the full JEI jar
-  	// runtimeOnly fg.deobf("mezz.jei:jei-1.14.4:6.0.0.26")
-  	implementation fg.deobf("mezz.jei:jei-1.14.4:6.0.0.26")
-	implementation fg.deobf("curse.maven:create:2952509")
-	
-	def registrate = "com.tterrag.registrate:Registrate:MC1.14.4-0.0.3.40"
+	def registrate = "com.tterrag.registrate:Registrate:MC1.15.2-0.0.3.17"
     implementation fg.deobf(registrate)
     shade registrate
 	}
