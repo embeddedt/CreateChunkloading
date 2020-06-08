@@ -3,7 +3,6 @@ package com.grimmauld.createintegration.misc;
 import com.grimmauld.createintegration.CreateIntegration;
 import com.simibubi.create.content.contraptions.components.structureMovement.MovementBehaviour;
 import com.simibubi.create.content.contraptions.components.structureMovement.MovementContext;
-
 import net.minecraft.util.math.BlockPos;
 
 public class ChunkLoaderMovementBehaviour extends MovementBehaviour {

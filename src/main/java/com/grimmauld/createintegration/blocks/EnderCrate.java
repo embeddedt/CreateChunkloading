@@ -1,14 +1,9 @@
 package com.grimmauld.createintegration.blocks;
 
-import static com.grimmauld.createintegration.tools.ModUtil.getFacingFromEntity;
-
-import javax.annotation.Nonnull;
-
 import com.simibubi.create.content.contraptions.wrench.IWrenchable;
 import com.simibubi.create.content.contraptions.wrench.WrenchItem;
 import com.simibubi.create.content.logistics.block.inventories.CrateBlock;
 import com.simibubi.create.foundation.block.ITE;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -27,6 +22,10 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
+import javax.annotation.Nonnull;
+
+import static com.grimmauld.createintegration.tools.ModUtil.getFacingFromEntity;
+
 public class EnderCrate extends Block implements ITE<EnderCrateTile>, IWrenchable {
 
     public EnderCrate() {
@@ -43,12 +42,11 @@ public class EnderCrate extends Block implements ITE<EnderCrateTile>, IWrenchabl
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
         builder.add(BlockStateProperties.FACING, CrateBlock.DOUBLE);
     }
-    
-    
+
 
     @Override
     public ActionResultType onUse(@Nonnull BlockState state, World world, @Nonnull BlockPos pos, @Nonnull PlayerEntity player, @Nonnull Hand hand,
-                                    @Nonnull BlockRayTraceResult result) {
+                                  @Nonnull BlockRayTraceResult result) {
         if (!(world.isRemote || player.getHeldItemOffhand().getItem().getClass() == WrenchItem.class || player.getHeldItemMainhand().getItem().getClass() == WrenchItem.class)) {
             TileEntity tileEntity = world.getTileEntity(pos);
             if (tileEntity instanceof INamedContainerProvider) {

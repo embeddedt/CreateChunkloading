@@ -1,12 +1,9 @@
 package com.grimmauld.createintegration.blocks;
 
-import javax.annotation.Nonnull;
-
 import com.grimmauld.createintegration.CreateIntegration;
 import com.grimmauld.createintegration.misc.ChunkLoaderMovementBehaviour;
 import com.simibubi.create.content.contraptions.components.structureMovement.IPortableBlock;
 import com.simibubi.create.content.contraptions.components.structureMovement.MovementBehaviour;
-
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.GlassBlock;
@@ -16,12 +13,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
+
 public class ChunkLoader extends GlassBlock implements IPortableBlock {
     public static MovementBehaviour MOVEMENT = new ChunkLoaderMovementBehaviour();
 
 
     public ChunkLoader() {
-        super(Properties.from(Blocks.ANDESITE));
+        super(Properties.from(Blocks.BEACON));
         setRegistryName("chunk_loader");
     }
 
@@ -62,5 +61,4 @@ public class ChunkLoader extends GlassBlock implements IPortableBlock {
     public TileEntity createTileEntity(BlockState state, IBlockReader world) {
         return new ChunkLoaderTile();
     }
-
 }

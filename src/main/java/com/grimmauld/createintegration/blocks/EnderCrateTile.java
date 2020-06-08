@@ -1,21 +1,12 @@
 package com.grimmauld.createintegration.blocks;
 
-import java.util.List;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import com.grimmauld.createintegration.CreateIntegration;
 import com.grimmauld.createintegration.tools.Lang;
 import com.simibubi.create.AllTileEntities;
-import com.simibubi.create.content.logistics.block.inventories.AdjustableCrateTileEntity;
-import com.simibubi.create.content.logistics.block.inventories.CrateBlock;
-import com.simibubi.create.content.logistics.block.inventories.CrateTileEntity;
 import com.simibubi.create.foundation.tileEntity.SmartTileEntity;
 import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
 import com.simibubi.create.foundation.tileEntity.behaviour.CenteredSideValueBoxTransform;
 import com.simibubi.create.foundation.tileEntity.behaviour.scrollvalue.ScrollValueBehaviour;
-
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
@@ -31,6 +22,10 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.List;
 
 
 public class EnderCrateTile extends SmartTileEntity implements INamedContainerProvider {
@@ -115,22 +110,13 @@ public class EnderCrateTile extends SmartTileEntity implements INamedContainerPr
         updateItemHandler();
     }
 
-    @Nonnull
-    @Override
-    public TileEntityType<?> getType() {
-        if (Thread.currentThread().getStackTrace()[2].toString().contains("com.simibubi.create.content.contraptions.components.structureMovement.MountedStorage")) {  // FIXME: use StackTraceElement API (https://docs.oracle.com/javase/7/docs/api/java/lang/StackTraceElement.html)
-        	return super.getType();  // hack!
-        } else {
-            return super.getType();
-        }
-    }
-
     @Nullable
     @Override
     public Container createMenu(int id, @Nonnull PlayerInventory playerInventory, @Nonnull PlayerEntity player) {
         assert world != null;
         return new EnderContainer(id, world, pos, playerInventory);
     }
+
 
     @Nonnull
     @Override
@@ -146,4 +132,13 @@ public class EnderCrateTile extends SmartTileEntity implements INamedContainerPr
         return new ItemStackHandler(9);
     }
 
+    @Nonnull
+    @Override
+    public TileEntityType<?> getType() {
+        if (Thread.currentThread().getStackTrace()[2].toString().contains("com.simibubi.create.repack.registrate.util.entry.TileEntityEntry.is")) {  // FIXME: use StackTraceElement API (https://docs.oracle.com/javase/7/docs/api/java/lang/StackTraceElement.html)
+            return AllTileEntities.ADJUSTABLE_CRATE.get();  // hack!
+        } else {
+            return super.getType();
+        }
+    }
 }

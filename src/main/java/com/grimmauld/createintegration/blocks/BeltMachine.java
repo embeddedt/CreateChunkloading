@@ -1,14 +1,9 @@
 package com.grimmauld.createintegration.blocks;
 
-import static com.grimmauld.createintegration.tools.ModUtil.getFacingFromEntity;
-
-import javax.annotation.Nonnull;
-
 import com.simibubi.create.content.contraptions.base.DirectionalAxisKineticBlock;
 import com.simibubi.create.foundation.block.ITE;
-
 import net.minecraft.block.Block;
-import net.minecraft.block.Block.Properties;
+import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.material.PushReaction;
@@ -23,11 +18,15 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 
+import javax.annotation.Nonnull;
+
+import static com.grimmauld.createintegration.tools.ModUtil.getFacingFromEntity;
+
 public abstract class BeltMachine extends DirectionalAxisKineticBlock implements ITE<BeltMachineTile> {
     public static final BooleanProperty RUNNING = BooleanProperty.create("running");
 
     public BeltMachine(String registryName) {
-        super(Properties.from(Blocks.ANDESITE));
+        super(Properties.from(Blocks.ANDESITE).nonOpaque());
         setRegistryName(registryName);
         setDefaultState(getDefaultState().with(RUNNING, false));
     }
@@ -77,4 +76,13 @@ public abstract class BeltMachine extends DirectionalAxisKineticBlock implements
         return state.get(BlockStateProperties.FACING).getAxis();
     }
 
+    @Override
+    public boolean isNormalCube(@Nonnull BlockState state, @Nonnull IBlockReader reader, @Nonnull BlockPos pos) {
+        return false;
+    }
+
+    @Override
+    public BlockRenderType getRenderType(BlockState p_149645_1_) {
+        return BlockRenderType.MODEL;
+    }
 }

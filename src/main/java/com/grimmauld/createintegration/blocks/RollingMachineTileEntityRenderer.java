@@ -1,8 +1,5 @@
 package com.grimmauld.createintegration.blocks;
 
-import static net.minecraft.state.properties.BlockStateProperties.AXIS;
-import static net.minecraft.state.properties.BlockStateProperties.FACING;
-
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.simibubi.create.AllBlockPartials;
 import com.simibubi.create.AllBlocks;
@@ -12,7 +9,6 @@ import com.simibubi.create.content.contraptions.base.KineticTileEntity;
 import com.simibubi.create.content.contraptions.base.KineticTileEntityRenderer;
 import com.simibubi.create.foundation.tileEntity.renderer.SafeTileEntityRenderer;
 import com.simibubi.create.foundation.utility.SuperByteBuffer;
-
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -27,30 +23,32 @@ import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.MathHelper;
 
+import static net.minecraft.state.properties.BlockStateProperties.AXIS;
+import static net.minecraft.state.properties.BlockStateProperties.FACING;
+
 public class RollingMachineTileEntityRenderer extends SafeTileEntityRenderer<RollingMachineTile> {
 
     public RollingMachineTileEntityRenderer(TileEntityRendererDispatcher dispatcher) {
-		super(dispatcher);
-	}
+        super(dispatcher);
+    }
 
-	@Override
-	protected void renderSafe(RollingMachineTile te, float partialTicks, MatrixStack ms, IRenderTypeBuffer buffer, int light,
-			int overlay) {
-    	renderItems(te, partialTicks, ms, buffer, light, overlay);
-    	renderShaft(te, ms, buffer, light, overlay);
-	}
-
+    @Override
+    protected void renderSafe(RollingMachineTile te, float partialTicks, MatrixStack ms, IRenderTypeBuffer buffer, int light,
+                              int overlay) {
+        renderItems(te, partialTicks, ms, buffer, light, overlay);
+        renderShaft(te, ms, buffer, light, overlay);
+    }
 
 
     protected void renderShaft(RollingMachineTile te, MatrixStack ms, IRenderTypeBuffer buffer, int light,
-			int overlay) {
-		KineticTileEntityRenderer.renderRotatingBuffer(te, getRotatedModel(te), ms, buffer.getBuffer(RenderType.getSolid()), light);
-	}
+                               int overlay) {
+        KineticTileEntityRenderer.renderRotatingBuffer(te, getRotatedModel(te), ms, buffer.getBuffer(RenderType.getSolid()), light);
+    }
 
     private void renderItems(RollingMachineTile te, float partialTicks, MatrixStack ms, IRenderTypeBuffer buffer,
-			int light, int overlay) {
-    	
-    	
+                             int light, int overlay) {
+
+
         if (!te.inventory.isEmpty()) {
             boolean alongZ = te.getBlockState().get(BlockStateProperties.FACING).getXOffset() == 0;
             ms.push();
@@ -68,14 +66,14 @@ public class RollingMachineTileEntityRenderer extends SafeTileEntityRenderer<Rol
             ItemStack stack = te.inventory.getStackInSlot(0);
             ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
             IBakedModel modelWithOverrides = itemRenderer.getItemModelWithOverrides(stack, te.getWorld(), null);
-			boolean blockItem = modelWithOverrides.isGui3d();
+            boolean blockItem = modelWithOverrides.isGui3d();
 
             ms.translate(alongZ ? offset : .5, blockItem ? .925f : 13f / 16f, alongZ ? .5 : offset);
 
             ms.scale(.5f, .5f, .5f);
             if (alongZ)
-				ms.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(90));
-			ms.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(90));
+                ms.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(90));
+            ms.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(90));
             itemRenderer.renderItem(stack, ItemCameraTransforms.TransformType.FIXED, light, overlay, ms, buffer);
             ms.pop();
         }
@@ -94,5 +92,5 @@ public class RollingMachineTileEntityRenderer extends SafeTileEntityRenderer<Rol
         return AllBlocks.SHAFT.get().getDefaultState().with(AXIS, ((IRotate) state.getBlock()).getRotationAxis(state));
     }
 
-	
+
 }

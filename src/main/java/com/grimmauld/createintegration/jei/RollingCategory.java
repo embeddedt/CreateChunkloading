@@ -1,16 +1,10 @@
 package com.grimmauld.createintegration.jei;
 
-import java.util.Arrays;
-import java.util.List;
-
-import javax.annotation.Nonnull;
-
 import com.grimmauld.createintegration.CreateIntegration;
 import com.grimmauld.createintegration.blocks.AnimatedRoller;
 import com.grimmauld.createintegration.blocks.ModBlocks;
 import com.grimmauld.createintegration.recipes.RollingRecipe;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
-
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -21,6 +15,10 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import mezz.jei.util.Translator;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+
+import javax.annotation.Nonnull;
+import java.util.Arrays;
+import java.util.List;
 
 public class RollingCategory implements IRecipeCategory<RollingRecipe> {
     public static ResourceLocation ID = new ResourceLocation(CreateIntegration.modid, "rolling");
@@ -89,11 +87,11 @@ public class RollingCategory implements IRecipeCategory<RollingRecipe> {
 
     @Override
     public void draw(@Nonnull RollingRecipe recipe, double mouseX, double mouseY) {
-    	AllGuiTextures.JEI_SLOT.draw(26, 8);
-    	AllGuiTextures.JEI_SLOT.draw(131, 8);
+        AllGuiTextures.JEI_SLOT.draw(26, 8);
+        AllGuiTextures.JEI_SLOT.draw(131, 8);
 
-    	AllGuiTextures.JEI_SHADOW.draw(59, 45);
-    	AllGuiTextures.JEI_LONG_ARROW.draw(52, 12);
+        AllGuiTextures.JEI_SHADOW.draw(59, 45);
+        AllGuiTextures.JEI_LONG_ARROW.draw(52, 12);
 
         roller.draw(72, 25);
     }

@@ -6,12 +6,12 @@ import com.grimmauld.createintegration.misc.EnderList;
 import com.grimmauld.createintegration.misc.IChunkLoaderList;
 import com.grimmauld.createintegration.recipes.RecipeTypeRolling;
 import com.grimmauld.createintegration.recipes.RollingRecipe;
-import com.grimmauld.createintegration.setup.ClientProxy;
-import com.grimmauld.createintegration.setup.IProxy;
 import com.grimmauld.createintegration.setup.ModSetup;
-import com.grimmauld.createintegration.setup.ServerProxy;
-
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ScreenManager;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -41,7 +41,6 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.RegistryEvent.Register;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
@@ -56,15 +55,14 @@ import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
 import java.util.Map;
-import java.util.function.Function;
 
 @Mod(CreateIntegration.modid)
 public class CreateIntegration {
     public static final String modid = "createintegration";
+    @SuppressWarnings("unused")
     public static final String version = "0.1.6b";
     public static final Logger logger = LogManager.getLogger(modid);
     public static final IRecipeType<RollingRecipe> ROLLING_RECIPE = new RecipeTypeRolling();
-    public static IProxy proxy = DistExecutor.runForDist(() -> () -> new ClientProxy(), () -> () -> new ServerProxy());
     public static ModSetup setup = new ModSetup();
     public static CreateIntegration instance;
     @CapabilityInject(IChunkLoaderList.class)
@@ -101,12 +99,15 @@ public class CreateIntegration {
     }
 
     public static void clientInit(FMLClientSetupEvent event) {
+        ScreenManager.registerFactory(ModBlocks.ENDER_CONTAINER, EnderGui::new);
+        RenderTypeLookup.setRenderLayer(ModBlocks.CHUNK_LOADER, RenderType.getTranslucent());
+        // RenderTypeLookup.setRenderLayer(ModBlocks.ROLLING_MACHINE, RenderType.getCutout());  // FIXME
         registerRenderers();
     }
 
     @OnlyIn(Dist.CLIENT)
     public static void registerRenderers() {
-    	ClientRegistry.bindTileEntityRenderer(ModBlocks.ROLLING_MACHINE_TILE, RollingMachineTileEntityRenderer::new);
+        ClientRegistry.bindTileEntityRenderer(ModBlocks.ROLLING_MACHINE_TILE, RollingMachineTileEntityRenderer::new);
     }
 
 
@@ -138,7 +139,6 @@ public class CreateIntegration {
             @Override
             public void deserializeNBT(INBT nbt) {
                 loaderInst.ifPresent(h -> CHUNK_LOADING_CAPABILITY.readNBT(h, null, nbt));
-                // CHUNK_LOADING_CAPABILITY.readNBT(inst.orElse(null), null, nbt);
             }
         };
 
@@ -151,14 +151,12 @@ public class CreateIntegration {
 
             @Override
             public INBT serializeNBT() {
-                // enderInst.ifPresent(h -> ENDER_CRATE_CAPABILITY.writeNBT(h, null));
                 return ENDER_CRATE_CAPABILITY.writeNBT(enderInst.orElse(null), null);
             }
 
             @Override
             public void deserializeNBT(INBT nbt) {
                 enderInst.ifPresent(h -> ENDER_CRATE_CAPABILITY.readNBT(h, null, nbt));
-                // ENDER_CRATE_CAPABILITY.readNBT(enderInst.orElse(null), null, nbt);
             }
         };
 
@@ -170,7 +168,6 @@ public class CreateIntegration {
 
     private void setup(final FMLCommonSetupEvent event) {
         setup.init();
-        proxy.init();
 
         CapabilityManager.INSTANCE.register(IChunkLoaderList.class, new ChunkLoaderList.Storage(), () -> new ChunkLoaderList(null));
         CapabilityManager.INSTANCE.register(EnderList.class, new EnderList.Storage(), EnderList::new);
@@ -212,6 +209,8 @@ public class CreateIntegration {
         @SubscribeEvent
         @SuppressWarnings("unused")
         public static void registerBlocks(final RegistryEvent.Register<Block> event) {
+
+
             logger.info("blocks registering");
             event.getRegistry().register(new Dynamo());
             event.getRegistry().register(new Motor());
@@ -241,10 +240,11 @@ public class CreateIntegration {
 
         @SubscribeEvent
         @SuppressWarnings("unused")
+        @OnlyIn(Dist.CLIENT)
         public static void onContainerRegistry(final RegistryEvent.Register<ContainerType<?>> event) {
             event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
                 BlockPos pos = data.readBlockPos();
-                return new EnderContainer(windowId, CreateIntegration.proxy.getClientWorld(), pos, inv);
+                return new EnderContainer(windowId, Minecraft.getInstance().world, pos, inv);
             }).setRegistryName("ender_crate"));
         }
     }

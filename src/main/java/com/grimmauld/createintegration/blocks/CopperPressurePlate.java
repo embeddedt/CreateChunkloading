@@ -40,7 +40,7 @@ public class CopperPressurePlate extends WeightedPressurePlateBlock {
     public boolean ticksRandomly(@Nonnull BlockState state) {
         return super.ticksRandomly(state) || state.get(OXIDIZATION) < 7;
     }
-    
+
 
     @Override
     public void randomTick(@Nonnull BlockState state, ServerWorld worldIn, @Nonnull BlockPos pos, @Nonnull Random random) {

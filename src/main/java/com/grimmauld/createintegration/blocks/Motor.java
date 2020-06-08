@@ -1,11 +1,6 @@
 package com.grimmauld.createintegration.blocks;
 
-import static com.grimmauld.createintegration.tools.ModUtil.getFacingFromEntity;
-
-import javax.annotation.Nonnull;
-
 import com.simibubi.create.content.contraptions.base.KineticBlock;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
@@ -20,6 +15,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraftforge.common.ToolType;
+
+import javax.annotation.Nonnull;
+
+import static com.grimmauld.createintegration.tools.ModUtil.getFacingFromEntity;
 
 public class Motor extends KineticBlock {
 
@@ -64,9 +63,9 @@ public class Motor extends KineticBlock {
         return face == state.get(BlockStateProperties.FACING);
     }
 
-	@Override
-	public Axis getRotationAxis(BlockState state) {
-		return state.get(BlockStateProperties.AXIS);
-	}
+    @Override
+    public Axis getRotationAxis(BlockState state) {
+        return state.get(BlockStateProperties.AXIS);
+    }
 
 }
