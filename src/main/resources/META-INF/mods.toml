@@ -25,6 +25,6 @@ description='''This mod adds an interface to convert mechanical energy provided 
 [[dependencies.createintegration]]
     modId="create"
     mandatory=true
-    versionRange="[mc1.15.2_v0.2.4,mc1.15.2_v0.2.4a]" #keep updated
+    versionRange="[mc1.15.2_v0.2.4,mc1.15.2_v0.2.4a,mc1.15.2_v0.2.4a+custom]" #keep updated
     ordering="NONE"
     side="BOTH"

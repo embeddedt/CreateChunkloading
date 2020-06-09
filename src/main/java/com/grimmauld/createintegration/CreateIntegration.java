@@ -251,10 +251,6 @@ public class CreateIntegration {
         @SuppressWarnings("unused")
         @OnlyIn(Dist.CLIENT)
         public static void onContainerRegistry(final RegistryEvent.Register<ContainerType<?>> event) {
-            if(Minecraft.getInstance().world == null){
-                logger.warn("Can not load Containers: World is null");
-                return;
-            }
             event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
                 BlockPos pos = data.readBlockPos();
                 return new EnderContainer(windowId, Minecraft.getInstance().world, pos, inv);
