@@ -68,7 +68,7 @@ public abstract class BeltMachine extends DirectionalAxisKineticBlock implements
 
     @Override
     public BlockState getStateForPlacement(@Nonnull BlockItemUseContext context) {
-        return this.getDefaultState().with(BlockStateProperties.FACING, getFacingFromEntity(context.getPos(), context.getPlayer()));
+        return this.getDefaultState().with(BlockStateProperties.FACING, getFacingFromEntity(context.getPos(), context.getPlayer(), true));
     }
 
     @Override

@@ -1,6 +1,8 @@
 package com.grimmauld.createintegration.misc;
 
 import com.grimmauld.createintegration.Config;
+import com.grimmauld.createintegration.CreateIntegration;
+
 import net.minecraft.command.CommandSource;
 import net.minecraft.nbt.INBT;
 import net.minecraft.nbt.LongArrayNBT;
@@ -19,6 +21,7 @@ public class ChunkLoaderList implements IChunkLoaderList {
     @Nullable
     private final ServerWorld world;
     public HashMap<BlockPos, Integer> chunkLoaders;
+    private boolean enabled = false;
 
     public ChunkLoaderList(@Nullable ServerWorld world) {
         this.world = world;
@@ -40,7 +43,7 @@ public class ChunkLoaderList implements IChunkLoaderList {
 
     @Override
     public void tickDown() {
-        if (!chunkLoaders.isEmpty()) {
+        if (!chunkLoaders.isEmpty() && enabled) {
             for (BlockPos pos : chunkLoaders.keySet()) {
                 if (chunkLoaders.get(pos) > -1) {  // prevent overflows
                     chunkLoaders.put(pos, chunkLoaders.get(pos) - 1);
@@ -82,6 +85,19 @@ public class ChunkLoaderList implements IChunkLoaderList {
         chunkLoaders.put(pos, 0);
         update();
     }
+    
+    public void addSilent(BlockPos pos) {
+    	chunkLoaders.put(pos, 5);
+	}
+    
+    @Override
+    public void start() {
+    	for(BlockPos pos: chunkLoaders.keySet()) {
+    		chunkLoaders.put(pos, 5);
+    		force(pos);
+    	}
+    	enabled = true;
+	}
 
     private void update() {
         try {
@@ -132,10 +148,11 @@ public class ChunkLoaderList implements IChunkLoaderList {
             ChunkLoaderList list = (ChunkLoaderList) instance;
             try {
                 for (long l : ((LongArrayNBT) nbt).getAsLongArray()) {
-                    list.add(BlockPos.fromLong(l));
+                    list.addSilent(BlockPos.fromLong(l));
                 }
             } finally {
-                list.update();
+            	CreateIntegration.logger.debug("Loaded Chunk Loader positions.");
+                // list.update();
             }
         }
     }

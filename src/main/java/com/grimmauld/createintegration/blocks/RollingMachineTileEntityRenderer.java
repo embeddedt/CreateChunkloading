@@ -42,7 +42,8 @@ public class RollingMachineTileEntityRenderer extends SafeTileEntityRenderer<Rol
 
     protected void renderShaft(RollingMachineTile te, MatrixStack ms, IRenderTypeBuffer buffer, int light,
                                int overlay) {
-        KineticTileEntityRenderer.renderRotatingBuffer(te, getRotatedModel(te), ms, buffer.getBuffer(RenderType.getSolid()), light);
+        KineticTileEntityRenderer.renderRotatingBuffer(te, getRotatedModel(te, Rotation.CLOCKWISE_180), ms, buffer.getBuffer(RenderType.getSolid()), light);
+        KineticTileEntityRenderer.renderRotatingBuffer(te, getRotatedModel(te, Rotation.NONE), ms, buffer.getBuffer(RenderType.getSolid()), light);
     }
 
     private void renderItems(RollingMachineTile te, float partialTicks, MatrixStack ms, IRenderTypeBuffer buffer,
@@ -79,12 +80,9 @@ public class RollingMachineTileEntityRenderer extends SafeTileEntityRenderer<Rol
         }
     }
 
-    protected SuperByteBuffer getRotatedModel(KineticTileEntity te) {
+    protected SuperByteBuffer getRotatedModel(KineticTileEntity te, Rotation rot) {
         BlockState state = te.getBlockState();
-        if (state.get(FACING).getAxis().isHorizontal())
-            return AllBlockPartials.SHAFT_HALF.renderOnDirectional(state.rotate(Rotation.CLOCKWISE_180));
-        return CreateClient.bufferCache.renderBlockIn(KineticTileEntityRenderer.KINETIC_TILE,
-                getRenderedBlockState(te));
+        return AllBlockPartials.SHAFT_HALF.renderOnDirectional(state.rotate(rot));
     }
 
     protected BlockState getRenderedBlockState(KineticTileEntity te) {

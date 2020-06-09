@@ -48,6 +48,7 @@ import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
 import org.apache.logging.log4j.LogManager;
@@ -87,7 +88,6 @@ public class CreateIntegration {
         Config.loadConfig(Config.COMMON_CONFIG, FMLPaths.CONFIGDIR.get().resolve("createintegration-common.toml"));
 
         MinecraftForge.EVENT_BUS.register(this);
-        // MinecraftForge.EVENT_BUS.addListener(this::onTick);
 
         FMLJavaModLoadingContext.get().getModEventBus().addListener(CreateIntegration::clientInit);
     }
@@ -101,7 +101,7 @@ public class CreateIntegration {
     public static void clientInit(FMLClientSetupEvent event) {
         ScreenManager.registerFactory(ModBlocks.ENDER_CONTAINER, EnderGui::new);
         RenderTypeLookup.setRenderLayer(ModBlocks.CHUNK_LOADER, RenderType.getTranslucent());
-        // RenderTypeLookup.setRenderLayer(ModBlocks.ROLLING_MACHINE, RenderType.getCutout());  // FIXME
+        RenderTypeLookup.setRenderLayer(ModBlocks.ROLLING_MACHINE, RenderType.getCutoutMipped());  // FIXME
         registerRenderers();
     }
 
@@ -186,6 +186,14 @@ public class CreateIntegration {
             event.world.getCapability(CreateIntegration.CHUNK_LOADING_CAPABILITY, null).ifPresent(IChunkLoaderList::tickDown);
         }
     }
+    
+    @SubscribeEvent
+    public void onServerStarted(FMLServerStartedEvent event) {
+    	System.out.println("Server up");
+    	event.getServer().getWorlds().forEach(world -> world.getCapability(CreateIntegration.CHUNK_LOADING_CAPABILITY, null).ifPresent(IChunkLoaderList::start));
+    	
+    }
+    
 
     @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class RegistryEvents {

@@ -12,4 +12,6 @@ public interface IChunkLoaderList {
     void resetForBlock(BlockPos pos);
 
     void tickDown();
+    
+    void start();
 }
