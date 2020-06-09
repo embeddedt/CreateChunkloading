@@ -4,9 +4,9 @@ import com.grimmauld.createintegration.CreateIntegration;
 import com.grimmauld.createintegration.misc.ChunkLoaderMovementBehaviour;
 import com.simibubi.create.content.contraptions.components.structureMovement.IPortableBlock;
 import com.simibubi.create.content.contraptions.components.structureMovement.MovementBehaviour;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.GlassBlock;
 import net.minecraft.block.material.PushReaction;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
 
-public class ChunkLoader extends GlassBlock implements IPortableBlock {
+public class ChunkLoader extends Block implements IPortableBlock {
     public static MovementBehaviour MOVEMENT = new ChunkLoaderMovementBehaviour();
 
 

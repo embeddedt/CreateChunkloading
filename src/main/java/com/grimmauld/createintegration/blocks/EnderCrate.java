@@ -44,6 +44,7 @@ public class EnderCrate extends Block implements ITE<EnderCrateTile>, IWrenchabl
     }
 
 
+    @Nonnull
     @Override
     public ActionResultType onUse(@Nonnull BlockState state, World world, @Nonnull BlockPos pos, @Nonnull PlayerEntity player, @Nonnull Hand hand,
                                   @Nonnull BlockRayTraceResult result) {

@@ -186,14 +186,15 @@ public class CreateIntegration {
             event.world.getCapability(CreateIntegration.CHUNK_LOADING_CAPABILITY, null).ifPresent(IChunkLoaderList::tickDown);
         }
     }
-    
+
     @SubscribeEvent
+    @SuppressWarnings("unused")
     public void onServerStarted(FMLServerStartedEvent event) {
-    	System.out.println("Server up");
-    	event.getServer().getWorlds().forEach(world -> world.getCapability(CreateIntegration.CHUNK_LOADING_CAPABILITY, null).ifPresent(IChunkLoaderList::start));
-    	
+        System.out.println("Server up");
+        event.getServer().getWorlds().forEach(world -> world.getCapability(CreateIntegration.CHUNK_LOADING_CAPABILITY, null).ifPresent(IChunkLoaderList::start));
+
     }
-    
+
 
     @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class RegistryEvents {
@@ -250,6 +251,10 @@ public class CreateIntegration {
         @SuppressWarnings("unused")
         @OnlyIn(Dist.CLIENT)
         public static void onContainerRegistry(final RegistryEvent.Register<ContainerType<?>> event) {
+            if(Minecraft.getInstance().world == null){
+                logger.warn("Can not load Containers: World is null");
+                return;
+            }
             event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> {
                 BlockPos pos = data.readBlockPos();
                 return new EnderContainer(windowId, Minecraft.getInstance().world, pos, inv);

@@ -1,5 +1,6 @@
 package com.grimmauld.createintegration.misc;
 
+import com.grimmauld.createintegration.CreateIntegration;
 import com.grimmauld.createintegration.tools.ModUtil;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
@@ -56,8 +57,8 @@ public class EnderList implements IEnderList {
             for (String id : tag.keySet()) {
                 try {
                     instance.getOrCreate(Integer.parseInt(id)).ifPresent(h -> ModUtil.safeNBTCast(h).deserializeNBT(tag.getCompound(id)));
-                } catch (NumberFormatException e) {
-                    // fixme: Add invalid NBT handling here!
+                } finally {
+                    CreateIntegration.logger.debug("Loaded Ender Crate contents.");
                 }
             }
         }

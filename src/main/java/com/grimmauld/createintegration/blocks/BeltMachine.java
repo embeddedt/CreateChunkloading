@@ -81,8 +81,9 @@ public abstract class BeltMachine extends DirectionalAxisKineticBlock implements
         return false;
     }
 
+    @Nonnull
     @Override
-    public BlockRenderType getRenderType(BlockState p_149645_1_) {
+    public BlockRenderType getRenderType(@Nonnull BlockState p_149645_1_) {
         return BlockRenderType.MODEL;
     }
 }

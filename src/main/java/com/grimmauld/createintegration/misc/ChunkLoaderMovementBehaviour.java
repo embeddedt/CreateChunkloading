@@ -9,7 +9,6 @@ public class ChunkLoaderMovementBehaviour extends MovementBehaviour {
     private BlockPos pos;
     private int resetTicking;
 
-
     @Override
     public void visitNewPosition(MovementContext context, BlockPos pos) {
         if (context.world.isRemote)
@@ -29,6 +28,4 @@ public class ChunkLoaderMovementBehaviour extends MovementBehaviour {
             context.world.getCapability(CreateIntegration.CHUNK_LOADING_CAPABILITY, null).ifPresent(cap -> cap.resetForBlock(pos));
         }
     }
-
-
 }

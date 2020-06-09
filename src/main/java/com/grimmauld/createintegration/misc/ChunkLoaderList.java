@@ -2,7 +2,6 @@ package com.grimmauld.createintegration.misc;
 
 import com.grimmauld.createintegration.Config;
 import com.grimmauld.createintegration.CreateIntegration;
-
 import net.minecraft.command.CommandSource;
 import net.minecraft.nbt.INBT;
 import net.minecraft.nbt.LongArrayNBT;
@@ -85,19 +84,19 @@ public class ChunkLoaderList implements IChunkLoaderList {
         chunkLoaders.put(pos, 0);
         update();
     }
-    
+
     public void addSilent(BlockPos pos) {
-    	chunkLoaders.put(pos, 5);
-	}
-    
+        chunkLoaders.put(pos, 5);
+    }
+
     @Override
     public void start() {
-    	for(BlockPos pos: chunkLoaders.keySet()) {
-    		chunkLoaders.put(pos, 5);
-    		force(pos);
-    	}
-    	enabled = true;
-	}
+        for (BlockPos pos : chunkLoaders.keySet()) {
+            chunkLoaders.put(pos, 5);
+            force(pos);
+        }
+        enabled = true;
+    }
 
     private void update() {
         try {
@@ -151,8 +150,7 @@ public class ChunkLoaderList implements IChunkLoaderList {
                     list.addSilent(BlockPos.fromLong(l));
                 }
             } finally {
-            	CreateIntegration.logger.debug("Loaded Chunk Loader positions.");
-                // list.update();
+                CreateIntegration.logger.debug("Loaded Chunk Loader positions.");
             }
         }
     }

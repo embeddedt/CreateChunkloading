@@ -2,9 +2,6 @@ package com.grimmauld.createintegration.blocks;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.simibubi.create.AllBlockPartials;
-import com.simibubi.create.AllBlocks;
-import com.simibubi.create.CreateClient;
-import com.simibubi.create.content.contraptions.base.IRotate;
 import com.simibubi.create.content.contraptions.base.KineticTileEntity;
 import com.simibubi.create.content.contraptions.base.KineticTileEntityRenderer;
 import com.simibubi.create.foundation.tileEntity.renderer.SafeTileEntityRenderer;
@@ -23,9 +20,6 @@ import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.MathHelper;
 
-import static net.minecraft.state.properties.BlockStateProperties.AXIS;
-import static net.minecraft.state.properties.BlockStateProperties.FACING;
-
 public class RollingMachineTileEntityRenderer extends SafeTileEntityRenderer<RollingMachineTile> {
 
     public RollingMachineTileEntityRenderer(TileEntityRendererDispatcher dispatcher) {
@@ -36,12 +30,11 @@ public class RollingMachineTileEntityRenderer extends SafeTileEntityRenderer<Rol
     protected void renderSafe(RollingMachineTile te, float partialTicks, MatrixStack ms, IRenderTypeBuffer buffer, int light,
                               int overlay) {
         renderItems(te, partialTicks, ms, buffer, light, overlay);
-        renderShaft(te, ms, buffer, light, overlay);
+        renderShaft(te, ms, buffer, light);
     }
 
 
-    protected void renderShaft(RollingMachineTile te, MatrixStack ms, IRenderTypeBuffer buffer, int light,
-                               int overlay) {
+    protected void renderShaft(RollingMachineTile te, MatrixStack ms, IRenderTypeBuffer buffer, int light) {
         KineticTileEntityRenderer.renderRotatingBuffer(te, getRotatedModel(te, Rotation.CLOCKWISE_180), ms, buffer.getBuffer(RenderType.getSolid()), light);
         KineticTileEntityRenderer.renderRotatingBuffer(te, getRotatedModel(te, Rotation.NONE), ms, buffer.getBuffer(RenderType.getSolid()), light);
     }
@@ -84,11 +77,4 @@ public class RollingMachineTileEntityRenderer extends SafeTileEntityRenderer<Rol
         BlockState state = te.getBlockState();
         return AllBlockPartials.SHAFT_HALF.renderOnDirectional(state.rotate(rot));
     }
-
-    protected BlockState getRenderedBlockState(KineticTileEntity te) {
-        BlockState state = te.getBlockState();
-        return AllBlocks.SHAFT.get().getDefaultState().with(AXIS, ((IRotate) state.getBlock()).getRotationAxis(state));
-    }
-
-
 }

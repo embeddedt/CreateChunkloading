@@ -1,5 +1,6 @@
 package com.grimmauld.createintegration.recipes;
 
+import com.grimmauld.createintegration.CreateIntegration;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -8,7 +9,6 @@ import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -28,30 +28,17 @@ public abstract class BeltMachineRecipe implements IRecipe<IInventory> {
         this.input = input;
         this.output = output;
         this.processingDuration = processingTime;
-
-
-        // This output is not required, but it can be used to detect when a recipe has
-        // been
-        // loaded into the game.
-        System.out.println("Loaded " + this.toString());
+        CreateIntegration.logger.debug("Loaded " + this.toString());
     }
-
 
     @Override
     public boolean matches(IInventory inv, @Nonnull World worldIn) {
-
-        // This method is ignored by our custom recipe system, and only has partial
-        // functionality. isValid is used instead.
         return this.input.test(inv.getStackInSlot(0));
     }
 
     @Nonnull
     @Override
     public ItemStack getCraftingResult(@Nonnull IInventory inv) {
-
-        // This method is ignored by our custom recipe system. getRecipeOutput().copy()
-        // is used
-        // instead.
         return this.output.copy();
     }
 
@@ -65,22 +52,20 @@ public abstract class BeltMachineRecipe implements IRecipe<IInventory> {
         return this.input;
     }
 
-
     @Nonnull
     @Override
     public ResourceLocation getId() {
-
         return this.id;
     }
 
-
+    @Nonnull
     @Override
     public abstract IRecipeSerializer<?> getSerializer();
 
 
+    @Nonnull
     @Override
     public abstract IRecipeType<?> getType();
-
 
     public boolean isValid(ItemStack input) {
         return this.input.test(input);
@@ -103,9 +88,5 @@ public abstract class BeltMachineRecipe implements IRecipe<IInventory> {
 
     public List<ItemStack> getPossibleOutputs() {
         return getRollableResults();
-    }
-
-    abstract static class Serializer extends ForgeRegistryEntry<IRecipeSerializer<?>>
-            implements IRecipeSerializer<BeltMachineRecipe> {
     }
 }
