@@ -1,6 +1,7 @@
 package com.grimmauld.createintegration.blocks;
 
-import com.simibubi.create.content.contraptions.base.KineticBlock;
+import com.grimmauld.createintegration.Config;
+import com.simibubi.create.content.contraptions.base.DirectionalKineticBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
@@ -16,11 +17,9 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraftforge.common.ToolType;
 
-import javax.annotation.Nonnull;
-
 import static com.grimmauld.createintegration.tools.ModUtil.getFacingFromEntity;
 
-public class Dynamo extends KineticBlock {
+public class Dynamo extends DirectionalKineticBlock {
     public Dynamo() {
         super(Properties.create(Material.IRON)
                 .sound(SoundType.METAL)
@@ -43,9 +42,12 @@ public class Dynamo extends KineticBlock {
     }
 
     @Override
-    public BlockState getStateForPlacement(@Nonnull BlockItemUseContext context) {
-        return this.getDefaultState().with(BlockStateProperties.FACING, getFacingFromEntity(context.getPos(), context.getPlayer()));
-    }
+	public BlockState getStateForPlacement(BlockItemUseContext context) {
+		Direction preferred = getPreferredFacing(context);
+		if ((context.getPlayer().isSneaking() || preferred == null) && Config.PART_SNAPPING.get())
+			return this.getDefaultState().with(BlockStateProperties.FACING, getFacingFromEntity(context.getPos(), context.getPlayer()));
+		return getDefaultState().with(BlockStateProperties.FACING, preferred);
+	}
 
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
@@ -69,6 +71,7 @@ public class Dynamo extends KineticBlock {
 
     @Override
     public Axis getRotationAxis(BlockState state) {
+    	System.out.println("get axis");
         return state.get(BlockStateProperties.FACING).getAxis();
     }
 }

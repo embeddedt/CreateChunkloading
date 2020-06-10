@@ -23,6 +23,7 @@ public class Config {
     public static ForgeConfigSpec CLIENT_CONFIG;
 
     public static ForgeConfigSpec.BooleanValue CHUNK_CHAT;
+    public static ForgeConfigSpec.BooleanValue PART_SNAPPING;
 
     public static ForgeConfigSpec.IntValue ROLLER_SU;
 
@@ -68,7 +69,8 @@ public class Config {
     }
 
     private static void setupGeneralConfig(ForgeConfigSpec.Builder COMMON_BUILDER) {
-        CHUNK_CHAT = COMMON_BUILDER.comment("Do chat output of chunk loaders?").define("feedback", true); // FIXME: default false if everything works
+        CHUNK_CHAT = COMMON_BUILDER.comment("Do chat output of chunk loaders?").define("feedback", false);
+        PART_SNAPPING = COMMON_BUILDER.comment("Kinetic blocks should snap to connect to networks").define("part_snapping", true);
     }
 
 

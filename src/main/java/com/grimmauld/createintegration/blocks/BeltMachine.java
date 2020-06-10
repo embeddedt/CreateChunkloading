@@ -1,5 +1,6 @@
 package com.grimmauld.createintegration.blocks;
 
+import com.grimmauld.createintegration.Config;
 import com.simibubi.create.content.contraptions.base.DirectionalAxisKineticBlock;
 import com.simibubi.create.foundation.block.ITE;
 import net.minecraft.block.Block;
@@ -67,11 +68,6 @@ public abstract class BeltMachine extends DirectionalAxisKineticBlock implements
     }
 
     @Override
-    public BlockState getStateForPlacement(@Nonnull BlockItemUseContext context) {
-        return this.getDefaultState().with(BlockStateProperties.FACING, getFacingFromEntity(context.getPos(), context.getPlayer(), true));
-    }
-
-    @Override
     public Axis getRotationAxis(BlockState state) {
         return state.get(BlockStateProperties.FACING).getAxis();
     }
@@ -86,4 +82,12 @@ public abstract class BeltMachine extends DirectionalAxisKineticBlock implements
     public BlockRenderType getRenderType(@Nonnull BlockState p_149645_1_) {
         return BlockRenderType.MODEL;
     }
+    
+    @Override
+	public BlockState getStateForPlacement(BlockItemUseContext context) {
+		Direction preferred = getPreferredFacing(context);
+		if ((context.getPlayer().isSneaking() || preferred == null || preferred.getAxis()==Axis.Y) && Config.PART_SNAPPING.get())
+			return this.getDefaultState().with(BlockStateProperties.FACING, getFacingFromEntity(context.getPos(), context.getPlayer(), true));
+		return getDefaultState().with(BlockStateProperties.FACING, preferred);
+	}
 }
