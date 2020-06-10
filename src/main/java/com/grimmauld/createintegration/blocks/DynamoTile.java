@@ -69,7 +69,7 @@ public class DynamoTile extends KineticTileEntity implements ITickableTileEntity
                 assert world != null;
                 TileEntity te = world.getTileEntity(pos.offset(direction));
                 if (te != null) {
-                    te.getCapability(CapabilityEnergy.ENERGY, direction).ifPresent(handler -> {
+                    te.getCapability(CapabilityEnergy.ENERGY, direction.getOpposite()).ifPresent(handler -> {
                                 if (handler.canReceive())
                                     ((CustomEnergyStorage) energy).consumeEnergy(handler.receiveEnergy(Math.min(energy.getEnergyStored(), Config.DYNAMO_SEND.get()), false));
                             }

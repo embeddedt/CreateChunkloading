@@ -4,7 +4,7 @@ issueTrackerURL="https://github.com/LordGrimmauld/createintegration/issues"
 logoFile="createintegration_logo.png"
 [[mods]]
 modId="createintegration"
-version="0.1.7"
+version="0.1.7b"
 displayName="Create Integration"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/create-integration"
 credits="Thanks to Alexander2907 for the Dynamo texture, Thanks to Joe for the Ender Crate texture"
@@ -25,6 +25,6 @@ description='''This mod adds an interface to convert mechanical energy provided 
 [[dependencies.createintegration]]
     modId="create"
     mandatory=true
-    versionRange="[mc1.15.2_v0.2.4,mc1.15.2_v0.2.4a,mc1.15.2_v0.2.4a+custom]" #keep updated
+    versionRange="[mc1.15.2_v0.2.4,mc1.15.2_v0.2.4a,mc1.15.2_v0.2.4a+custom,mc1.15.2_v0.2.4c,mc1.15.2_v0.2.4c+custom]" #keep updated
     ordering="NONE"
     side="BOTH"

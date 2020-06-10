@@ -27,7 +27,7 @@ apply plugin: 'com.wynprice.cursemaven'
 
 apply from: 'https://raw.githubusercontent.com/MinecraftModDevelopment/Gradle-Collection/master/generic/markdown-git-changelog.gradle'
 
-version = '0.1.7'
+version = '0.1.7b'
 group = 'com.grimmauld.createintegration'
 archivesBaseName = 'createintegration'
 
@@ -118,7 +118,7 @@ dependencies {
     minecraft 'net.minecraftforge:forge:1.15.2-31.2.9'
 
     implementation fg.deobf("mezz.jei:jei-1.15.2:6.0.0.4")
-    implementation fg.deobf("curse.maven:create:2975674")
+    implementation fg.deobf("curse.maven:create:2976507")
 
     def registrate = "com.tterrag.registrate:Registrate:MC1.15.2-0.0.3.17"
     implementation fg.deobf(registrate)

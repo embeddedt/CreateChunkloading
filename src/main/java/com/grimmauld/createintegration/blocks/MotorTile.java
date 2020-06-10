@@ -43,7 +43,7 @@ public class MotorTile extends GeneratingKineticTileEntity {
         active = false;
         energy.ifPresent(energy -> {
                     AtomicInteger capacity = new AtomicInteger(energy.getEnergyStored());
-                    if (capacity.get() > Config.MOTOR_FE.get()) {
+                    if (capacity.get() > (activeBefore ? Config.MOTOR_FE.get() : 0.5 * Config.MOTOR_CAPACITY.get())) {
                         active = true;
                         ((CustomEnergyStorage) energy).consumeEnergy(Config.MOTOR_FE.get());
                         markDirty();
@@ -52,14 +52,12 @@ public class MotorTile extends GeneratingKineticTileEntity {
                     }
                 }
         );
-
         if (active != activeBefore) {
             updateGeneratedRotation();
             markDirty();
         }
 
         damageCooldown++;
-
 
         if (damageCooldown % 20 == 0) {
             boolean attacked = false;
@@ -131,5 +129,4 @@ public class MotorTile extends GeneratingKineticTileEntity {
     private void setEnergy(int value) {
         energy.ifPresent(energy -> ((CustomEnergyStorage) energy).setEnergy(value));
     }
-
 }

@@ -65,7 +65,7 @@ public class Motor extends KineticBlock {
 
     @Override
     public Axis getRotationAxis(BlockState state) {
-        return state.get(BlockStateProperties.AXIS);
+        return state.get(BlockStateProperties.FACING).getAxis();
     }
 
 }

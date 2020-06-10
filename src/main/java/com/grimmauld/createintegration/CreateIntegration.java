@@ -61,7 +61,7 @@ import java.util.Map;
 public class CreateIntegration {
     public static final String modid = "createintegration";
     @SuppressWarnings("unused")
-    public static final String version = "0.1.7";
+    public static final String version = "0.1.7b";
     public static final Logger logger = LogManager.getLogger(modid);
     public static final IRecipeType<RollingRecipe> ROLLING_RECIPE = new RecipeTypeRolling();
     public static ModSetup setup = new ModSetup();
