@@ -9,7 +9,6 @@ public interface IChunkLoaderList {
     void add(iVec2d chunk);
     void remove(iVec2d chunk);
 
-    boolean contains(BlockPos pos);
 
 
 

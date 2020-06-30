@@ -10,7 +10,7 @@ import java.util.HashSet;
 
 public class ChunkLoaderMovementBehaviour extends MovementBehaviour {
     //private iVec2d chunk=null;
-    private HashMap<MovementContext,iVec2d> chunk=new HashMap<>();
+    public static HashMap<MovementContext,iVec2d> chunk=new HashMap<>();
 
     @Override
     public void visitNewPosition(MovementContext context, BlockPos pos) {
@@ -42,7 +42,7 @@ public class ChunkLoaderMovementBehaviour extends MovementBehaviour {
     public void startMoving(MovementContext context){
        // this.chunk= new iVec2d((int)(context.position.x),(int)(context.position.z)).div(16);
         CreateIntegration.logger.debug("start");
-        chunk.put(context,null);
+        //chunk.put(context,null);
     }
 
     @Override

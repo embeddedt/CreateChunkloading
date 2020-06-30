@@ -3,6 +3,7 @@ package com.grimmauld.createintegration.misc;
 import com.grimmauld.createintegration.Config;
 import com.grimmauld.createintegration.CreateIntegration;
 import com.grimmauld.createintegration.blocks.ChunkLoader;
+import com.simibubi.create.content.contraptions.components.structureMovement.MovementContext;
 import net.minecraft.command.CommandSource;
 import net.minecraft.nbt.INBT;
 import net.minecraft.nbt.LongArrayNBT;
@@ -166,7 +167,6 @@ public class ChunkLoaderList implements IChunkLoaderList {
 public class ChunkLoaderList implements IChunkLoaderList {
     @Nullable
     private final ServerWorld world;
-    public HashMap<BlockPos, Integer> chunkLoaders;
 
 
     public HashMap<iVec2d, Integer> chunkloaderentety;
@@ -175,8 +175,6 @@ public class ChunkLoaderList implements IChunkLoaderList {
 
     public ChunkLoaderList(@Nullable ServerWorld world) {
         this.world = world;
-        chunkLoaders = new HashMap<>();
-
         chunkloaderentety= new HashMap<>();
     }
 
@@ -238,53 +236,42 @@ public class ChunkLoaderList implements IChunkLoaderList {
     }
 
     public void addSilent(BlockPos pos) {
-        chunkLoaders.put(pos, 5);
     }
 
     @Override
     public void start() {
-        for (BlockPos pos : chunkLoaders.keySet()) {
-            chunkLoaders.put(pos, 5);
-            force(pos);
-        }
         enabled = true;
     }
 
-    private void update() {
-        try {
-            if (world != null && chunkLoaders != null) {
-                if (!chunkLoaders.isEmpty()) {
-                    for (BlockPos pos : chunkLoaders.keySet()) {
-                        if (chunkLoaders.get(pos) <= 0) {  // TODO: only check 0 ?
-                            chunkLoaders.remove(pos);
-                            if (!getChunkNumbers().contains(toChunk(pos))) {
-                                unforce(pos);
-                            }
-                        }
-                    }
-                }
-            }
-        } catch (Exception e) {
-            // CreateIntegration.logger.catching(e);
+    public void reload(){
+        for(iVec2d k:chunkloaderentety.keySet()) {
+            Integer i=chunkloaderentety.get(k);
+            if(i==null||i==0){
+                chunkloaderentety.remove(k);
+                //setforceload(k,false);
+            }else setforceload(k,true);
         }
     }
+    public HashSet<iVec2d> unloadminecartchukloader(){
+        HashSet<iVec2d> s=new HashSet<>();
+
+        for(MovementContext k:ChunkLoaderMovementBehaviour.chunk.keySet()){
+            s.add(ChunkLoaderMovementBehaviour.chunk.get(k));
+            ChunkLoaderMovementBehaviour.chunk.remove(k);
+        }
+        return s;
+    }
+
+
 
     public ArrayList<Long> getChunkNumbers() {
         ArrayList<Long> chunkNumbers = new ArrayList<>();
-        if (!chunkLoaders.isEmpty()) {
-            for (BlockPos pos : chunkLoaders.keySet()) {
-                if (chunkLoaders.get(pos) > 0) {  // only active chunk loaders are saved
-                    chunkNumbers.add(toChunk(pos));
-                }
-            }
+        if (!chunkloaderentety.isEmpty()) {
+            //Todo()
         }
         return chunkNumbers;
     }
 
-    @Override
-    public boolean contains(BlockPos pos) {
-        return chunkLoaders.containsKey(pos) && chunkLoaders.get(pos) > 0;
-    }
 
     public static class Storage implements IStorage<IChunkLoaderList> {
         //TODO(not implemented)
@@ -317,6 +304,9 @@ class iVec2d{
         this.y=y;
     }
     iVec2d(BlockPos p){ this(p.getX(),p.getZ());}
+    iVec2d(long l){
+        this((int)(l<<32),(int)l);
+    }
 
     public int hashCode() { return (this.y + this.x * 31); }
     public boolean equals(Object o){
@@ -332,6 +322,9 @@ class iVec2d{
         else if(y!=o.y)return y-o.y;
         return 0;
     }
+    public long toLong(){
+        return ((long)x)>>32 & y;
+    }
 
     @Override
     public String toString() {
@@ -340,6 +333,6 @@ class iVec2d{
 
     public iVec2d div(int n){return new iVec2d(x/n,y/n);}
     public iVec2d times(int n){return new iVec2d(x*n,y*n);}
-    public iVec2d add(iVec2d n){return new iVec2d(x+n.x,y+n.y);}
+    public iVec2d plus(iVec2d n){return new iVec2d(x+n.x,y+n.y);}
     public iVec2d sub(iVec2d n){return new iVec2d(x-n.x,y-n.y);}
 }
