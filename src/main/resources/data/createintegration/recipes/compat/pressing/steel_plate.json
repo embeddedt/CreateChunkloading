@@ -1,23 +1,23 @@
 {
-	"conditions": [
-        {
-            "type": "forge:not",
-            "value": {
-            	"type":"forge:tag_empty",
-            	"tag":"forge:plates/steel"
-            }
-        }
-    ],
-    "type": "createintegration:tagtotagpressing",
-    "ingredients": [
-    	{
-    		"tag": "forge:ingots/steel"
-    	}
-    ],
-	"results": [
-		{
-			"tag": "forge:plates/steel",
-			"count": 1
-		}
-	]
+  "conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:plates/steel"
+      }
+    }
+  ],
+  "type": "createintegration:tagtotagpressing",
+  "ingredients": [
+    {
+      "tag": "forge:ingots/steel"
+    }
+  ],
+  "results": [
+    {
+      "tag": "forge:plates/steel",
+      "count": 1
+    }
+  ]
 }

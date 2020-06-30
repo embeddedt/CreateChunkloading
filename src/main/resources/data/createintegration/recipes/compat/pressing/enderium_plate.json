@@ -1,23 +1,23 @@
 {
-	"conditions": [
-        {
-            "type": "forge:not",
-            "value": {
-            	"type":"forge:tag_empty",
-            	"tag":"forge:plates/enderium"
-            }
-        }
-    ],
-    "type": "createintegration:tagtotagpressing",
-    "ingredients": [
-    	{
-    		"tag": "forge:ingots/enderium"
-    	}
-    ],
-	"results": [
-		{
-			"tag": "forge:plates/enderium",
-			"count": 1
-		}
-	]
+  "conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:plates/enderium"
+      }
+    }
+  ],
+  "type": "createintegration:tagtotagpressing",
+  "ingredients": [
+    {
+      "tag": "forge:ingots/enderium"
+    }
+  ],
+  "results": [
+    {
+      "tag": "forge:plates/enderium",
+      "count": 1
+    }
+  ]
 }

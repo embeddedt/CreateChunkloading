@@ -1,23 +1,23 @@
 {
-	"conditions": [
-        {
-            "type": "forge:not",
-            "value": {
-            	"type":"forge:tag_empty",
-            	"tag":"forge:plates/nickel"
-            }
-        }
-    ],
-    "type": "createintegration:tagtotagpressing",
-    "ingredients": [
-    	{
-    		"tag": "forge:ingots/nickel"
-    	}
-    ],
-	"results": [
-		{
-			"tag": "forge:plates/nickel",
-			"count": 1
-		}
-	]
+  "conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:plates/nickel"
+      }
+    }
+  ],
+  "type": "createintegration:tagtotagpressing",
+  "ingredients": [
+    {
+      "tag": "forge:ingots/nickel"
+    }
+  ],
+  "results": [
+    {
+      "tag": "forge:plates/nickel",
+      "count": 1
+    }
+  ]
 }

@@ -1,0 +1,24 @@
+{
+  "conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:dusts/electrum"
+      }
+    }
+  ],
+  "type": "createintegration:tagtotagcrushing",
+  "ingredients": [
+    {
+      "tag": "forge:storage_blocks/electrum"
+    }
+  ],
+  "results": [
+    {
+      "tag": "forge:dusts/electrum",
+      "count": 5
+    }
+  ],
+  "processingTime": 400
+}

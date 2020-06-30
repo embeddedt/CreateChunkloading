@@ -1,23 +1,23 @@
 {
-	"conditions": [
-        {
-            "type": "forge:not",
-            "value": {
-            	"type":"forge:tag_empty",
-            	"tag":"forge:plates/aluminum"
-            }
-        }
-    ],
-    "type": "createintegration:tagtotagpressing",
-    "ingredients": [
-    	{
-    		"tag": "forge:ingots/aluminum"
-    	}
-    ],
-	"results": [
-		{
-			"tag": "forge:plates/aluminum",
-			"count": 1
-		}
-	]
+  "conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:plates/aluminum"
+      }
+    }
+  ],
+  "type": "createintegration:tagtotagpressing",
+  "ingredients": [
+    {
+      "tag": "forge:ingots/aluminum"
+    }
+  ],
+  "results": [
+    {
+      "tag": "forge:plates/aluminum",
+      "count": 1
+    }
+  ]
 }

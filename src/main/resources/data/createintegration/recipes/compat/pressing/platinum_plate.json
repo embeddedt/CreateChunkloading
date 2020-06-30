@@ -1,23 +1,23 @@
 {
-	"conditions": [
-        {
-            "type": "forge:not",
-            "value": {
-            	"type":"forge:tag_empty",
-            	"tag":"forge:plates/platinum"
-            }
-        }
-    ],
-    "type": "createintegration:tagtotagpressing",
-    "ingredients": [
-    	{
-    		"tag": "forge:ingots/platinum"
-    	}
-    ],
-	"results": [
-		{
-			"tag": "forge:plates/platinum",
-			"count": 1
-		}
-	]
+  "conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:plates/platinum"
+      }
+    }
+  ],
+  "type": "createintegration:tagtotagpressing",
+  "ingredients": [
+    {
+      "tag": "forge:ingots/platinum"
+    }
+  ],
+  "results": [
+    {
+      "tag": "forge:plates/platinum",
+      "count": 1
+    }
+  ]
 }

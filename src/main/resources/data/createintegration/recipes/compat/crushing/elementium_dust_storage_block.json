@@ -1,0 +1,24 @@
+{
+  "conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:dusts/elementium"
+      }
+    }
+  ],
+  "type": "createintegration:tagtotagcrushing",
+  "ingredients": [
+    {
+      "tag": "forge:storage_blocks/elementium"
+    }
+  ],
+  "results": [
+    {
+      "tag": "forge:dusts/elementium",
+      "count": 5
+    }
+  ],
+  "processingTime": 400
+}

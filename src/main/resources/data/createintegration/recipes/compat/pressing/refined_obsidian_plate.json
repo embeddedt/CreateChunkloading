@@ -1,23 +1,23 @@
 {
-	"conditions": [
-        {
-            "type": "forge:not",
-            "value": {
-            	"type":"forge:tag_empty",
-            	"tag":"forge:plates/refined_obsidian"
-            }
-        }
-    ],
-    "type": "createintegration:tagtotagpressing",
-    "ingredients": [
-    	{
-    		"tag": "forge:ingots/refined_obsidian"
-    	}
-    ],
-	"results": [
-		{
-			"tag": "forge:plates/refined_obsidian",
-			"count": 1
-		}
-	]
+  "conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:plates/refined_obsidian"
+      }
+    }
+  ],
+  "type": "createintegration:tagtotagpressing",
+  "ingredients": [
+    {
+      "tag": "forge:ingots/refined_obsidian"
+    }
+  ],
+  "results": [
+    {
+      "tag": "forge:plates/refined_obsidian",
+      "count": 1
+    }
+  ]
 }

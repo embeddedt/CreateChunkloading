@@ -1,23 +1,23 @@
 {
-	"conditions": [
-        {
-            "type": "forge:not",
-            "value": {
-            	"type":"forge:tag_empty",
-            	"tag":"forge:plates/redstone_alloy"
-            }
-        }
-    ],
-    "type": "createintegration:tagtotagpressing",
-    "ingredients": [
-    	{
-    		"tag": "forge:ingots/redstone_alloy"
-    	}
-    ],
-	"results": [
-		{
-			"tag": "forge:plates/redstone_alloy",
-			"count": 1
-		}
-	]
+  "conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:plates/redstone_alloy"
+      }
+    }
+  ],
+  "type": "createintegration:tagtotagpressing",
+  "ingredients": [
+    {
+      "tag": "forge:ingots/redstone_alloy"
+    }
+  ],
+  "results": [
+    {
+      "tag": "forge:plates/redstone_alloy",
+      "count": 1
+    }
+  ]
 }

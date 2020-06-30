@@ -1,0 +1,24 @@
+{
+  "conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:dusts/bismuth_brass"
+      }
+    }
+  ],
+  "type": "createintegration:tagtotagcrushing",
+  "ingredients": [
+    {
+      "tag": "forge:storage_blocks/bismuth_brass"
+    }
+  ],
+  "results": [
+    {
+      "tag": "forge:dusts/bismuth_brass",
+      "count": 5
+    }
+  ],
+  "processingTime": 400
+}
