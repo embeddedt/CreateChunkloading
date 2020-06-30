@@ -183,7 +183,7 @@ public class CreateIntegration {
     @SuppressWarnings("unused")
     public void onTick(TickEvent.WorldTickEvent event) {
         if (event.world != null && event.world.getGameTime() % 20 == 0) {
-            event.world.getCapability(CreateIntegration.CHUNK_LOADING_CAPABILITY, null).ifPresent(IChunkLoaderList::tickDown);
+            //event.world.getCapability(CreateIntegration.CHUNK_LOADING_CAPABILITY, null).ifPresent(IChunkLoaderList::tickDown);
         }
     }
 
