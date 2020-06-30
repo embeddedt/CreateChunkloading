@@ -1,0 +1,23 @@
+{
+	"conditions": [
+        {
+            "type": "forge:not",
+            "value": {
+            	"type":"forge:tag_empty",
+            	"tag":"forge:plates/manyullyn"
+            }
+        }
+    ],
+    "type": "createintegration:tagtotagpressing",
+    "ingredients": [
+    	{
+    		"tag": "forge:ingots/manyullyn"
+    	}
+    ],
+	"results": [
+		{
+			"tag": "forge:plates/manyullyn",
+			"count": 1
+		}
+	]
+}

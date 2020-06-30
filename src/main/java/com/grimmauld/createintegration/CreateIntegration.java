@@ -64,10 +64,10 @@ import java.util.Map;
 public class CreateIntegration {
     public static final String modid = "createintegration";
     @SuppressWarnings("unused")
-    public static final String version = "0.1.7b";
+    public static final String version = "0.1.8";
     public static final Logger logger = LogManager.getLogger(modid);
     public static final IRecipeType<RollingRecipe> ROLLING_RECIPE = new RecipeTypeRolling();
-    public static final TagToTagProcessingRecipe<PressingRecipe> TAG_TO_TAG_PRESS_SERIALIZER = new TagToTagProcessingRecipe<>(PressingRecipe::new, "tagtotagpress");
+    public static final TagToTagProcessingRecipe<PressingRecipe> TAG_TO_TAG_PRESS_SERIALIZER = new TagToTagProcessingRecipe<>(PressingRecipe::new, "tagtotagpressing");
     public static final TagToTagProcessingRecipe<CrushingRecipe> TAG_TO_TAG_CRUSHING_SERIALIZER = new TagToTagProcessingRecipe<>(CrushingRecipe::new, "tagtotagcrushing");
     public static ModSetup setup = new ModSetup();
     public static CreateIntegration instance;

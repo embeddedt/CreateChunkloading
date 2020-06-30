@@ -1,0 +1,23 @@
+{
+	"conditions": [
+        {
+            "type": "forge:not",
+            "value": {
+            	"type":"forge:tag_empty",
+            	"tag":"forge:plates/lithium"
+            }
+        }
+    ],
+    "type": "createintegration:tagtotagpressing",
+    "ingredients": [
+    	{
+    		"tag": "forge:ingots/lithium"
+    	}
+    ],
+	"results": [
+		{
+			"tag": "forge:plates/lithium",
+			"count": 1
+		}
+	]
+}

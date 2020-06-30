@@ -1,0 +1,23 @@
+{
+	"conditions": [
+        {
+            "type": "forge:not",
+            "value": {
+            	"type":"forge:tag_empty",
+            	"tag":"forge:plates/boron"
+            }
+        }
+    ],
+    "type": "createintegration:tagtotagpressing",
+    "ingredients": [
+    	{
+    		"tag": "forge:ingots/boron"
+    	}
+    ],
+	"results": [
+		{
+			"tag": "forge:plates/boron",
+			"count": 1
+		}
+	]
+}

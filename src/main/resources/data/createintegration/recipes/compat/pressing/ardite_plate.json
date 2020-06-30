@@ -1,0 +1,23 @@
+{
+	"conditions": [
+        {
+            "type": "forge:not",
+            "value": {
+            	"type":"forge:tag_empty",
+            	"tag":"forge:plates/ardite"
+            }
+        }
+    ],
+    "type": "createintegration:tagtotagpressing",
+    "ingredients": [
+    	{
+    		"tag": "forge:ingots/ardite"
+    	}
+    ],
+	"results": [
+		{
+			"tag": "forge:plates/ardite",
+			"count": 1
+		}
+	]
+}

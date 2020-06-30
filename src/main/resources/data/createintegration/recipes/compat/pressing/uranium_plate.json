@@ -1,0 +1,23 @@
+{
+	"conditions": [
+        {
+            "type": "forge:not",
+            "value": {
+            	"type":"forge:tag_empty",
+            	"tag":"forge:plates/uranium"
+            }
+        }
+    ],
+    "type": "createintegration:tagtotagpressing",
+    "ingredients": [
+    	{
+    		"tag": "forge:ingots/uranium"
+    	}
+    ],
+	"results": [
+		{
+			"tag": "forge:plates/uranium",
+			"count": 1
+		}
+	]
+}

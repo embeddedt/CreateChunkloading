@@ -1,0 +1,23 @@
+{
+	"conditions": [
+        {
+            "type": "forge:not",
+            "value": {
+            	"type":"forge:tag_empty",
+            	"tag":"forge:plates/hop_graphite"
+            }
+        }
+    ],
+    "type": "createintegration:tagtotagpressing",
+    "ingredients": [
+    	{
+    		"tag": "forge:ingots/hop_graphite"
+    	}
+    ],
+	"results": [
+		{
+			"tag": "forge:plates/hop_graphite",
+			"count": 1
+		}
+	]
+}
