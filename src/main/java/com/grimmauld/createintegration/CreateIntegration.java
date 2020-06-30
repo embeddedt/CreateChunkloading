@@ -6,7 +6,10 @@ import com.grimmauld.createintegration.misc.EnderList;
 import com.grimmauld.createintegration.misc.IChunkLoaderList;
 import com.grimmauld.createintegration.recipes.RecipeTypeRolling;
 import com.grimmauld.createintegration.recipes.RollingRecipe;
+import com.grimmauld.createintegration.recipes.TagToTagProcessingRecipe;
 import com.grimmauld.createintegration.setup.ModSetup;
+import com.simibubi.create.content.contraptions.components.crusher.CrushingRecipe;
+import com.simibubi.create.content.contraptions.components.press.PressingRecipe;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
@@ -64,6 +67,8 @@ public class CreateIntegration {
     public static final String version = "0.1.7b";
     public static final Logger logger = LogManager.getLogger(modid);
     public static final IRecipeType<RollingRecipe> ROLLING_RECIPE = new RecipeTypeRolling();
+    public static final TagToTagProcessingRecipe<PressingRecipe> TAG_TO_TAG_PRESS_SERIALIZER = new TagToTagProcessingRecipe<>(PressingRecipe::new, "tagtotagpress");
+    public static final TagToTagProcessingRecipe<CrushingRecipe> TAG_TO_TAG_CRUSHING_SERIALIZER = new TagToTagProcessingRecipe<>(CrushingRecipe::new, "tagtotagcrushing");
     public static ModSetup setup = new ModSetup();
     public static CreateIntegration instance;
     @CapabilityInject(IChunkLoaderList.class)
@@ -118,6 +123,8 @@ public class CreateIntegration {
     private void registerRecipeSerializers(Register<IRecipeSerializer<?>> event) {
         Registry.register(Registry.RECIPE_TYPE, new ResourceLocation(ROLLING_RECIPE.toString()), ROLLING_RECIPE);
         event.getRegistry().register(RollingRecipe.SERIALIZER);
+        event.getRegistry().register(TAG_TO_TAG_PRESS_SERIALIZER);
+        event.getRegistry().register(TAG_TO_TAG_CRUSHING_SERIALIZER);
     }
 
     @SubscribeEvent
