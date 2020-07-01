@@ -8,7 +8,7 @@ import net.minecraft.tileentity.TileEntity;
 public class ChunkLoaderTile extends TileEntity implements ITickableTileEntity {
     public ChunkLoaderTile() {
         super(ModBlocks.CHUNK_LOADER_TILE);
-        //world.getCapability(CreateIntegration.CHUNK_LOADING_CAPABILITY, null).ifPresent(cap -> cap.add(pos));
+        //world.getCapability(CreateIntegration.CHUNK_LOADING_CAPABILITY, null).ifPresent(cap -> cap.addchunk(pos));
     }
 
     @Override
@@ -16,7 +16,7 @@ public class ChunkLoaderTile extends TileEntity implements ITickableTileEntity {
     @Override
     public void remove(){
         super.remove();
-        world.getCapability(CreateIntegration.CHUNK_LOADING_CAPABILITY, null).ifPresent(cap -> cap.remove(pos));
+        world.getCapability(CreateIntegration.CHUNK_LOADING_CAPABILITY, null).ifPresent(cap -> cap.removeblock(pos));
     }
 
 

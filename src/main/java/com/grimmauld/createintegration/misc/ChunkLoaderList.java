@@ -2,15 +2,12 @@ package com.grimmauld.createintegration.misc;
 
 import com.grimmauld.createintegration.Config;
 import com.grimmauld.createintegration.CreateIntegration;
-import com.grimmauld.createintegration.blocks.ChunkLoader;
 import com.simibubi.create.content.contraptions.components.structureMovement.MovementContext;
 import net.minecraft.command.CommandSource;
 import net.minecraft.nbt.INBT;
 import net.minecraft.nbt.LongArrayNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.Capability.IStorage;
@@ -25,26 +22,29 @@ public class ChunkLoaderList implements IChunkLoaderList {
     private final ServerWorld world;
 
 
-    public HashMap<iVec2d, Integer> chunkloaderentety;
+    public HashMap<iVec2d, Integer> loadedchunks;
+    public ArrayList<BlockPos> chunkloaderblocks;
 
     private boolean enabled = false;
 
     public ChunkLoaderList(@Nullable ServerWorld world) {
         this.world = world;
-        chunkloaderentety= new HashMap<>();
+        loadedchunks = new HashMap<>();
+        chunkloaderblocks=new ArrayList<>();//could be replaced with hashset
     }
 
-    public static long toChunk(BlockPos pos) {
+    /*public static long toChunk(BlockPos pos) {
         return ChunkPos.asLong(pos.getX() >> 4, pos.getZ() >> 4);
-    }
-
+    }*/
+    /** loads chunk containing the blockpos */
     private void force(BlockPos pos) {
-        forceload(pos, "add");
+        forceload(pos, "addchunk");
     }
+    /** unloads chunk containing the blockpos */
     private void unforce(BlockPos pos) {
-        forceload(pos, "remove");
+        forceload(pos, "chunk");
     }
-
+    /** loads/unloads chunk containing the blockpos */
     private void forceload(BlockPos pos, String action) {
         if (this.world == null) return;
 
@@ -56,39 +56,71 @@ public class ChunkLoaderList implements IChunkLoaderList {
         @SuppressWarnings("unused")
         int ret = this.world.getServer().getCommandManager().handleCommand(source, "forceload " + action + " " + pos.getX() + " " + pos.getZ());
     }
+    /** loads/unloads chunk containing the blockpos */
+    private void setforceload(BlockPos pos, Boolean x) {forceload(pos,x?"addchunk":"chunk");}
+    private void setforceload(iVec2d pos, Boolean x) {forceload(new BlockPos(pos.x,0,pos.y),x?"addchunk":"chunk");}
 
-    private void setforceload(BlockPos pos, Boolean x) {forceload(pos,x?"add":"remove");}
-    private void setforceload(iVec2d pos, Boolean x) {forceload(new BlockPos(pos.x,0,pos.y),x?"add":"remove");}
 
+    /** adds chunk containing the blockpos to loaded chunks and to chunkloaderblocks
+     * use to addchunk a normal chunkloader (not in minecart)*/
+    @Override
+    public void addblock(BlockPos pos) {
+        if(pos==null){CreateIntegration.logger.debug("pos is null");return;}
+        chunkloaderblocks.add(pos);
+        iVec2d chunk=new iVec2d(pos).div(16);
+        addchunk(chunk);
+    }
+
+    /** chunk chunk containing the blockpos from loaded chunks and from chunkloaderblocks
+     * use to chunk a normal chunkloader (not in minecart)*/
+    @Override
+    public void removeblock(BlockPos pos) {
+        if(pos==null){CreateIntegration.logger.debug("pos is null");return;}
+        chunkloaderblocks.remove(pos);
+        iVec2d chunk=new iVec2d(pos).div(16);
+        chunk(chunk);
+    }
+
+
+    /** adds chunk containing the blockpos to loaded chunks */
+    @Override
     public void add(BlockPos pos) {
         if(pos==null){CreateIntegration.logger.debug("pos is null");return;}
         iVec2d chunk=new iVec2d(pos).div(16);
-        add(chunk);
+        addchunk(chunk);
     }
+
+    /** chunk chunk containing the blockpos from loaded chunks */
+    @Override
     public void remove(BlockPos pos) {
         if(pos==null){CreateIntegration.logger.debug("pos is null");return;}
         iVec2d chunk=new iVec2d(pos).div(16);
-        remove(chunk);
+        chunk(chunk);
     }
+
+    /** addchunk chunk to loaded chunks */
     @Override
-    public void add(iVec2d chunk){
+    public void addchunk(iVec2d chunk){
         if(chunk==null){CreateIntegration.logger.debug("chunk is null");return;}
-        if(!chunkloaderentety.keySet().contains(chunk)){
-            chunkloaderentety.put(chunk,1);
+        if(!loadedchunks.keySet().contains(chunk)){
+            loadedchunks.put(chunk,1);
             setforceload(chunk.times(16),true);
-        }else{chunkloaderentety.put(chunk,chunkloaderentety.get(chunk)+1);}
-        CreateIntegration.logger.debug(chunkloaderentety);
+        }else{
+            loadedchunks.put(chunk, loadedchunks.get(chunk)+1);}
+        CreateIntegration.logger.debug(loadedchunks);
     }
+
+    /** chunk chunk containing from loaded chunks*/
     @Override
-    public void remove(iVec2d chunk){
-        Integer i=chunkloaderentety.get(chunk);
-        if(i==null){CreateIntegration.logger.debug("no chunk to remove");return;}
+    public void chunk(iVec2d chunk){
+        Integer i= loadedchunks.get(chunk);
+        if(i==null){CreateIntegration.logger.debug("no chunk to chunk");return;}
         if(chunk==null){CreateIntegration.logger.debug("chunk is null");return;}
         if(i==1){
-            chunkloaderentety.remove(chunk);
+            loadedchunks.remove(chunk);
             setforceload(chunk.times(16),false);
-        }else chunkloaderentety.put(chunk,i-1);
-        CreateIntegration.logger.debug(chunkloaderentety);
+        }else loadedchunks.put(chunk,i-1);
+        CreateIntegration.logger.debug(loadedchunks);
     }
 
     public void addSilent(BlockPos pos) {
@@ -96,18 +128,22 @@ public class ChunkLoaderList implements IChunkLoaderList {
 
     @Override
     public void start() {
+        //Todo(Does nothing)
         enabled = true;
     }
 
+    /** loads all chunks wich are suposed to be loaded */
     public void reload(){
-        for(iVec2d k:chunkloaderentety.keySet()) {
-            Integer i=chunkloaderentety.get(k);
+        for(iVec2d k: loadedchunks.keySet()) {
+            Integer i= loadedchunks.get(k);
             if(i==null||i==0){
-                chunkloaderentety.remove(k);
+                loadedchunks.remove(k);
                 //setforceload(k,false);
             }else setforceload(k,true);
         }
     }
+
+    /** removes chunks with minecart with chunkloaders from loaded chunks */
     public HashSet<iVec2d> unloadminecartchukloader(){
         HashSet<iVec2d> s=new HashSet<>();
 
@@ -122,8 +158,8 @@ public class ChunkLoaderList implements IChunkLoaderList {
 
     public ArrayList<Long> getChunkNumbers() {
         ArrayList<Long> chunkNumbers = new ArrayList<>();
-        if (!chunkloaderentety.isEmpty()) {
-            //Todo()
+        if (!loadedchunks.isEmpty()) {
+            //Todo(Does nothing)
         }
         return chunkNumbers;
     }
@@ -151,7 +187,7 @@ public class ChunkLoaderList implements IChunkLoaderList {
         }
     }
 }
-
+/** 2D int Vektor Class */ //Todo(put in seperate file)
 class iVec2d{
     public int x=0;
     public int y=0;
@@ -160,7 +196,8 @@ class iVec2d{
         this.y=y;
     }
     iVec2d(BlockPos p){ this(p.getX(),p.getZ());}
-    iVec2d(long l){
+
+    iVec2d(long l){//Todo(Test if this really works)
         this((int)(l<<32),(int)l);
     }
 
@@ -178,7 +215,7 @@ class iVec2d{
         else if(y!=o.y)return y-o.y;
         return 0;
     }
-    public long toLong(){
+    public long toLong(){//Todo(Test if this really works)
         return ((long)x)>>32 & y;
     }
 

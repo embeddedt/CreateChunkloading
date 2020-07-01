@@ -27,7 +27,7 @@ public class ChunkLoader extends Block implements IPortableBlock {
     @Override
     public void onBlockAdded(@Nonnull BlockState state, World world, @Nonnull BlockPos pos, @Nonnull BlockState oldState, boolean isMoving) {
         if (world.isRemote) return;
-        world.getCapability(CreateIntegration.CHUNK_LOADING_CAPABILITY, null).ifPresent(cap -> cap.add(pos));
+        world.getCapability(CreateIntegration.CHUNK_LOADING_CAPABILITY, null).ifPresent(cap -> cap.addblock(pos));
 
     }
 /*
@@ -35,7 +35,7 @@ public class ChunkLoader extends Block implements IPortableBlock {
     public void onReplaced(@Nonnull BlockState state, World world, @Nonnull BlockPos pos, @Nonnull BlockState newState, boolean isMoving) {
         if (world.isRemote) return;
         if (!isMoving) {
-            world.getCapability(CreateIntegration.CHUNK_LOADING_CAPABILITY, null).ifPresent(cap -> cap.remove(pos));
+            world.getCapability(CreateIntegration.CHUNK_LOADING_CAPABILITY, null).ifPresent(cap -> cap.chunk(pos));
 
         }
     }

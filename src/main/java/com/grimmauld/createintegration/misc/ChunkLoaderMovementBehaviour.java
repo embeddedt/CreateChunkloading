@@ -6,7 +6,6 @@ import com.simibubi.create.content.contraptions.components.structureMovement.Mov
 import net.minecraft.util.math.BlockPos;
 
 import java.util.HashMap;
-import java.util.HashSet;
 
 public class ChunkLoaderMovementBehaviour extends MovementBehaviour {
     //private iVec2d chunk=null;
@@ -23,8 +22,8 @@ public class ChunkLoaderMovementBehaviour extends MovementBehaviour {
 
         if(!newchunk.equals(chunkalt)){
 
-            if(chunkalt!=null){context.world.getCapability(CreateIntegration.CHUNK_LOADING_CAPABILITY, null).ifPresent(cap -> cap.remove(chunkalt));CreateIntegration.logger.debug("addednew");}
-            context.world.getCapability(CreateIntegration.CHUNK_LOADING_CAPABILITY, null).ifPresent(cap -> cap.add(newchunk));
+            if(chunkalt!=null){context.world.getCapability(CreateIntegration.CHUNK_LOADING_CAPABILITY, null).ifPresent(cap -> cap.chunk(chunkalt));CreateIntegration.logger.debug("addednew");}
+            context.world.getCapability(CreateIntegration.CHUNK_LOADING_CAPABILITY, null).ifPresent(cap -> cap.addchunk(newchunk));
 
             chunk.put(context,newchunk);
         }
@@ -41,14 +40,14 @@ public class ChunkLoaderMovementBehaviour extends MovementBehaviour {
     @Override
     public void startMoving(MovementContext context){
        // this.chunk= new iVec2d((int)(context.position.x),(int)(context.position.z)).div(16);
-        CreateIntegration.logger.debug("start");
+        //CreateIntegration.logger.debug("start");
         //chunk.put(context,null);
     }
 
     @Override
     public void stopMoving(MovementContext context){
-        context.world.getCapability(CreateIntegration.CHUNK_LOADING_CAPABILITY, null).ifPresent(cap -> cap.remove(chunk.get(context)));
-        CreateIntegration.logger.debug("stop");
+        context.world.getCapability(CreateIntegration.CHUNK_LOADING_CAPABILITY, null).ifPresent(cap -> cap.chunk(chunk.get(context)));
+        //CreateIntegration.logger.debug("stop");
         chunk.remove(context);
     }
 }
