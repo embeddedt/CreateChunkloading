@@ -27,7 +27,7 @@ apply plugin: 'com.wynprice.cursemaven'
 
 apply from: 'https://raw.githubusercontent.com/MinecraftModDevelopment/Gradle-Collection/master/generic/markdown-git-changelog.gradle'
 
-version = '0.1.7b'
+version = '0.1.8'
 group = 'com.grimmauld.createintegration'
 archivesBaseName = 'createintegration'
 

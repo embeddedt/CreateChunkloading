@@ -1,0 +1,24 @@
+{
+  "conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:dusts/cobalt"
+      }
+    }
+  ],
+  "type": "createintegration:tagtotagcrushing",
+  "ingredients": [
+    {
+      "tag": "forge:storage_blocks/cobalt"
+    }
+  ],
+  "results": [
+    {
+      "tag": "forge:dusts/cobalt",
+      "count": 5
+    }
+  ],
+  "processingTime": 400
+}

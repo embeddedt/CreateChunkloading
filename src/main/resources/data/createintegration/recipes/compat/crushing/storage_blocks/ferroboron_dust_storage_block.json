@@ -1,0 +1,24 @@
+{
+  "conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:dusts/ferroboron"
+      }
+    }
+  ],
+  "type": "createintegration:tagtotagcrushing",
+  "ingredients": [
+    {
+      "tag": "forge:storage_blocks/ferroboron"
+    }
+  ],
+  "results": [
+    {
+      "tag": "forge:dusts/ferroboron",
+      "count": 5
+    }
+  ],
+  "processingTime": 400
+}

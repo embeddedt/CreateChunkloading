@@ -6,7 +6,11 @@ import com.grimmauld.createintegration.misc.EnderList;
 import com.grimmauld.createintegration.misc.IChunkLoaderList;
 import com.grimmauld.createintegration.recipes.RecipeTypeRolling;
 import com.grimmauld.createintegration.recipes.RollingRecipe;
+import com.grimmauld.createintegration.recipes.TagToTagProcessingRecipe;
 import com.grimmauld.createintegration.setup.ModSetup;
+import com.simibubi.create.content.contraptions.components.crusher.CrushingRecipe;
+import com.simibubi.create.content.contraptions.components.millstone.MillingRecipe;
+import com.simibubi.create.content.contraptions.components.press.PressingRecipe;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
@@ -61,9 +65,12 @@ import java.util.Map;
 public class CreateIntegration {
     public static final String modid = "createintegration";
     @SuppressWarnings("unused")
-    public static final String version = "0.1.7b";
+    public static final String version = "0.1.8";
     public static final Logger logger = LogManager.getLogger(modid);
     public static final IRecipeType<RollingRecipe> ROLLING_RECIPE = new RecipeTypeRolling();
+    public static final TagToTagProcessingRecipe<PressingRecipe> TAG_TO_TAG_PRESS_SERIALIZER = new TagToTagProcessingRecipe<>(PressingRecipe::new, "tagtotagpressing");
+    public static final TagToTagProcessingRecipe<CrushingRecipe> TAG_TO_TAG_CRUSHING_SERIALIZER = new TagToTagProcessingRecipe<>(CrushingRecipe::new, "tagtotagcrushing");
+    public static final TagToTagProcessingRecipe<MillingRecipe> TAG_TO_TAG_MILLING_SERIALIZER = new TagToTagProcessingRecipe<>(MillingRecipe::new, "tagtotagmilling");
     public static ModSetup setup = new ModSetup();
     public static CreateIntegration instance;
     @CapabilityInject(IChunkLoaderList.class)
@@ -118,6 +125,9 @@ public class CreateIntegration {
     private void registerRecipeSerializers(Register<IRecipeSerializer<?>> event) {
         Registry.register(Registry.RECIPE_TYPE, new ResourceLocation(ROLLING_RECIPE.toString()), ROLLING_RECIPE);
         event.getRegistry().register(RollingRecipe.SERIALIZER);
+        event.getRegistry().register(TAG_TO_TAG_PRESS_SERIALIZER);
+        event.getRegistry().register(TAG_TO_TAG_CRUSHING_SERIALIZER);
+        event.getRegistry().register(TAG_TO_TAG_MILLING_SERIALIZER);
     }
 
     @SubscribeEvent
@@ -190,7 +200,6 @@ public class CreateIntegration {
     @SubscribeEvent
     @SuppressWarnings("unused")
     public void onServerStarted(FMLServerStartedEvent event) {
-        System.out.println("Server up");
         event.getServer().getWorlds().forEach(world -> world.getCapability(CreateIntegration.CHUNK_LOADING_CAPABILITY, null).ifPresent(IChunkLoaderList::start));
 
     }

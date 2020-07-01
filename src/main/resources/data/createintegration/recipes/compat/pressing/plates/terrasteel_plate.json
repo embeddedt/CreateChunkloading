@@ -1,0 +1,23 @@
+{
+  "conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:plates/terrasteel"
+      }
+    }
+  ],
+  "type": "createintegration:tagtotagpressing",
+  "ingredients": [
+    {
+      "tag": "forge:ingots/terrasteel"
+    }
+  ],
+  "results": [
+    {
+      "tag": "forge:plates/terrasteel",
+      "count": 1
+    }
+  ]
+}

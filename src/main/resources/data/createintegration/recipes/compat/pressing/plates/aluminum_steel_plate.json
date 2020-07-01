@@ -1,0 +1,23 @@
+{
+  "conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:plates/aluminum_steel"
+      }
+    }
+  ],
+  "type": "createintegration:tagtotagpressing",
+  "ingredients": [
+    {
+      "tag": "forge:ingots/aluminum_steel"
+    }
+  ],
+  "results": [
+    {
+      "tag": "forge:plates/aluminum_steel",
+      "count": 1
+    }
+  ]
+}

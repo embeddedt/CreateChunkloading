@@ -1,0 +1,24 @@
+{
+  "conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:dusts/refined_glowstone"
+      }
+    }
+  ],
+  "type": "createintegration:tagtotagcrushing",
+  "ingredients": [
+    {
+      "tag": "forge:storage_blocks/refined_glowstone"
+    }
+  ],
+  "results": [
+    {
+      "tag": "forge:dusts/refined_glowstone",
+      "count": 5
+    }
+  ],
+  "processingTime": 400
+}

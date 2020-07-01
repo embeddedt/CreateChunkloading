@@ -1,0 +1,24 @@
+{
+  "conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:dusts/redstone_alloy"
+      }
+    }
+  ],
+  "type": "createintegration:tagtotagcrushing",
+  "ingredients": [
+    {
+      "tag": "forge:storage_blocks/redstone_alloy"
+    }
+  ],
+  "results": [
+    {
+      "tag": "forge:dusts/redstone_alloy",
+      "count": 5
+    }
+  ],
+  "processingTime": 400
+}

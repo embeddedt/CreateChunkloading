@@ -20,6 +20,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 
 import javax.annotation.Nonnull;
+import java.util.Objects;
 
 import static com.grimmauld.createintegration.tools.ModUtil.getFacingFromEntity;
 
@@ -82,12 +83,13 @@ public abstract class BeltMachine extends DirectionalAxisKineticBlock implements
     public BlockRenderType getRenderType(@Nonnull BlockState p_149645_1_) {
         return BlockRenderType.MODEL;
     }
-    
+
     @Override
-	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		Direction preferred = getPreferredFacing(context);
-		if ((context.getPlayer().isSneaking() || preferred == null || preferred.getAxis()==Axis.Y) && Config.PART_SNAPPING.get())
-			return this.getDefaultState().with(BlockStateProperties.FACING, getFacingFromEntity(context.getPos(), context.getPlayer(), true));
-		return getDefaultState().with(BlockStateProperties.FACING, preferred);
-	}
+    public BlockState getStateForPlacement(BlockItemUseContext context) {
+        Direction preferred = getPreferredFacing(context);
+        if ((Objects.requireNonNull(context.getPlayer()).isSneaking() || preferred == null || preferred.getAxis() == Axis.Y) && Config.PART_SNAPPING.get())
+            return this.getDefaultState().with(BlockStateProperties.FACING, getFacingFromEntity(context.getPos(), context.getPlayer(), true));
+        assert preferred != null;
+        return getDefaultState().with(BlockStateProperties.FACING, preferred);
+    }
 }

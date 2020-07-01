@@ -17,6 +17,8 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraftforge.common.ToolType;
 
+import java.util.Objects;
+
 import static com.grimmauld.createintegration.tools.ModUtil.getFacingFromEntity;
 
 public class Dynamo extends DirectionalKineticBlock {
@@ -42,12 +44,13 @@ public class Dynamo extends DirectionalKineticBlock {
     }
 
     @Override
-	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		Direction preferred = getPreferredFacing(context);
-		if ((context.getPlayer().isSneaking() || preferred == null) && Config.PART_SNAPPING.get())
-			return this.getDefaultState().with(BlockStateProperties.FACING, getFacingFromEntity(context.getPos(), context.getPlayer()));
-		return getDefaultState().with(BlockStateProperties.FACING, preferred);
-	}
+    public BlockState getStateForPlacement(BlockItemUseContext context) {
+        Direction preferred = getPreferredFacing(context);
+        if ((Objects.requireNonNull(context.getPlayer()).isSneaking() || preferred == null) && Config.PART_SNAPPING.get())
+            return this.getDefaultState().with(BlockStateProperties.FACING, getFacingFromEntity(context.getPos(), context.getPlayer()));
+        assert preferred != null;
+        return getDefaultState().with(BlockStateProperties.FACING, preferred);
+    }
 
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
@@ -71,7 +74,7 @@ public class Dynamo extends DirectionalKineticBlock {
 
     @Override
     public Axis getRotationAxis(BlockState state) {
-    	System.out.println("get axis");
+        System.out.println("get axis");
         return state.get(BlockStateProperties.FACING).getAxis();
     }
 }

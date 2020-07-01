@@ -48,7 +48,7 @@ public class CreateIntegrationJEI implements IModPlugin {
 
     @Override
     public void registerRecipes(@Nonnull IRecipeRegistration registry) {
-        if(Minecraft.getInstance().world == null){
+        if (Minecraft.getInstance().world == null) {
             CreateIntegration.logger.warn("Can not register JEI recipes: world is null");
             return;
         }

@@ -1,0 +1,23 @@
+{
+  "conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:plates/compressed_iron"
+      }
+    }
+  ],
+  "type": "createintegration:tagtotagpressing",
+  "ingredients": [
+    {
+      "tag": "forge:ingots/compressed_iron"
+    }
+  ],
+  "results": [
+    {
+      "tag": "forge:plates/compressed_iron",
+      "count": 1
+    }
+  ]
+}

@@ -134,10 +134,10 @@ public class EnderCrateTile extends SmartTileEntity implements INamedContainerPr
     }
 
     @SuppressWarnings("unused")
-	@Nonnull
+    @Nonnull
     @Override
     public TileEntityType<?> getType() {
-        if (Create.VERSION == "0.2.4" && Thread.currentThread().getStackTrace()[2].toString().contains("com.simibubi.create.repack.registrate.util.entry.TileEntityEntry.is")) {
+        if (Create.VERSION.equals("0.2.4") && Thread.currentThread().getStackTrace()[2].toString().contains("com.simibubi.create.repack.registrate.util.entry.TileEntityEntry.is")) {
             return AllTileEntities.ADJUSTABLE_CRATE.get();  // hack!
         } else {
             return super.getType();

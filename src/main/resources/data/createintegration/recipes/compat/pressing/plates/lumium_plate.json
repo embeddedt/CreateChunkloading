@@ -1,0 +1,23 @@
+{
+  "conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:plates/lumium"
+      }
+    }
+  ],
+  "type": "createintegration:tagtotagpressing",
+  "ingredients": [
+    {
+      "tag": "forge:ingots/lumium"
+    }
+  ],
+  "results": [
+    {
+      "tag": "forge:plates/lumium",
+      "count": 1
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:plates/refined_glowstone"
+      }
+    }
+  ],
+  "type": "createintegration:tagtotagpressing",
+  "ingredients": [
+    {
+      "tag": "forge:ingots/refined_glowstone"
+    }
+  ],
+  "results": [
+    {
+      "tag": "forge:plates/refined_glowstone",
+      "count": 1
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:plates/aluminumbrass"
+      }
+    }
+  ],
+  "type": "createintegration:tagtotagpressing",
+  "ingredients": [
+    {
+      "tag": "forge:ingots/aluminumbrass"
+    }
+  ],
+  "results": [
+    {
+      "tag": "forge:plates/aluminumbrass",
+      "count": 1
+    }
+  ]
+}
