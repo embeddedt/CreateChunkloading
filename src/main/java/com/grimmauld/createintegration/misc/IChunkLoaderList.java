@@ -10,7 +10,7 @@ public interface IChunkLoaderList {
     void remove(BlockPos pos);
 
     void addchunk(iVec2d chunk);
-    void chunk(iVec2d chunk);
+    void removechunk(iVec2d chunk);
 
 
 

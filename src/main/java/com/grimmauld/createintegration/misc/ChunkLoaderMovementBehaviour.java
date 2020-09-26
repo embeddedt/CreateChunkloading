@@ -16,13 +16,14 @@ public class ChunkLoaderMovementBehaviour extends MovementBehaviour {
         if (context.world.isRemote)
             return;
 
-        iVec2d newchunk=new iVec2d(pos).div(16);
+        iVec2d newchunk=new iVec2d(pos);
+        newchunk.x>>=4;newchunk.y>>=4;
         iVec2d chunkalt=chunk.get(context);
         CreateIntegration.logger.debug("moved alt"+chunkalt+" new" +newchunk+" "+newchunk.equals(chunkalt)+" "+context);
 
         if(!newchunk.equals(chunkalt)){
 
-            if(chunkalt!=null){context.world.getCapability(CreateIntegration.CHUNK_LOADING_CAPABILITY, null).ifPresent(cap -> cap.chunk(chunkalt));CreateIntegration.logger.debug("addednew");}
+            if(chunkalt!=null){context.world.getCapability(CreateIntegration.CHUNK_LOADING_CAPABILITY, null).ifPresent(cap -> cap.removechunk(chunkalt));CreateIntegration.logger.debug("addednew");}
             context.world.getCapability(CreateIntegration.CHUNK_LOADING_CAPABILITY, null).ifPresent(cap -> cap.addchunk(newchunk));
 
             chunk.put(context,newchunk);
@@ -46,7 +47,7 @@ public class ChunkLoaderMovementBehaviour extends MovementBehaviour {
 
     @Override
     public void stopMoving(MovementContext context){
-        context.world.getCapability(CreateIntegration.CHUNK_LOADING_CAPABILITY, null).ifPresent(cap -> cap.chunk(chunk.get(context)));
+        context.world.getCapability(CreateIntegration.CHUNK_LOADING_CAPABILITY, null).ifPresent(cap -> cap.removechunk(chunk.get(context)));
         //CreateIntegration.logger.debug("stop");
         chunk.remove(context);
     }
