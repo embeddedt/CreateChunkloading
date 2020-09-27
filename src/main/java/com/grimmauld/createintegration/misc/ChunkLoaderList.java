@@ -54,7 +54,6 @@ public class ChunkLoaderList implements IChunkLoaderList {
             source = source.withFeedbackDisabled();
         }
 
-        @SuppressWarnings("unused")
         int ret = this.world.getServer().getCommandManager().handleCommand(source, "forceload " + action + " " + pos.getX() + " " + pos.getZ());
     }
     /** loads/unloads chunk containing the blockpos */
@@ -113,6 +112,8 @@ public class ChunkLoaderList implements IChunkLoaderList {
         }else{
             loadedchunks.put(chunk, loadedchunks.get(chunk)+1);}
         CreateIntegration.logger.debug(loadedchunks);
+        //CreateIntegration.logger.debug(chunk);
+        //CreateIntegration.logger.debug(new iVec2d(chunk.toLong()));
     }
 
     /**removechunk removes chunk containing the blockpos from loaded chunks*/
@@ -161,13 +162,6 @@ public class ChunkLoaderList implements IChunkLoaderList {
 
 
 
-    public ArrayList<Long> getChunkNumbers() {
-        ArrayList<Long> chunkNumbers = new ArrayList<>();
-        if (!loadedchunks.isEmpty()) {
-            //Todo(Does nothing)
-        }
-        return chunkNumbers;
-    }
 
     public void readFromNBT(CompoundNBT nbt){
         long[] keys=nbt.getLongArray("loadedchunksKeys");
@@ -268,7 +262,7 @@ class iVec2d{
         return 0;
     }
     public long toLong(){//Todo(Test if this really works)
-        return ((long)x)<<32 | y;
+        return ((long)x)<<32 | (y & 0xffffffffL);
     }
 
     @Override
