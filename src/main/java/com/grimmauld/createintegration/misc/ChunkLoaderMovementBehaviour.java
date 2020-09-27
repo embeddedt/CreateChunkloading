@@ -5,50 +5,82 @@ import com.simibubi.create.content.contraptions.components.structureMovement.Mov
 import com.simibubi.create.content.contraptions.components.structureMovement.MovementContext;
 import net.minecraft.util.math.BlockPos;
 
-import java.util.HashMap;
+//import java.util.HashMap;
 
 public class ChunkLoaderMovementBehaviour extends MovementBehaviour {
-    //private iVec2d chunk=null;
-    public static HashMap<MovementContext,iVec2d> chunk=new HashMap<>();
 
     @Override
     public void visitNewPosition(MovementContext context, BlockPos pos) {
-        if (context.world.isRemote)
-            return;
+        if (context.world.isRemote)return;
 
-        iVec2d newchunk=new iVec2d(pos);
-        newchunk.x>>=4;newchunk.y>>=4;
-        iVec2d chunkalt=chunk.get(context);
-        CreateIntegration.logger.debug("moved alt"+chunkalt+" new" +newchunk+" "+newchunk.equals(chunkalt)+" "+context);
+        iVec2d chunknew=new iVec2d(pos);
+        chunknew.x>>=4;chunknew.y>>=4;//mact position zu einem chunk
 
-        if(!newchunk.equals(chunkalt)){
+        if (!(context.temporaryData instanceof iVec2d)){
+            if(context.data.contains("chunknew")) {
+                context.temporaryData = new iVec2d(context.data.getLong("chunknew"));
+            }else{
+                context.temporaryData=chunknew;
+                //CreateIntegration.logger.debug("wtf just happend");//visitNewPosition wurde vor startMoving aufgerufen
+                writeExtraData(context);
+                forceload(context,chunknew,true);
+            }
+        }
+        iVec2d chunkalt= (iVec2d) context.temporaryData;
 
-            if(chunkalt!=null){context.world.getCapability(CreateIntegration.CHUNK_LOADING_CAPABILITY, null).ifPresent(cap -> cap.removechunk(chunkalt));CreateIntegration.logger.debug("addednew");}
-            context.world.getCapability(CreateIntegration.CHUNK_LOADING_CAPABILITY, null).ifPresent(cap -> cap.addchunk(newchunk));
-
-            chunk.put(context,newchunk);
+        if(!chunknew.equals(chunkalt)){
+            forceload(context,chunkalt,false);
+            forceload(context,chunknew,true);
+            context.temporaryData=chunknew;
         }
     }
 
-    @Override
-    public void tick(MovementContext context) {
-        /*resetTicking++;
-        if (pos != null && resetTicking % 20 == 0) {
-            context.world.getCapability(CreateIntegration.CHUNK_LOADING_CAPABILITY, null).ifPresent(cap -> cap.resetForBlock(pos));
-        }*/
-    }
+    //private void updatepos(){ }
+
+
 
     @Override
     public void startMoving(MovementContext context){
-       // this.chunk= new iVec2d((int)(context.position.x),(int)(context.position.z)).div(16);
+
+        //CreateIntegration.logger.debug("start");
+        //CreateIntegration.logger.debug(context.position); probably null
+        /*if(context.position!=null){
+            iVec2d chunkstart= new iVec2d((int)(context.position.x),(int)(context.position.z));
+            chunkstart.x>>=4;chunkstart.y>>=4;
+            context.temporaryData=chunkstart;
+            forceload(context,chunkstart,true);
+        }*/
+
         //CreateIntegration.logger.debug("start");
         //chunk.put(context,null);
     }
 
     @Override
     public void stopMoving(MovementContext context){
-        context.world.getCapability(CreateIntegration.CHUNK_LOADING_CAPABILITY, null).ifPresent(cap -> cap.removechunk(chunk.get(context)));
+        iVec2d chunkalt= (iVec2d) context.temporaryData;
+        forceload(context,chunkalt,false);
         //CreateIntegration.logger.debug("stop");
-        chunk.remove(context);
+
+    }
+
+    @Override
+    public void writeExtraData(MovementContext context) {
+        super.writeExtraData(context);
+        if(context.temporaryData instanceof iVec2d) {
+            iVec2d chunkalt = (iVec2d) context.temporaryData;
+            context.data.putLong("chunknew", chunkalt.toLong());
+            CreateIntegration.logger.debug("minecatr saved");
+        }else{
+            CreateIntegration.logger.debug("i don't want to write null");
+        }
+    }
+
+    //loads/unloads the specified chunk
+    private void forceload(MovementContext context,iVec2d chunk,boolean state){
+        if(state){
+            context.world.getCapability(CreateIntegration.CHUNK_LOADING_CAPABILITY, null).ifPresent(cap -> cap.addchunk(chunk));
+        }else{
+            context.world.getCapability(CreateIntegration.CHUNK_LOADING_CAPABILITY, null).ifPresent(cap -> cap.removechunk(chunk));
+        }
     }
 }

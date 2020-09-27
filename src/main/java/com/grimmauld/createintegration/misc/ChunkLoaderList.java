@@ -66,7 +66,7 @@ public class ChunkLoaderList implements IChunkLoaderList {
     @Override
     public void addblock(BlockPos pos) {
         if(pos==null){CreateIntegration.logger.debug("pos is null");return;}
-        chunkloaderblocks.add(pos);
+        //chunkloaderblocks.add(pos);
         iVec2d chunk=new iVec2d(pos);
         chunk.x>>=4;chunk.y>>=4;
         addchunk(chunk);
@@ -77,7 +77,7 @@ public class ChunkLoaderList implements IChunkLoaderList {
     @Override
     public void removeblock(BlockPos pos) {
         if(pos==null){CreateIntegration.logger.debug("pos is null");return;}
-        chunkloaderblocks.remove(pos);
+        //chunkloaderblocks.remove(pos);
         iVec2d chunk=new iVec2d(pos);
         chunk.x>>=4;chunk.y>>=4;
         removechunk(chunk);
@@ -149,16 +149,7 @@ public class ChunkLoaderList implements IChunkLoaderList {
         }
     }
 
-    /** removes chunks with minecart with chunkloaders from loaded chunks */
-    public HashSet<iVec2d> unloadminecartchukloader(){
-        HashSet<iVec2d> s=new HashSet<>();
 
-        for(MovementContext k:ChunkLoaderMovementBehaviour.chunk.keySet()){
-            s.add(ChunkLoaderMovementBehaviour.chunk.get(k));
-            ChunkLoaderMovementBehaviour.chunk.remove(k);
-        }
-        return s;
-    }
 
 
 
@@ -166,11 +157,13 @@ public class ChunkLoaderList implements IChunkLoaderList {
     public void readFromNBT(CompoundNBT nbt){
         long[] keys=nbt.getLongArray("loadedchunksKeys");
         int[] values=nbt.getIntArray("loadedchunksValues");
-        CreateIntegration.logger.debug("readnbt");
+        //CreateIntegration.logger.debug("readnbt");
         CreateIntegration.logger.debug(keys);
         for(int i=0;i< keys.length;i++) {
-            loadedchunks.put(new iVec2d(keys[i]),values[i]);
-            CreateIntegration.logger.debug((new iVec2d(keys[i])).toString()+" = "+values[i]);
+            if(values[i]>0) {//"if" probably not nessesary but saver
+                loadedchunks.put(new iVec2d(keys[i]), values[i]);
+                CreateIntegration.logger.debug((new iVec2d(keys[i])).toString() + " = " + values[i]);
+            }
         }
     }
     public CompoundNBT writeToNBT(){
@@ -235,8 +228,8 @@ public class ChunkLoaderList implements IChunkLoaderList {
 }
 /** 2D int Vektor Class */ //Todo(put in seperate file)
 class iVec2d{
-    public int x=0;
-    public int y=0;
+    public int x;//nicht x=0 da intellij mich sonst nerft
+    public int y;
     iVec2d(int x,int y){
         this.x=x;
         this.y=y;
