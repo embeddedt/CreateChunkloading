@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "particle": "createchunkloading:block/dynamo_side",
+    "down": "createchunkloading:block/dynamo_top_bottom",
+    "up": "createchunkloading:block/dynamo_top_bottom",
+    "east": "createchunkloading:block/dynamo_side",
+    "west": "createchunkloading:block/dynamo_side",
+    "north": "createchunkloading:block/dynamo_front",
+    "south": "createchunkloading:block/dynamo_back"
+  }
+}

@@ -27,9 +27,9 @@ apply plugin: 'com.wynprice.cursemaven'
 
 apply from: 'https://raw.githubusercontent.com/MinecraftModDevelopment/Gradle-Collection/master/generic/markdown-git-changelog.gradle'
 
-version = '0.1.8'
-group = 'com.grimmauld.createintegration'
-archivesBaseName = 'createintegration'
+version = '0.1.0'
+group = 'org.embeddedt.createchunkloading'
+archivesBaseName = 'createchunkloading'
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 
@@ -93,7 +93,7 @@ configurations.all {
 
 shadowJar {
     configurations = [project.configurations.shade]
-    relocate 'com.tterrag.registrate', 'com.grimmauld.createintegration.repack.registrate'
+    relocate 'com.tterrag.registrate', 'org.embeddedt.createchunkloading.repack.registrate'
 }
 
 

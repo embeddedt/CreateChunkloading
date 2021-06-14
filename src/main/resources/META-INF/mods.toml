@@ -1,29 +1,29 @@
 modLoader="javafml"
 loaderVersion="[36,)"
-issueTrackerURL="https://github.com/LordGrimmauld/createintegration/issues"
-logoFile="createintegration_logo.png"
+issueTrackerURL="https://github.com/embeddedt/CreateChunkloading/issues"
+logoFile="createchunkloading_logo.png"
 license="LGPL-2.1 License"
 [[mods]]
-modId="createintegration"
-version="0.2.0"
-displayName="Create Integration"
+modId="createchunkloading"
+version="0.1.0"
+displayName="Create Chunkloading"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/create-integration"
-credits="Thanks to Alexander2907 for the Dynamo texture, Thanks to Joe for the Ender Crate texture. Thanks to Dargin for finding my stupid bugs."
-authors="Grimmauld"
-description='''This mod adds an interface to convert mechanical energy provided from Create machinery to FE.'''
-[[dependencies.createintegration]] #optional
+credits="Thanks to LordGrimmauld for the original implementation of the chunkloader, used almost unmodified here."
+authors="Grimmauld, embeddedt"
+description='''This mod adds a block which loads the chunk it is in, even when moved by Create contraptions.'''
+[[dependencies.createchunkloading]] #optional
     modId="forge" #mandatory
     mandatory=true #mandatory
     versionRange="[36,)" #mandatory
     ordering="NONE"
     side="BOTH"
-[[dependencies.createintegration]]
+[[dependencies.createchunkloading]]
     modId="minecraft"
     mandatory=true
     versionRange="[1.16.5]" #keep updated
     ordering="NONE"
     side="BOTH"
-[[dependencies.createintegration]]
+[[dependencies.createchunkloading]]
     modId="create"
     mandatory=true
     versionRange="[mc1.16.5_v0.3.1c,)" #keep updated
