@@ -1,10 +1,11 @@
 modLoader="javafml"
-loaderVersion="[31,)"
+loaderVersion="[36,)"
 issueTrackerURL="https://github.com/LordGrimmauld/createintegration/issues"
 logoFile="createintegration_logo.png"
+license="LGPL-2.1 License"
 [[mods]]
 modId="createintegration"
-version="0.1.8"
+version="0.2.0"
 displayName="Create Integration"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/create-integration"
 credits="Thanks to Alexander2907 for the Dynamo texture, Thanks to Joe for the Ender Crate texture. Thanks to Dargin for finding my stupid bugs."
@@ -13,18 +14,18 @@ description='''This mod adds an interface to convert mechanical energy provided 
 [[dependencies.createintegration]] #optional
     modId="forge" #mandatory
     mandatory=true #mandatory
-    versionRange="[31,)" #mandatory
+    versionRange="[36,)" #mandatory
     ordering="NONE"
     side="BOTH"
 [[dependencies.createintegration]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.15.2]" #keep updated
+    versionRange="[1.16.5]" #keep updated
     ordering="NONE"
     side="BOTH"
 [[dependencies.createintegration]]
     modId="create"
     mandatory=true
-    versionRange="[mc1.15.2_v0.2.4,)" #keep updated
+    versionRange="[mc1.16.5_v0.3.1c,)" #keep updated
     ordering="NONE"
     side="BOTH"

@@ -2,7 +2,6 @@ package com.grimmauld.createintegration.blocks;
 
 import com.grimmauld.createintegration.CreateIntegration;
 import com.grimmauld.createintegration.misc.ChunkLoaderMovementBehaviour;
-import com.simibubi.create.content.contraptions.components.structureMovement.IPortableBlock;
 import com.simibubi.create.content.contraptions.components.structureMovement.MovementBehaviour;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -15,10 +14,7 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
 
-public class ChunkLoader extends Block implements IPortableBlock {
-    public static MovementBehaviour MOVEMENT = new ChunkLoaderMovementBehaviour();
-
-
+public class ChunkLoader extends Block {
     public ChunkLoader() {
         super(Properties.from(Blocks.BEACON));
         setRegistryName("chunk_loader");
@@ -40,13 +36,6 @@ public class ChunkLoader extends Block implements IPortableBlock {
         }
     }
     */
-
-
-    @Override
-    public MovementBehaviour getMovementBehaviour() {
-        return MOVEMENT;
-    }
-
 
     @Nonnull
     @Override

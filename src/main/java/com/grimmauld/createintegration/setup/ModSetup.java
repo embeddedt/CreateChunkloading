@@ -8,7 +8,7 @@ public class ModSetup {
     public static ItemGroup itemGroup = new ItemGroup("createintegration") {
         @Override
         public ItemStack createIcon() {
-            return new ItemStack(ModBlocks.DYNAMO);
+            return new ItemStack(ModBlocks.CHUNK_LOADER);
         }
     };
 

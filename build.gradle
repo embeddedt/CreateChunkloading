@@ -34,10 +34,11 @@ archivesBaseName = 'createintegration'
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 
 minecraft {
-    mappings channel: 'snapshot', version: '20200301-mixed-1.15.2'
+    mappings channel: 'snapshot', version: '20200920-mixed-1.16.3'
     runs {
         client {
             workingDirectory project.file('run')
+            jvmArgs "-Dmixin.env.disableRefMap=true"
 
             // Recommended logging data for a userdev environment
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
@@ -115,14 +116,11 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.15.2-31.2.9'
+    minecraft 'net.minecraftforge:forge:1.16.5-36.1.0'
 
-    implementation fg.deobf("mezz.jei:jei-1.15.2:6.0.0.4")
-    implementation fg.deobf("curse.maven:create:2979593")
+    implementation fg.deobf("mezz.jei:jei-1.16.4:7.6.1.74")
+    implementation fg.deobf("curse.maven:create-328085:3278516")
 
-    def registrate = "com.tterrag.registrate:Registrate:MC1.15.2-0.0.3.17"
-    implementation fg.deobf(registrate)
-    shade registrate
 }
 
 jar {
