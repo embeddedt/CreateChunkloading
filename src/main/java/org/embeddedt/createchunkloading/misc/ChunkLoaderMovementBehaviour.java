@@ -76,11 +76,23 @@ public class ChunkLoaderMovementBehaviour extends MovementBehaviour {
     }
 
     //loads/unloads the specified chunk
-    private void forceload(MovementContext context,iVec2d chunk,boolean state){
+    private void _forceload(MovementContext context,iVec2d chunk,boolean state){
         if(state){
             context.world.getCapability(CreateChunkloading.CHUNK_LOADING_CAPABILITY, null).ifPresent(cap -> cap.addchunk(chunk));
         }else{
             context.world.getCapability(CreateChunkloading.CHUNK_LOADING_CAPABILITY, null).ifPresent(cap -> cap.removechunk(chunk));
         }
+    }
+    private void forceload(MovementContext context,iVec2d chunk,boolean state) {
+        _forceload(context, chunk, state);
+        /* load the surrounding 8 chunks as well so that minecart contraptions get ticked */
+        _forceload(context, chunk.plus(new iVec2d(1, 0)), state);
+        _forceload(context, chunk.plus(new iVec2d(1, 1)), state);
+        _forceload(context, chunk.plus(new iVec2d(1, -1)), state);
+        _forceload(context, chunk.plus(new iVec2d(-1, 0)), state);
+        _forceload(context, chunk.plus(new iVec2d(-1, 1)), state);
+        _forceload(context, chunk.plus(new iVec2d(-1, -1)), state);
+        _forceload(context, chunk.plus(new iVec2d(0, -1)), state);
+        _forceload(context, chunk.plus(new iVec2d(0, 1)), state);
     }
 }
