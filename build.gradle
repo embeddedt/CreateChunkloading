@@ -27,7 +27,7 @@ apply plugin: 'com.wynprice.cursemaven'
 
 apply from: 'https://raw.githubusercontent.com/MinecraftModDevelopment/Gradle-Collection/master/generic/markdown-git-changelog.gradle'
 
-version = '0.1.0'
+version = '0.1.1'
 group = 'org.embeddedt.createchunkloading'
 archivesBaseName = 'createchunkloading'
 
