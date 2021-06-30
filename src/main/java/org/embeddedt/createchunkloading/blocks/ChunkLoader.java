@@ -1,5 +1,10 @@
 package org.embeddedt.createchunkloading.blocks;
 
+import com.simibubi.create.content.contraptions.components.structureMovement.MovementContext;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.common.world.ForgeChunkManager;
 import org.embeddedt.createchunkloading.CreateChunkloading;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -21,19 +26,46 @@ public class ChunkLoader extends Block {
     @Override
     public void onBlockAdded(@Nonnull BlockState state, World world, @Nonnull BlockPos pos, @Nonnull BlockState oldState, boolean isMoving) {
         if (world.isRemote) return;
-        world.getCapability(CreateChunkloading.CHUNK_LOADING_CAPABILITY, null).ifPresent(cap -> cap.addblock(pos));
-
+        int chunkX = pos.getX() >> 4;
+        int chunkZ = pos.getZ() >> 4;
+        CreateChunkloading.logger.debug("ADD " + chunkX + " " + chunkZ);
+        forgeLoadChunk((ServerWorld)world, pos, true);
     }
-/*
+
     @Override
     public void onReplaced(@Nonnull BlockState state, World world, @Nonnull BlockPos pos, @Nonnull BlockState newState, boolean isMoving) {
         if (world.isRemote) return;
-        if (!isMoving) {
-            world.getCapability(CreateIntegration.CHUNK_LOADING_CAPABILITY, null).ifPresent(cap -> cap.chunk(pos));
 
+        forgeLoadChunk((ServerWorld)world, pos, false);
+    }
+
+    public static BlockPos roundBlockPosToChunk(BlockPos pos) {
+        int roundedX = pos.getX() & ~0xf;
+        int roundedZ = pos.getZ() & ~0xf;
+        return new BlockPos(roundedX, 0, roundedZ);
+    }
+
+    private static void forgeLoadChunk(ServerWorld world, BlockPos pos, boolean state, boolean shouldLoadSurroundingAsWell) {
+        int chunkX = pos.getX() >> 4;
+        int chunkZ = pos.getZ() >> 4;
+        ForgeChunkManager.forceChunk(world, CreateChunkloading.modid, pos, chunkX, chunkZ, state, true);
+        if(shouldLoadSurroundingAsWell) {
+            CreateChunkloading.logger.debug((state ? "ADD" : "REMOVE") + " " + pos.toString());
+            forgeLoadChunk(world, pos.add(1, 0, 0), state, false);
+            forgeLoadChunk(world, pos.add(1, 0, 1), state, false);
+            forgeLoadChunk(world, pos.add(1, 0, -1), state, false);
+            forgeLoadChunk(world, pos.add(-1, 0, 0), state, false);
+            forgeLoadChunk(world, pos.add(-1, 0, 1), state, false);
+            forgeLoadChunk(world, pos.add(-1, 0, -1), state, false);
+            forgeLoadChunk(world, pos.add(0, 0, -1), state, false);
+            forgeLoadChunk(world, pos.add(0, 0, 1), state, false);
         }
     }
-    */
+
+    public static void forgeLoadChunk(ServerWorld world, BlockPos pos, boolean state) {
+        forgeLoadChunk(world, pos, state, true);
+    }
+
 
     @Nonnull
     @Override
@@ -44,11 +76,6 @@ public class ChunkLoader extends Block {
 
     @Override
     public boolean hasTileEntity(BlockState state) {
-        return true;
-    }
-
-    @Override
-    public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-        return new ChunkLoaderTile();
+        return false;
     }
 }

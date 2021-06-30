@@ -1,9 +1,12 @@
 package org.embeddedt.createchunkloading.misc;
 
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.server.ServerWorld;
 import org.embeddedt.createchunkloading.CreateChunkloading;
 import com.simibubi.create.content.contraptions.components.structureMovement.MovementBehaviour;
 import com.simibubi.create.content.contraptions.components.structureMovement.MovementContext;
 import net.minecraft.util.math.BlockPos;
+import org.embeddedt.createchunkloading.blocks.ChunkLoader;
 
 //import java.util.HashMap;
 
@@ -13,86 +16,59 @@ public class ChunkLoaderMovementBehaviour extends MovementBehaviour {
     public void visitNewPosition(MovementContext context, BlockPos pos) {
         if (context.world.isRemote)return;
 
-        iVec2d chunknew=new iVec2d(pos);
-        chunknew.x>>=4;chunknew.y>>=4;//mact position zu einem chunk
+        CreateChunkloading.logger.debug("visit new position " + pos.toString());
 
-        if (!(context.temporaryData instanceof iVec2d)){
-            if(context.data.contains("chunknew")) {
-                context.temporaryData = new iVec2d(context.data.getLong("chunknew"));
-            }else{
-                context.temporaryData=chunknew;
-                //CreateIntegration.logger.debug("wtf just happend");//visitNewPosition wurde vor startMoving aufgerufen
-                writeExtraData(context);
-                forceload(context,chunknew,true);
-            }
-        }
-        iVec2d chunkalt= (iVec2d) context.temporaryData;
+        Object oldPos = context.temporaryData;
 
-        if(!chunknew.equals(chunkalt)){
-            forceload(context,chunkalt,false);
-            forceload(context,chunknew,true);
-            context.temporaryData=chunknew;
+        if(!(oldPos instanceof BlockPos)) {
+            if(context.data.contains("previous_chunk"))
+                oldPos = BlockPos.fromLong(context.data.getLong("previous_chunk"));
         }
+
+        if(pos.equals(oldPos))
+            return;
+
+        ChunkLoader.forgeLoadChunk((ServerWorld) context.world, pos, true);
+        if(oldPos instanceof BlockPos) {
+            ChunkLoader.forgeLoadChunk((ServerWorld) context.world, (BlockPos) oldPos, false);
+        }
+
+        context.temporaryData = pos;
     }
 
     //private void updatepos(){ }
 
-
+    public static BlockPos getBlockPos(Vector3d vec) {
+        return new BlockPos((int)vec.x, (int)vec.y, (int)vec.z);
+    }
 
     @Override
     public void startMoving(MovementContext context){
-
-        //CreateIntegration.logger.debug("start");
-        //CreateIntegration.logger.debug(context.position); probably null
-        /*if(context.position!=null){
-            iVec2d chunkstart= new iVec2d((int)(context.position.x),(int)(context.position.z));
-            chunkstart.x>>=4;chunkstart.y>>=4;
-            context.temporaryData=chunkstart;
-            forceload(context,chunkstart,true);
-        }*/
-
-        //CreateIntegration.logger.debug("start");
-        //chunk.put(context,null);
+        if(context.position == null)
+            return; /* not much we can do */
+        context.temporaryData = getBlockPos(context.position);
+        CreateChunkloading.logger.debug("start moving " + context.temporaryData.toString());
+        ChunkLoader.forgeLoadChunk((ServerWorld) context.world, (BlockPos)context.temporaryData, true);
     }
 
     @Override
     public void stopMoving(MovementContext context){
-        iVec2d chunkalt= (iVec2d) context.temporaryData;
-        forceload(context,chunkalt,false);
-        //CreateIntegration.logger.debug("stop");
-
+        if(context.position == null)
+            return; /* not much we can do */
+        CreateChunkloading.logger.debug("stop moving " + getBlockPos(context.position).toString());
+        ChunkLoader.forgeLoadChunk((ServerWorld) context.world, getBlockPos(context.position), false);
+        context.temporaryData = null;
     }
 
     @Override
     public void writeExtraData(MovementContext context) {
         super.writeExtraData(context);
-        if(context.temporaryData instanceof iVec2d) {
-            iVec2d chunkalt = (iVec2d) context.temporaryData;
-            context.data.putLong("chunknew", chunkalt.toLong());
-            CreateChunkloading.logger.debug("minecatr saved");
+        if(context.temporaryData instanceof BlockPos) {
+            context.data.putLong("previous_chunk", ((BlockPos)context.temporaryData).toLong());
+            CreateChunkloading.logger.debug("previous chunk saved");
         }else{
             CreateChunkloading.logger.debug("i don't want to write null");
         }
     }
 
-    //loads/unloads the specified chunk
-    private void _forceload(MovementContext context,iVec2d chunk,boolean state){
-        if(state){
-            context.world.getCapability(CreateChunkloading.CHUNK_LOADING_CAPABILITY, null).ifPresent(cap -> cap.addchunk(chunk));
-        }else{
-            context.world.getCapability(CreateChunkloading.CHUNK_LOADING_CAPABILITY, null).ifPresent(cap -> cap.removechunk(chunk));
-        }
-    }
-    private void forceload(MovementContext context,iVec2d chunk,boolean state) {
-        _forceload(context, chunk, state);
-        /* load the surrounding 8 chunks as well so that minecart contraptions get ticked */
-        _forceload(context, chunk.plus(new iVec2d(1, 0)), state);
-        _forceload(context, chunk.plus(new iVec2d(1, 1)), state);
-        _forceload(context, chunk.plus(new iVec2d(1, -1)), state);
-        _forceload(context, chunk.plus(new iVec2d(-1, 0)), state);
-        _forceload(context, chunk.plus(new iVec2d(-1, 1)), state);
-        _forceload(context, chunk.plus(new iVec2d(-1, -1)), state);
-        _forceload(context, chunk.plus(new iVec2d(0, -1)), state);
-        _forceload(context, chunk.plus(new iVec2d(0, 1)), state);
-    }
 }

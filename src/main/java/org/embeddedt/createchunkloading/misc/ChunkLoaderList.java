@@ -52,7 +52,9 @@ public class ChunkLoaderList implements IChunkLoaderList {
             source = source.withFeedbackDisabled();
         }
 
-        int ret = this.world.getServer().getCommandManager().handleCommand(source, "forceload " + action + " " + pos.getX() + " " + pos.getZ());
+        String cmd = "forceload " + action + " " + pos.getX() + " " + pos.getZ();
+        System.out.println(cmd);
+        int ret = this.world.getServer().getCommandManager().handleCommand(source, cmd);
     }
     /** loads/unloads chunk containing the blockpos */
     private void setforceload(BlockPos pos, Boolean x) {forceload(pos,x?"add":"remove");}

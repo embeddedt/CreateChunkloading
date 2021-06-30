@@ -1,5 +1,6 @@
 package org.embeddedt.createchunkloading;
 
+import net.minecraftforge.common.world.ForgeChunkManager;
 import org.embeddedt.createchunkloading.blocks.ChunkLoader;
 import org.embeddedt.createchunkloading.misc.ChunkLoaderList;
 import org.embeddedt.createchunkloading.misc.ChunkLoaderMovementBehaviour;
@@ -97,36 +98,8 @@ public class CreateChunkloading {
     }
 
 
-    @SubscribeEvent
-    @SuppressWarnings("unused")
-    public void attachWorldCaps(AttachCapabilitiesEvent<World> event) {
-        if (event.getObject().isRemote) return;
-        final LazyOptional<IChunkLoaderList> loaderInst = LazyOptional.of(() -> new ChunkLoaderList((ServerWorld) event.getObject()));
-        final ICapabilitySerializable<INBT> loadingCapability = new ICapabilitySerializable<INBT>() {
-            @Override
-            public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, Direction side) {
-                return CHUNK_LOADING_CAPABILITY.orEmpty(cap, loaderInst);
-            }
-
-            @Override
-            public INBT serializeNBT() {
-                return CHUNK_LOADING_CAPABILITY.writeNBT(loaderInst.orElse(null), null);
-            }
-
-            @Override
-            public void deserializeNBT(INBT nbt) {
-                loaderInst.ifPresent(h -> CHUNK_LOADING_CAPABILITY.readNBT(h, null, nbt));
-            }
-        };
-
-        event.addCapability(new ResourceLocation(modid, "create_integration_loader"), loadingCapability);
-        event.addListener(loaderInst::invalidate);
-    }
-
     private void setup(final FMLCommonSetupEvent event) {
         setup.init();
-
-        CapabilityManager.INSTANCE.register(IChunkLoaderList.class, new ChunkLoaderList.Storage(), () -> new ChunkLoaderList(null));
 
         logger.info("Setup method registered.");
     }
@@ -134,22 +107,6 @@ public class CreateChunkloading {
     private void clientRegistries(final FMLClientSetupEvent event) {
         logger.info("Client method registered.");
     }
-
-    @SubscribeEvent
-    @SuppressWarnings("unused")
-    public void onTick(TickEvent.WorldTickEvent event) {
-        if (event.world != null && event.world.getGameTime() % 20 == 0) {
-            //event.world.getCapability(CreateIntegration.CHUNK_LOADING_CAPABILITY, null).ifPresent(IChunkLoaderList::tickDown);
-        }
-    }
-
-    @SubscribeEvent
-    @SuppressWarnings("unused")
-    public void onServerStarted(FMLServerStartedEvent event) {
-        event.getServer().getWorlds().forEach(world -> world.getCapability(CreateChunkloading.CHUNK_LOADING_CAPABILITY, null).ifPresent(IChunkLoaderList::start));
-
-    }
-
 
     @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class RegistryEvents {
@@ -175,7 +132,7 @@ public class CreateChunkloading {
             logger.info("finished blocks registering");
         }
 
-
+/*
         @SubscribeEvent
         @SuppressWarnings("unused")
         public static void onTileEntityRegistry(final RegistryEvent.Register<TileEntityType<?>> event) {
@@ -183,6 +140,7 @@ public class CreateChunkloading {
             event.getRegistry().register(TileEntityType.Builder.create(ChunkLoaderTile::new, ModBlocks.CHUNK_LOADER).build(null).setRegistryName("chunk_loader"));
             logger.info("finished TEs registering");
         }
+ */
 
     }
 }
