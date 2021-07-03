@@ -100,16 +100,6 @@ shadowJar {
 repositories {
     mavenLocal()
     maven { url "http://www.wynprice.com/dummycursemaven/curse/maven/create/2926732_mapped_snapshot_20190719-1.14.3/create-2926732_mapped_snapshot_20190719-1.14.3.pom" }
-    maven {
-        // location of the maven that hosts JEI files
-        name "Progwml6 maven"
-        url "https://dvs1.progwml6.com/files/maven/"
-    }
-    maven {
-        // location of a maven mirror for JEI files, as a fallback
-        name "ModMaven"
-        url "https://modmaven.k-4u.nl"
-    }
     maven { // Registrate
         url "http://maven.tterrag.com/"
     }
@@ -118,7 +108,6 @@ repositories {
 dependencies {
     minecraft 'net.minecraftforge:forge:1.16.5-36.1.0'
 
-    implementation fg.deobf("mezz.jei:jei-1.16.4:7.6.1.74")
     implementation fg.deobf("curse.maven:create-328085:3278516")
 
 }
