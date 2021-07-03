@@ -16,6 +16,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
+import java.util.UUID;
 
 public class ChunkLoader extends Block {
     public ChunkLoader() {
@@ -45,26 +46,34 @@ public class ChunkLoader extends Block {
         return new BlockPos(roundedX, 0, roundedZ);
     }
 
-    private static void forgeLoadChunk(ServerWorld world, BlockPos pos, boolean state, boolean shouldLoadSurroundingAsWell) {
+    private static void forgeLoadChunk(ServerWorld world, BlockPos pos, boolean state, UUID entityUUID, boolean shouldLoadSurroundingAsWell) {
         int chunkX = pos.getX() >> 4;
         int chunkZ = pos.getZ() >> 4;
-        ForgeChunkManager.forceChunk(world, CreateChunkloading.modid, pos, chunkX, chunkZ, state, true);
+        if(entityUUID != null) {
+            ForgeChunkManager.forceChunk(world, CreateChunkloading.modid, entityUUID, chunkX, chunkZ, state, true);
+        } else {
+            ForgeChunkManager.forceChunk(world, CreateChunkloading.modid, pos, chunkX, chunkZ, state, true);
+        }
         if(shouldLoadSurroundingAsWell) {
             CreateChunkloading.logger.debug((state ? "ADD" : "REMOVE") + " " + pos.toString());
-            forgeLoadChunk(world, pos.add(1, 0, 0), state, false);
-            forgeLoadChunk(world, pos.add(1, 0, 1), state, false);
-            forgeLoadChunk(world, pos.add(1, 0, -1), state, false);
-            forgeLoadChunk(world, pos.add(-1, 0, 0), state, false);
-            forgeLoadChunk(world, pos.add(-1, 0, 1), state, false);
-            forgeLoadChunk(world, pos.add(-1, 0, -1), state, false);
-            forgeLoadChunk(world, pos.add(0, 0, -1), state, false);
-            forgeLoadChunk(world, pos.add(0, 0, 1), state, false);
+            forgeLoadChunk(world, pos.add(1, 0, 0), state, entityUUID,false);
+            forgeLoadChunk(world, pos.add(1, 0, 1), state, entityUUID,false);
+            forgeLoadChunk(world, pos.add(1, 0, -1), state, entityUUID, false);
+            forgeLoadChunk(world, pos.add(-1, 0, 0), state, entityUUID, false);
+            forgeLoadChunk(world, pos.add(-1, 0, 1), state, entityUUID, false);
+            forgeLoadChunk(world, pos.add(-1, 0, -1), state, entityUUID,false);
+            forgeLoadChunk(world, pos.add(0, 0, -1), state, entityUUID, false);
+            forgeLoadChunk(world, pos.add(0, 0, 1), state, entityUUID, false);
         }
     }
 
     public static void forgeLoadChunk(ServerWorld world, BlockPos pos, boolean state) {
-        forgeLoadChunk(world, pos, state, true);
+        forgeLoadChunk(world, pos, state, null, true);
     }
+    public static void forgeLoadChunk(ServerWorld world, BlockPos pos, boolean state, UUID entityUUID) {
+        forgeLoadChunk(world, pos, state, entityUUID, true);
+    }
+
 
 
     @Nonnull

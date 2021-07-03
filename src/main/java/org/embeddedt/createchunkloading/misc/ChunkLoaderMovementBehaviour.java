@@ -28,9 +28,9 @@ public class ChunkLoaderMovementBehaviour extends MovementBehaviour {
         if(pos.equals(oldPos))
             return;
 
-        ChunkLoader.forgeLoadChunk((ServerWorld) context.world, pos, true);
+        ChunkLoader.forgeLoadChunk((ServerWorld) context.world, pos, true, context.contraption.entity.getUniqueID());
         if(oldPos instanceof BlockPos) {
-            ChunkLoader.forgeLoadChunk((ServerWorld) context.world, (BlockPos) oldPos, false);
+            ChunkLoader.forgeLoadChunk((ServerWorld) context.world, (BlockPos) oldPos, false, context.contraption.entity.getUniqueID());
         }
 
         context.temporaryData = pos;
@@ -48,7 +48,7 @@ public class ChunkLoaderMovementBehaviour extends MovementBehaviour {
             return; /* not much we can do */
         context.temporaryData = getBlockPos(context.position);
         CreateChunkloading.logger.debug("start moving " + context.temporaryData.toString());
-        ChunkLoader.forgeLoadChunk((ServerWorld) context.world, (BlockPos)context.temporaryData, true);
+        ChunkLoader.forgeLoadChunk((ServerWorld) context.world, (BlockPos)context.temporaryData,true, context.contraption.entity.getUniqueID());
     }
 
     @Override
@@ -56,7 +56,7 @@ public class ChunkLoaderMovementBehaviour extends MovementBehaviour {
         if(context.position == null)
             return; /* not much we can do */
         CreateChunkloading.logger.debug("stop moving " + getBlockPos(context.position).toString());
-        ChunkLoader.forgeLoadChunk((ServerWorld) context.world, getBlockPos(context.position), false);
+        ChunkLoader.forgeLoadChunk((ServerWorld) context.world, getBlockPos(context.position), false, context.contraption.entity.getUniqueID());
         context.temporaryData = null;
     }
 
