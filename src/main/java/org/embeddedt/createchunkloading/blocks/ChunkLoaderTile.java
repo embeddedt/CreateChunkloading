@@ -17,7 +17,7 @@ public class ChunkLoaderTile extends TileEntity implements ITickableTileEntity {
     public void remove(){
         //TODO(remove tile entety)
         super.remove();
-        world.getCapability(CreateChunkloading.CHUNK_LOADING_CAPABILITY, null).ifPresent(cap -> cap.removeblock(pos));
+        //world.getCapability(CreateChunkloading.CHUNK_LOADING_CAPABILITY, null).ifPresent(cap -> cap.removeblock(pos));
     }
 
 
