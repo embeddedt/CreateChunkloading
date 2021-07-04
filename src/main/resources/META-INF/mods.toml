@@ -5,7 +5,7 @@ logoFile="createchunkloading_logo.png"
 license="LGPL-2.1 License"
 [[mods]]
 modId="createchunkloading"
-version="0.1.1"
+version="0.2.0"
 displayName="Create Chunkloading"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/create-integration"
 credits="Thanks to LordGrimmauld for the original implementation of the chunkloader, used almost unmodified here."
