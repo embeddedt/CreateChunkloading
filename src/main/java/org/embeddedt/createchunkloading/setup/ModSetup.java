@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 public class ModSetup {
     public static ItemGroup itemGroup = new ItemGroup("createchunkloading") {
         @Override
-        public ItemStack createIcon() {
+        public ItemStack makeIcon() {
             return new ItemStack(ModBlocks.CHUNK_LOADER);
         }
     };

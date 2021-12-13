@@ -13,25 +13,27 @@ import net.minecraft.world.World;
 import javax.annotation.Nonnull;
 import java.util.UUID;
 
+import net.minecraft.block.AbstractBlock.Properties;
+
 public class ChunkLoader extends Block {
     public ChunkLoader() {
-        super(Properties.from(Blocks.BEACON));
+        super(Properties.copy(Blocks.BEACON));
         setRegistryName("chunk_loader");
     }
 
     @Override
-    public void onBlockAdded(@Nonnull BlockState state, World world, @Nonnull BlockPos pos, @Nonnull BlockState oldState, boolean isMoving) {
-        super.onBlockAdded(state, world, pos, oldState, isMoving);
-        if (world.isRemote) return;
+    public void onPlace(@Nonnull BlockState state, World world, @Nonnull BlockPos pos, @Nonnull BlockState oldState, boolean isMoving) {
+        super.onPlace(state, world, pos, oldState, isMoving);
+        if (world.isClientSide) return;
         int chunkX = pos.getX() >> 4;
         int chunkZ = pos.getZ() >> 4;
         forgeLoadChunk((ServerWorld)world, chunkX, chunkZ, true, pos, false);
     }
 
     @Override
-    public void onReplaced(@Nonnull BlockState state, World world, @Nonnull BlockPos pos, @Nonnull BlockState newState, boolean isMoving) {
-        super.onReplaced(state, world, pos, newState, isMoving);
-        if (world.isRemote) return;
+    public void onRemove(@Nonnull BlockState state, World world, @Nonnull BlockPos pos, @Nonnull BlockState newState, boolean isMoving) {
+        super.onRemove(state, world, pos, newState, isMoving);
+        if (world.isClientSide) return;
 
         int chunkX = pos.getX() >> 4;
         int chunkZ = pos.getZ() >> 4;
@@ -67,7 +69,7 @@ public class ChunkLoader extends Block {
 
     @Nonnull
     @Override
-    public PushReaction getPushReaction(@Nonnull BlockState state) {
+    public PushReaction getPistonPushReaction(@Nonnull BlockState state) {
         return PushReaction.NORMAL;
     }
 

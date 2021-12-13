@@ -17,9 +17,9 @@ public class ChunkLoaderMovementBehaviour extends MovementBehaviour {
 
     @Override
     public void visitNewPosition(MovementContext context, BlockPos pos) {
-        if (context.world.isRemote)return;
+        if (context.world.isClientSide)return;
 
-        pos = new BlockPos(context.contraption.entity.chunkCoordX, 0, context.contraption.entity.chunkCoordZ);
+        pos = new BlockPos(context.contraption.entity.xChunk, 0, context.contraption.entity.zChunk);
 
         CreateChunkloading.logger.debug("visit new position " + pos.toString());
 
@@ -27,7 +27,7 @@ public class ChunkLoaderMovementBehaviour extends MovementBehaviour {
 
         if(!(oldPos instanceof BlockPos)) {
             if (context.data.contains("previous_chunk"))
-                oldPos = BlockPos.fromLong(context.data.getLong("previous_chunk"));
+                oldPos = BlockPos.of(context.data.getLong("previous_chunk"));
         }
 
         if(pos.equals(oldPos))
@@ -41,16 +41,16 @@ public class ChunkLoaderMovementBehaviour extends MovementBehaviour {
                     oldChunkPos.getX(),
                     oldChunkPos.getZ(),
                     false,
-                    context.contraption.entity.getUniqueID(),
+                    context.contraption.entity.getUUID(),
                     true);
         }
         /* Now load the new position */
         ChunkLoader.forgeLoadChunk(
                 (ServerWorld) context.world,
-                context.contraption.entity.chunkCoordX,
-                context.contraption.entity.chunkCoordZ,
+                context.contraption.entity.xChunk,
+                context.contraption.entity.zChunk,
                 true,
-                context.contraption.entity.getUniqueID(),
+                context.contraption.entity.getUUID(),
                 true);
 
 
@@ -67,14 +67,14 @@ public class ChunkLoaderMovementBehaviour extends MovementBehaviour {
     public void startMoving(MovementContext context){
         if(context.position == null)
             return; /* not much we can do */
-        context.temporaryData = context.contraption.entity.getBlockPos();
+        context.temporaryData = context.contraption.entity.blockPosition();
         CreateChunkloading.logger.debug("start moving " + context.temporaryData.toString());
         ChunkLoader.forgeLoadChunk(
                 (ServerWorld) context.world,
-                context.contraption.entity.chunkCoordX,
-                context.contraption.entity.chunkCoordZ,
+                context.contraption.entity.xChunk,
+                context.contraption.entity.zChunk,
                 true,
-                context.contraption.entity.getUniqueID(),
+                context.contraption.entity.getUUID(),
                 true);
     }
 
@@ -84,14 +84,14 @@ public class ChunkLoaderMovementBehaviour extends MovementBehaviour {
             CreateChunkloading.logger.error("Contraption entity no longer exists - a chunk is probably going to remain loaded forever!");
             return; /* not much we can do */
         }
-        BlockPos pos = context.contraption.entity.getBlockPos();
+        BlockPos pos = context.contraption.entity.blockPosition();
         CreateChunkloading.logger.debug("stop moving " + pos.toString());
         ChunkLoader.forgeLoadChunk(
                 (ServerWorld) context.world,
-                context.contraption.entity.chunkCoordX,
-                context.contraption.entity.chunkCoordZ,
+                context.contraption.entity.xChunk,
+                context.contraption.entity.zChunk,
                 false,
-                context.contraption.entity.getUniqueID(),
+                context.contraption.entity.getUUID(),
                 true);
         context.temporaryData = null;
     }
@@ -100,7 +100,7 @@ public class ChunkLoaderMovementBehaviour extends MovementBehaviour {
     public void writeExtraData(MovementContext context) {
         super.writeExtraData(context);
         if(context.temporaryData instanceof BlockPos) {
-            context.data.putLong("previous_chunk", ((BlockPos)context.temporaryData).toLong());
+            context.data.putLong("previous_chunk", ((BlockPos)context.temporaryData).asLong());
             CreateChunkloading.logger.debug("previous chunk saved");
         }else{
             CreateChunkloading.logger.debug("i don't want to write null");

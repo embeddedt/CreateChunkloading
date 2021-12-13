@@ -78,13 +78,13 @@ public class CreateChunkloading {
     }
 
     public static Map<ResourceLocation, IRecipe<?>> getRecipes(IRecipeType<?> recipeType, RecipeManager manager) {
-        final Map<IRecipeType<?>, Map<ResourceLocation, IRecipe<?>>> recipesMap = ObfuscationReflectionHelper.getPrivateValue(RecipeManager.class, manager, "field_199522_d");
+        final Map<IRecipeType<?>, Map<ResourceLocation, IRecipe<?>>> recipesMap = ObfuscationReflectionHelper.getPrivateValue(RecipeManager.class, manager, "recipes");
         assert recipesMap != null;
         return recipesMap.get(recipeType);
     }
 
     public static void clientInit(FMLClientSetupEvent event) {
-        RenderTypeLookup.setRenderLayer(ModBlocks.CHUNK_LOADER, RenderType.getTranslucent());
+        RenderTypeLookup.setRenderLayer(ModBlocks.CHUNK_LOADER, RenderType.translucent());
         registerRenderers();
     }
 
@@ -114,7 +114,7 @@ public class CreateChunkloading {
         @SuppressWarnings("unused")
         public static void registerItems(final RegistryEvent.Register<Item> event) {
             logger.info("items registering");
-            Item.Properties properties = new Item.Properties().group(ModSetup.itemGroup);
+            Item.Properties properties = new Item.Properties().tab(ModSetup.itemGroup);
 
             event.getRegistry().register(new BlockItem(ModBlocks.CHUNK_LOADER, properties).setRegistryName("chunk_loader"));
             logger.info("finished items registering");
