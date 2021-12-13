@@ -22,13 +22,13 @@ public class ModUtil {
 
     public static Direction getFacingFromEntity(BlockPos clickedBlock, @Nullable LivingEntity entity) {
         if (entity == null) return Direction.NORTH;
-        Vector3d vec = entity.getPositionVec();
-        return Direction.getFacingFromVector((float) (entity.isSneaking() ? -1 : 1) * (vec.x - clickedBlock.getX()), (float) (entity.isSneaking() ? -1 : 1) * (vec.y - clickedBlock.getY()), (float) (entity.isSneaking() ? -1 : 1) * (vec.z - clickedBlock.getZ()));
+        Vector3d vec = entity.position();
+        return Direction.getNearest((float) (entity.isShiftKeyDown() ? -1 : 1) * (vec.x - clickedBlock.getX()), (float) (entity.isShiftKeyDown() ? -1 : 1) * (vec.y - clickedBlock.getY()), (float) (entity.isShiftKeyDown() ? -1 : 1) * (vec.z - clickedBlock.getZ()));
     }
 
     public static Direction getFacingFromEntity(BlockPos clickedBlock, @Nullable LivingEntity entity, boolean noUpDown) {
         if (entity == null) return Direction.NORTH;
-        Vector3d vec = entity.getPositionVec();
-        return Direction.getFacingFromVector((float) (entity.isSneaking() ? -1 : 1) * (vec.x - clickedBlock.getX()), (float) (noUpDown ? 0 : 1) * (entity.isSneaking() ? -1 : 1) * (vec.y - clickedBlock.getY()), (float) (entity.isSneaking() ? -1 : 1) * (vec.z - clickedBlock.getZ()));
+        Vector3d vec = entity.position();
+        return Direction.getNearest((float) (entity.isShiftKeyDown() ? -1 : 1) * (vec.x - clickedBlock.getX()), (float) (noUpDown ? 0 : 1) * (entity.isShiftKeyDown() ? -1 : 1) * (vec.y - clickedBlock.getY()), (float) (entity.isShiftKeyDown() ? -1 : 1) * (vec.z - clickedBlock.getZ()));
     }
 }
