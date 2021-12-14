@@ -1,19 +1,19 @@
 package org.embeddedt.createchunkloading.blocks;
 
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.common.world.ForgeChunkManager;
 import org.embeddedt.createchunkloading.CreateChunkloading;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.material.PushReaction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
 import javax.annotation.Nonnull;
 import java.util.UUID;
 
-import net.minecraft.block.AbstractBlock.Properties;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class ChunkLoader extends Block {
     public ChunkLoader() {
@@ -22,22 +22,22 @@ public class ChunkLoader extends Block {
     }
 
     @Override
-    public void onPlace(@Nonnull BlockState state, World world, @Nonnull BlockPos pos, @Nonnull BlockState oldState, boolean isMoving) {
+    public void onPlace(@Nonnull BlockState state, Level world, @Nonnull BlockPos pos, @Nonnull BlockState oldState, boolean isMoving) {
         super.onPlace(state, world, pos, oldState, isMoving);
         if (world.isClientSide) return;
         int chunkX = pos.getX() >> 4;
         int chunkZ = pos.getZ() >> 4;
-        forgeLoadChunk((ServerWorld)world, chunkX, chunkZ, true, pos, false);
+        forgeLoadChunk((ServerLevel)world, chunkX, chunkZ, true, pos, false);
     }
 
     @Override
-    public void onRemove(@Nonnull BlockState state, World world, @Nonnull BlockPos pos, @Nonnull BlockState newState, boolean isMoving) {
+    public void onRemove(@Nonnull BlockState state, Level world, @Nonnull BlockPos pos, @Nonnull BlockState newState, boolean isMoving) {
         super.onRemove(state, world, pos, newState, isMoving);
         if (world.isClientSide) return;
 
         int chunkX = pos.getX() >> 4;
         int chunkZ = pos.getZ() >> 4;
-        forgeLoadChunk((ServerWorld)world, chunkX, chunkZ, false, pos, false);
+        forgeLoadChunk((ServerLevel)world, chunkX, chunkZ, false, pos, false);
     }
 
     public static BlockPos roundBlockPosToChunk(BlockPos pos) {
@@ -46,7 +46,7 @@ public class ChunkLoader extends Block {
         return new BlockPos(roundedX, 0, roundedZ);
     }
 
-    public static void forgeLoadChunk(ServerWorld world, int chunkX, int chunkZ, boolean state, Object entityUUID, boolean shouldLoadSurroundingAsWell) {
+    public static void forgeLoadChunk(ServerLevel world, int chunkX, int chunkZ, boolean state, Object entityUUID, boolean shouldLoadSurroundingAsWell) {
         //CreateChunkloading.logger.debug((state ? "LOAD" : "UNLOAD") + " " + chunkX + " " + chunkZ);
         if(entityUUID instanceof UUID) {
             ForgeChunkManager.forceChunk(world, CreateChunkloading.modid, (UUID)entityUUID, chunkX, chunkZ, state, true);
@@ -71,11 +71,5 @@ public class ChunkLoader extends Block {
     @Override
     public PushReaction getPistonPushReaction(@Nonnull BlockState state) {
         return PushReaction.NORMAL;
-    }
-
-
-    @Override
-    public boolean hasTileEntity(BlockState state) {
-        return false;
     }
 }

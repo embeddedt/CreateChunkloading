@@ -1,11 +1,11 @@
 modLoader="javafml"
-loaderVersion="[36,)"
+loaderVersion="[39,)"
 issueTrackerURL="https://github.com/embeddedt/CreateChunkloading/issues"
 logoFile="createchunkloading_logo.png"
 license="LGPL-2.1 License"
 [[mods]]
 modId="createchunkloading"
-version="0.2.0"
+version="0.3.0"
 displayName="Create Chunkloading"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/create-integration"
 credits="Thanks to LordGrimmauld for the original implementation of the chunkloader, used almost unmodified here."
@@ -14,18 +14,18 @@ description='''This mod adds a block which loads the chunk it is in, even when m
 [[dependencies.createchunkloading]] #optional
     modId="forge" #mandatory
     mandatory=true #mandatory
-    versionRange="[36,)" #mandatory
+    versionRange="[39,)" #mandatory
     ordering="NONE"
     side="BOTH"
 [[dependencies.createchunkloading]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.16.5]" #keep updated
+    versionRange="[1.18.1]" #keep updated
     ordering="NONE"
     side="BOTH"
 [[dependencies.createchunkloading]]
     modId="create"
     mandatory=true
-    versionRange="[mc1.16.5_v0.3.1c,)" #keep updated
+    versionRange="[mc1.18.1_v0.4a,)" #keep updated
     ordering="NONE"
     side="BOTH"

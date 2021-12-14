@@ -1,14 +1,12 @@
 package org.embeddedt.createchunkloading.misc;
 
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.server.ChunkManager;
-import net.minecraft.world.server.ServerChunkProvider;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.common.world.ForgeChunkManager;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.server.level.ServerLevel;
 import org.embeddedt.createchunkloading.CreateChunkloading;
 import com.simibubi.create.content.contraptions.components.structureMovement.MovementBehaviour;
 import com.simibubi.create.content.contraptions.components.structureMovement.MovementContext;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
 import org.embeddedt.createchunkloading.blocks.ChunkLoader;
 
 //import java.util.HashMap;
@@ -19,7 +17,8 @@ public class ChunkLoaderMovementBehaviour extends MovementBehaviour {
     public void visitNewPosition(MovementContext context, BlockPos pos) {
         if (context.world.isClientSide)return;
 
-        pos = new BlockPos(context.contraption.entity.xChunk, 0, context.contraption.entity.zChunk);
+        ChunkPos entityChunkPosition = context.contraption.entity.chunkPosition();
+        pos = new BlockPos(entityChunkPosition.x, 0, entityChunkPosition.z);
 
         CreateChunkloading.logger.debug("visit new position " + pos.toString());
 
@@ -37,7 +36,7 @@ public class ChunkLoaderMovementBehaviour extends MovementBehaviour {
         if(oldPos instanceof BlockPos) {
             BlockPos oldChunkPos = (BlockPos)oldPos;
             ChunkLoader.forgeLoadChunk(
-                    (ServerWorld) context.world,
+                    (ServerLevel) context.world,
                     oldChunkPos.getX(),
                     oldChunkPos.getZ(),
                     false,
@@ -46,9 +45,9 @@ public class ChunkLoaderMovementBehaviour extends MovementBehaviour {
         }
         /* Now load the new position */
         ChunkLoader.forgeLoadChunk(
-                (ServerWorld) context.world,
-                context.contraption.entity.xChunk,
-                context.contraption.entity.zChunk,
+                (ServerLevel) context.world,
+                entityChunkPosition.x,
+                entityChunkPosition.z,
                 true,
                 context.contraption.entity.getUUID(),
                 true);
@@ -59,7 +58,7 @@ public class ChunkLoaderMovementBehaviour extends MovementBehaviour {
 
     //private void updatepos(){ }
 
-    public static BlockPos getBlockPos(Vector3d vec) {
+    public static BlockPos getBlockPos(Vec3 vec) {
         return new BlockPos((int)vec.x, (int)vec.y, (int)vec.z);
     }
 
@@ -69,10 +68,11 @@ public class ChunkLoaderMovementBehaviour extends MovementBehaviour {
             return; /* not much we can do */
         context.temporaryData = context.contraption.entity.blockPosition();
         CreateChunkloading.logger.debug("start moving " + context.temporaryData.toString());
+        ChunkPos entityChunkPosition = context.contraption.entity.chunkPosition();
         ChunkLoader.forgeLoadChunk(
-                (ServerWorld) context.world,
-                context.contraption.entity.xChunk,
-                context.contraption.entity.zChunk,
+                (ServerLevel) context.world,
+                entityChunkPosition.x,
+                entityChunkPosition.z,
                 true,
                 context.contraption.entity.getUUID(),
                 true);
@@ -86,10 +86,11 @@ public class ChunkLoaderMovementBehaviour extends MovementBehaviour {
         }
         BlockPos pos = context.contraption.entity.blockPosition();
         CreateChunkloading.logger.debug("stop moving " + pos.toString());
+        ChunkPos entityChunkPosition = context.contraption.entity.chunkPosition();
         ChunkLoader.forgeLoadChunk(
-                (ServerWorld) context.world,
-                context.contraption.entity.xChunk,
-                context.contraption.entity.zChunk,
+                (ServerLevel) context.world,
+                entityChunkPosition.x,
+                entityChunkPosition.z,
                 false,
                 context.contraption.entity.getUUID(),
                 true);

@@ -40,10 +40,4 @@ public class Config {
         configData.load();
         spec.setConfig(configData);
     }
-
-    @SubscribeEvent
-    @SuppressWarnings("unused")
-    public static void onLoad(final ModConfig.Loading configEvent) {
-
-    }
 }
