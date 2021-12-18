@@ -20,7 +20,7 @@ apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 apply from: 'https://raw.githubusercontent.com/SizableShrimp/Forge-Class-Remapper/main/classremapper.gradle'
 
-version = '0.3.0'
+version = '0.3.1'
 group = 'org.embeddedt.createchunkloading'
 archivesBaseName = 'createchunkloading'
 
