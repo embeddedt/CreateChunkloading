@@ -1,0 +1,15 @@
+{
+  "block.createchunkloading.dynamo": "Dinamo sobre estresado",
+  "block.createchunkloading.motor": "Motor sobre estresado",
+  "block.createchunkloading.rolling_machine": "Maquina de laminación",
+  "block.createchunkloading.chunk_loader": "Cargador de chunks",
+  "block.createchunkloading.ender_crate": "Cofre de Ender movible",
+  "block.createchunkloading.brass_pressure_plate": "Placa de presión de latón",
+  "block.createchunkloading.copper_pressure_plate": "Placa de presión de cobre",
+  "block.createchunkloading.zinc_pressure_plate": "Placa de presión de zinc",
+  "death.attack.createchunkloading.dynamo": "%1$s fue golpeado hasta la muerte por un dinamo sobre estresado",
+  "death.attack.createchunkloading.motor": "%1$s fue golpeado hasta la muerte por un motor sobre estresado",
+  "itemGroup.createchunkloading": "Create Chunkloading",
+  "createchunkloading.category.rolling": "Laminación",
+  "createchunkloading.generic.ender_id": "Ender ID"
+}
