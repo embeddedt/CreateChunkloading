@@ -2,11 +2,13 @@ buildscript {
     repositories {
         jcenter()
         maven { url = 'https://maven.minecraftforge.net' }
+        maven { url = 'https://maven.parchmentmc.org' }
         maven { url "https://plugins.gradle.org/m2/" }
         mavenCentral()
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
+        classpath 'org.parchmentmc:librarian:1.+'
     }
 }
 
@@ -16,6 +18,7 @@ plugins {
 
 
 apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'org.parchmentmc.librarian.forgegradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 apply from: 'https://raw.githubusercontent.com/SizableShrimp/Forge-Class-Remapper/main/classremapper.gradle'
@@ -27,7 +30,7 @@ archivesBaseName = 'createchunkloading'
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 minecraft {
-    mappings channel: 'official', version: '1.18.1'
+    mappings channel: 'parchment', version: '2022.01.23-1.18.1'
     runs {
         client {
             workingDirectory project.file('run')
@@ -104,10 +107,11 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.18.1-39.0.0'
+    minecraft 'net.minecraftforge:forge:1.18.1-39.0.59'
 
-    implementation fg.deobf("curse.maven:create-328085:3564692")
-    implementation fg.deobf("curse.maven:flywheel-486392:3564677")
+    implementation fg.deobf("curse.maven:create-328085:3623348")
+    implementation fg.deobf("curse.maven:flywheel-486392:3623314")
+    runtimeOnly fg.deobf("curse.maven:lazydfu-460819:3544496")
 }
 
 jar {
