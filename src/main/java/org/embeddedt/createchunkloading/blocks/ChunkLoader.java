@@ -49,9 +49,9 @@ public class ChunkLoader extends Block {
     public static void forgeLoadChunk(ServerLevel world, int chunkX, int chunkZ, boolean state, Object entityUUID, boolean shouldLoadSurroundingAsWell) {
         //CreateChunkloading.logger.debug((state ? "LOAD" : "UNLOAD") + " " + chunkX + " " + chunkZ);
         if(entityUUID instanceof UUID) {
-            ForgeChunkManager.forceChunk(world, CreateChunkloading.modid, (UUID)entityUUID, chunkX, chunkZ, state, true);
+            ForgeChunkManager.forceChunk(world, CreateChunkloading.modid, (UUID)entityUUID, chunkX, chunkZ, state, false);
         } else if(entityUUID instanceof BlockPos) {
-            ForgeChunkManager.forceChunk(world, CreateChunkloading.modid, (BlockPos)entityUUID, chunkX, chunkZ, state, true);
+            ForgeChunkManager.forceChunk(world, CreateChunkloading.modid, (BlockPos)entityUUID, chunkX, chunkZ, state, false);
         } else
             throw new IllegalArgumentException("entityUUID must be UUID or BlockPos");
         if(shouldLoadSurroundingAsWell) {
