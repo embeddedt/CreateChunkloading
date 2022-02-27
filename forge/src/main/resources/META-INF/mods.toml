@@ -1,0 +1,42 @@
+modLoader = "javafml"
+loaderVersion = "[39,)"
+#issueTrackerURL = ""
+license = "LGPL-2.1 License"
+
+[[mods]]
+modId = "createchunkloading"
+version = "${version}"
+displayName = "Create Chunkloading"
+authors = "embeddedt"
+description = '''
+Provides a chunkloader block that works with Create contraptions.
+'''
+#logoFile = ""
+
+[[dependencies.createchunkloading]]
+modId = "forge"
+mandatory = true
+versionRange = "[39,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.createchunkloading]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.18.1,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.createchunkloading]]
+modId = "architectury"
+mandatory = true
+versionRange = "[3.7.22,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.createchunkloading]]
+modId="create"
+mandatory=true
+versionRange="[mc1.18.1_v0.4a,)" #keep updated
+ordering="NONE"
+side="BOTH"

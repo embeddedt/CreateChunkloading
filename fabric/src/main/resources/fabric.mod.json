@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "id": "createchunkloading",
+  "version": "${version}",
+  "name": "Create Chunkloading",
+  "description": "Provides a chunkloader block that works with Create contraptions.",
+  "authors": [
+    "embeddedt"
+  ],
+  "contact": {
+    "homepage": "https://fabricmc.net/",
+    "sources": "https://github.com/FabricMC/fabric-example-mod"
+  },
+  "license": "LGPL-2.1",
+  "icon": "assets/createchunkloading/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "org.embeddedt.createchunkloading.fabric.CreateChunkloadingFabric"
+    ],
+    "client": [
+      "org.embeddedt.createchunkloading.fabric.CreateChunkloadingFabricClient"
+    ]
+  },
+  "depends": {
+    "fabric": "*",
+    "minecraft": ">=1.18.1",
+    "architectury": ">=3.7.22",
+    "create": "*"
+  }
+}

@@ -13,10 +13,12 @@ jobs:
     - name: Adjust Gradle permission
       run: chmod +x ./gradlew
     - name: Build mod
-      run: ./gradlew reobfJar
+      run: ./gradlew build
     - name: Upload artifacts
       uses: actions/upload-artifact@v1
       with:
         name: create-chunkloading
-        path: build/libs
+        path: |
+          forge/build/libs/*-forge.jar
+          fabric/build/libs/*-fabric.jar
 

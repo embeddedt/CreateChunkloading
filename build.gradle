@@ -1,148 +1,81 @@
-buildscript {
-    repositories {
-        jcenter()
-        maven { url = 'https://maven.minecraftforge.net' }
-        maven { url = 'https://maven.parchmentmc.org' }
-        maven { url "https://plugins.gradle.org/m2/" }
-        mavenCentral()
-    }
-    dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
-        classpath 'org.parchmentmc:librarian:1.+'
-    }
-}
-
 plugins {
-    id 'com.github.johnrengelman.shadow' version '5.2.0'
+    id "architectury-plugin" version "3.4-SNAPSHOT"
+    id "dev.architectury.loom" version "0.11.0-SNAPSHOT" apply false
 }
 
+architectury {
+    minecraft = rootProject.minecraft_version
+}
 
-apply plugin: 'net.minecraftforge.gradle'
-apply plugin: 'org.parchmentmc.librarian.forgegradle'
-apply plugin: 'eclipse'
-apply plugin: 'maven-publish'
-apply from: 'https://raw.githubusercontent.com/SizableShrimp/Forge-Class-Remapper/main/classremapper.gradle'
+subprojects {
+    apply plugin: "dev.architectury.loom"
 
-version = '0.4.0'
-group = 'org.embeddedt.createchunkloading'
-archivesBaseName = 'createchunkloading'
+    loom {
+        silentMojangMappingsLicense()
+    }
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+    dependencies {
+        minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
+        // The following line declares the mojmap mappings, you may use other mappings as well
+        mappings loom.officialMojangMappings()
+        // The following line declares the yarn mappings you may select this one as well.
+        // mappings "net.fabricmc:yarn:1.18.1+build.22:v2"
+    }
+}
 
-minecraft {
-    mappings channel: 'parchment', version: '2022.01.23-1.18.1'
-    runs {
-        client {
-            workingDirectory project.file('run')
-            jvmArgs "-Dmixin.env.disableRefMap=true"
+allprojects {
+    apply plugin: "java"
+    apply plugin: "architectury-plugin"
+    apply plugin: "maven-publish"
 
-            // Recommended logging data for a userdev environment
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+    archivesBaseName = rootProject.archives_base_name
+    version = rootProject.mod_version
+    group = rootProject.maven_group
 
-            // Recommended logging level for the console
-            property 'forge.logging.console.level', 'debug'
-
-            mods {
-                createintegration {
-                    source sourceSets.main
-                }
+    repositories {
+        // Add repositories to retrieve artifacts from in here.
+        // You should only use this when depending on other mods because
+        // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
+        // See https://docs.gradle.org/current/userguide/declaring_repositories.html
+        // for more information about repositories.
+        /* Create mavens - TODO remove these */
+        maven { url = "https://api.modrinth.com/maven" }
+        maven { url = "https://cursemaven.com" }
+        maven { url = "https://maven.parchmentmc.org" }
+        maven { url = "https://maven.fabricmc.net/" }
+        maven { url = "https://maven.tterrag.com/" }
+        maven { url = "https://storage.googleapis.com/devan-maven/" }
+        maven { url = "https://maven.shedaniel.me/" }
+        maven { url = "https://aperlambda.github.io/maven" }
+        maven { url = "https://ladysnake.jfrog.io/artifactory/mods" }
+        maven { url = "https://maven.kotlindiscord.com/repository/terraformers/" }
+        maven { url = "https://maven.devos.community/releases/" }
+        maven { url = "https://maven.devos.community/snapshots/" }
+        maven { url = "https://maven.terraformersmc.com/" }
+        maven { url = "https://maven.cafeteria.dev" }
+        maven {
+            url = "https://jitpack.io/"
+            content {
+                includeGroup("com.github.PepperCode1")
+                includeGroup("com.github.SuperCoder7979")
+                includeGroup("com.github.Jozufozu")
+                includeGroup("com.github.emilyploszaj")
             }
         }
-
-        server {
-            workingDirectory project.file('run/server')
-            property 'forge.logging.console.level', 'info'
-            mods {
-                create {
-                    source sourceSets.main
-                }
-            }
-        }
-
-        data {
-            workingDirectory project.file('run')
-
-            // Recommended logging data for a userdev environment
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-
-            // Recommended logging level for the console
-            property 'forge.logging.console.level', 'debug'
-
-            args '--mod', 'createintegration', '--all', '--output', file('src/generated/resources/')
-
-            mods {
-                createintegration {
-                    source sourceSets.main
-                }
+        maven {
+            url = "https://maven.jamieswhiteshirt.com/libs-release"
+            content {
+                includeGroup("com.jamieswhiteshirt")
             }
         }
     }
-}
 
-configurations {
-    shade
-}
-
-configurations.all {
-    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
-}
-
-shadowJar {
-    configurations = [project.configurations.shade]
-    relocate 'com.tterrag.registrate', 'org.embeddedt.createchunkloading.repack.registrate'
-}
-
-
-repositories {
-    mavenLocal()
-    maven {
-        url "https://cursemaven.com"
-        content {
-            includeGroup "curse.maven"
-        }
+    tasks.withType(JavaCompile) {
+        options.encoding = "UTF-8"
+        options.release = 17
     }
-    maven { // Registrate
-        url "https://maven.tterrag.com/"
+
+    java {
+        withSourcesJar()
     }
-}
-
-dependencies {
-    minecraft 'net.minecraftforge:forge:1.18.1-39.0.59'
-
-    implementation fg.deobf("curse.maven:create-328085:3623348")
-    implementation fg.deobf("curse.maven:flywheel-486392:3623314")
-    runtimeOnly fg.deobf("curse.maven:lazydfu-460819:3544496")
-}
-
-jar {
-    manifest {
-        attributes([
-                "Specification-Title"     : "createintegration",
-                "Specification-Vendor"    : "grimmauld",
-                "Specification-Version"   : "1",
-                "Implementation-Title"    : project.name,
-                "Implementation-Version"  : "${version}",
-                "Implementation-Vendor"   : "grimmauld",
-                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
-        ])
-    }
-}
-
-task deobfJar(type: Jar) {
-    from sourceSets.main.output
-    classifier 'deobf'
-}
-
-build.dependsOn deobfJar
-
-
-def reobfFile = file("$buildDir/reobfJar/output.jar")
-def reobfArtifact = artifacts.add('default', reobfFile) {
-    type 'jar'
-    builtBy 'reobfJar'
-}
-
-
-artifacts {
-    archives deobfJar
 }
