@@ -1,5 +1,7 @@
 package org.embeddedt.createchunkloading.forge;
 
+import com.simibubi.create.AllMovementBehaviours;
+import org.embeddedt.createchunkloading.ChunkLoaderMovementBehaviour;
 import org.embeddedt.createchunkloading.CreateChunkloading;
 import org.embeddedt.createchunkloading.ExampleExpectPlatform;
 import net.minecraft.core.BlockPos;
@@ -35,5 +37,9 @@ public class ExampleExpectPlatformImpl {
             forceLoadChunk(world, chunkX, chunkZ - 1, state, entityUUID, false);
             forceLoadChunk(world, chunkX, chunkZ + 1, state, entityUUID, false);
         }
+    }
+
+    public static void registerMovementBehavior() {
+        AllMovementBehaviours.registerBehaviour(CreateChunkloading.CHUNK_LOADER.get().delegate, new ChunkLoaderMovementBehaviour());
     }
 }

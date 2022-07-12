@@ -11,7 +11,7 @@ import static org.embeddedt.createchunkloading.ExampleExpectPlatform.forceLoadCh
 
 //import java.util.HashMap;
 
-public class ChunkLoaderMovementBehaviour extends MovementBehaviour {
+public class ChunkLoaderMovementBehaviour implements MovementBehaviour {
 
     @Override
     public void visitNewPosition(MovementContext context, BlockPos pos) {
@@ -95,7 +95,6 @@ public class ChunkLoaderMovementBehaviour extends MovementBehaviour {
 
     @Override
     public void writeExtraData(MovementContext context) {
-        super.writeExtraData(context);
         if(context.temporaryData instanceof BlockPos) {
             context.data.putLong("previous_chunk", ((BlockPos)context.temporaryData).asLong());
         }

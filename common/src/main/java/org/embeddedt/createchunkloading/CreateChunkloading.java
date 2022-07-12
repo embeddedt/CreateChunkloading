@@ -1,5 +1,6 @@
 package org.embeddedt.createchunkloading;
 
+import com.simibubi.create.AllMovementBehaviours;
 import dev.architectury.registry.CreativeTabRegistry;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
@@ -13,7 +14,8 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
-import static com.simibubi.create.AllMovementBehaviours.addMovementBehaviour;
+
+import java.util.function.Consumer;
 
 public class CreateChunkloading {
     public static final String MOD_ID = "createchunkloading";
@@ -30,7 +32,6 @@ public class CreateChunkloading {
     public static void init() {
         BLOCKS.register();
         ITEMS.register();
-        System.out.println(ExampleExpectPlatform.getConfigDirectory().toAbsolutePath().normalize().toString());
-        addMovementBehaviour(CHUNK_LOADER.getId(), new ChunkLoaderMovementBehaviour());
+        CHUNK_LOADER.listen(block -> ExampleExpectPlatform.registerMovementBehavior());
     }
 }

@@ -29,4 +29,9 @@ public class ExampleExpectPlatform {
     public static void forceLoadChunk(ServerLevel world, int chunkX, int chunkZ, boolean state, Object entityUUID, boolean shouldLoadSurroundingAsWell) {
         throw new AssertionError();
     }
+
+    @ExpectPlatform
+    public static void registerMovementBehavior() {
+        throw new AssertionError();
+    }
 }
