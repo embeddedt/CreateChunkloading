@@ -1,5 +1,6 @@
 plugins {
     id "com.github.johnrengelman.shadow" version "7.1.2"
+    id "com.matthewprenger.cursegradle"
 }
 
 architectury {
@@ -95,5 +96,35 @@ publishing {
     // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
     repositories {
         // Add repositories to publish to here.
+    }
+}
+
+curseforge {
+    if (System.getenv("CURSEFORGE_TOKEN") != null) {
+        apiKey = System.getenv("CURSEFORGE_TOKEN")
+        project {
+            id = "494206"
+            changelog = '[Changelog is not currently available]'
+            changelogType = "markdown"
+            releaseType = "release"
+            addGameVersion "Forge"
+            addGameVersion rootProject.minecraft_version
+
+            mainArtifact(remapJar.archiveFile) {
+                displayName = "[FORGE] ${rootProject.mod_version} (${rootProject.minecraft_version})"
+            }
+            relations {
+                requiredDependency "cloth-config"
+                requiredDependency "architectury-api"
+            }
+            afterEvaluate {
+                uploadTask.dependsOn(remapJar)
+            }
+            addArtifact sourcesJar
+            addArtifact shadowJar
+        }
+        options {
+            forgeGradleIntegration = false
+        }
     }
 }
