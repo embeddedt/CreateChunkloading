@@ -16,7 +16,7 @@ Provides a chunkloader block that works with Create contraptions.
 [[dependencies.createchunkloading]]
 modId = "forge"
 mandatory = true
-versionRange = "[39,)"
+versionRange = "[40.1.58,)"
 ordering = "NONE"
 side = "BOTH"
 

@@ -22,9 +22,9 @@ public class ExampleExpectPlatformImpl {
 
     public static void forceLoadChunk(ServerLevel world, int chunkX, int chunkZ, boolean state, Object entityUUID, boolean shouldLoadSurroundingAsWell) {
         if(entityUUID instanceof UUID) {
-            ForgeChunkManager.forceChunk(world, CreateChunkloading.MOD_ID, (UUID)entityUUID, chunkX, chunkZ, state, false);
+            ForgeChunkManager.forceChunk(world, CreateChunkloading.MOD_ID, (UUID)entityUUID, chunkX, chunkZ, state, true);
         } else if(entityUUID instanceof BlockPos) {
-            ForgeChunkManager.forceChunk(world, CreateChunkloading.MOD_ID, (BlockPos)entityUUID, chunkX, chunkZ, state, false);
+            ForgeChunkManager.forceChunk(world, CreateChunkloading.MOD_ID, (BlockPos)entityUUID, chunkX, chunkZ, state, true);
         } else
             throw new IllegalArgumentException("entityUUID must be UUID or BlockPos");
         if(shouldLoadSurroundingAsWell) {
