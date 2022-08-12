@@ -43,6 +43,8 @@ dependencies {
     modImplementation "curse.maven:flywheel-486392:3871082"
     modRuntimeOnly "curse.maven:lazydfu-460819:3544496"
 
+    modRuntimeOnly "mezz.jei:jei-${rootProject.minecraft_version}:9.7.1.232"
+
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
 }
