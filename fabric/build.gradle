@@ -45,7 +45,7 @@ dependencies {
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
 
     /* Create */
-    modCompileOnly("com.simibubi:Create:0.5.0c-685")
+    modCompileOnly("com.simibubi:Create:0.5.0c-708")
     modRuntimeOnly("supercoder79:databreaker:0.2.9") {
         exclude module: "fabric-loader"
     }

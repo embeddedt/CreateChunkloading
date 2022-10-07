@@ -53,7 +53,7 @@ allprojects {
         maven { url = "https://mvn.devos.one/releases/" }
         maven { url = "https://mvn.devos.one/snapshots/" }
         maven { url = "https://maven.terraformersmc.com/" }
-        maven { url = "https://maven.cafeteria.dev" }
+        maven { url = "https://maven.cafeteria.dev/releases" }
         maven { url = "https://jitpack.io/" }
         maven { url = "https://maven.jamieswhiteshirt.com/libs-release" }
         maven {
