@@ -32,6 +32,10 @@ repositories {
             includeGroup "curse.maven"
         }
     }
+    maven {
+        name "tterrag maven"
+        url "https://maven.tterrag.com/"
+    }
 }
 
 dependencies {
@@ -39,11 +43,11 @@ dependencies {
     // Remove the next line if you don't want to depend on the API
     modApi "dev.architectury:architectury-forge:${rootProject.architectury_version}"
 
-    modImplementation "curse.maven:create-328085:3872145"
-    modImplementation "curse.maven:flywheel-486392:3871082"
-    modRuntimeOnly "curse.maven:lazydfu-460819:3544496"
+    modImplementation "curse.maven:create-328085:4011414"
+    modImplementation "com.jozufozu.flywheel:flywheel-forge-1.19.2:0.6.7-8"
+    modImplementation "com.tterrag.registrate:Registrate:MC1.19-1.1.5"
 
-    modRuntimeOnly "mezz.jei:jei-${rootProject.minecraft_version}:9.7.1.232"
+    modImplementation("curse.maven:jei-238222:3928388")
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
