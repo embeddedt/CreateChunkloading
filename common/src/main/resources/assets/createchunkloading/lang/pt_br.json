@@ -1,16 +1,4 @@
 {
-    "block.createchunkloading.dynamo": "Dínamo estressado",
-    "block.createchunkloading.motor": "Motor Estressado",
-    "block.createchunkloading.rolling_machine": "Máquina de enrolar",
     "block.createchunkloading.chunk_loader": "Chunk Loader",
-    "block.createchunkloading.ender_crate": "Caixa Ender móvel",
-    "block.createchunkloading.brass_pressure_plate": "Placa de pressão de latão",
-    "block.createchunkloading.copper_pressure_plate": "Placa de pressão de cobre",
-    "block.createchunkloading.zinc_pressure_plate": "Placa de pressão de zinco",
-    "death.attack.createchunkloading.dynamo": "%1$s foi eletrocutado até a morte por Dínamo estressado",
-    "death.attack.createchunkloading.motor": "%1$s foi eletrocutado até a morte por Motor Estressado",
-    "itemGroup.createchunkloading.blocks_tab": "Criar Blocos de para manter Chunks carregadas",
-    "createchunkloading.category.rolling": "Rolando",
-    "createchunkloading.generic.ender_id": "ID do ender"
-  }
-  
+    "itemGroup.createchunkloading.blocks_tab": "Criar Blocos de para manter Chunks carregadas"
+}

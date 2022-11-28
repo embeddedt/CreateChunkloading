@@ -1,15 +1,4 @@
 {
-  "block.createchunkloading.dynamo": "Dynamo",
-  "block.createchunkloading.motor": "Motor",
-  "block.createchunkloading.rolling_machine": "Walzmaschiene",
   "block.createchunkloading.chunk_loader": "Chunk Loader",
-  "block.createchunkloading.ender_crate": "Bewegliche Ender-Kiste",
-  "block.createchunkloading.brass_pressure_plate": "Messingdruckplatte",
-  "block.createchunkloading.copper_pressure_plate": "Kupferdruckplatte",
-  "block.createchunkloading.zinc_pressure_plate": "Zinkdruckplatte",
-  "death.attack.createchunkloading.dynamo": "%1$s wurde durch Dynamo zu tode geschockt",
-  "death.attack.createchunkloading.motor": "%1$s wurde durch Motor zu tode geschockt.",
-  "itemGroup.createchunkloading": "Create Integration",
-  "createchunkloading.category.rolling": "Walzen",
-  "createchunkloading.generic.ender_id": "Ender ID"
+  "itemGroup.createchunkloading": "Create Chunkloading"
 }
