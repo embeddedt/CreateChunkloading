@@ -1,15 +1,4 @@
 {
-  "block.createchunkloading.dynamo": "Stressed Out 다이나모",
-  "block.createchunkloading.motor": "Stressed Out 모터",
-  "block.createchunkloading.rolling_machine": "압연기",
   "block.createchunkloading.chunk_loader": "청크 로더",
-  "block.createchunkloading.ender_crate": "이동식 엔더 창고",
-  "block.createchunkloading.brass_pressure_plate": "황동 압력판",
-  "block.createchunkloading.copper_pressure_plate": "구리 압력판",
-  "block.createchunkloading.zinc_pressure_plate": "아연 압력판",
-  "death.attack.createchunkloading.dynamo": "%1$s이(가) Stressed Out 다이나모에 지져졌습니다",
-  "death.attack.createchunkloading.motor": "%1$s이(가) Stressed Out 모터에 지져졌습니다",
-  "itemGroup.createchunkloading.blocks_tab": "Create 청크로딩 블록",
-  "createchunkloading.category.rolling": "압연",
-  "createchunkloading.generic.ender_id": "엔더 ID"
+  "itemGroup.createchunkloading.blocks_tab": "Create 청크로딩 블록"
 }
