@@ -37,6 +37,6 @@ side = "BOTH"
 [[dependencies.createchunkloading]]
 modId="create"
 mandatory=true
-versionRange="[mc1.18.1_v0.4a,)" #keep updated
+versionRange="[0.5.1,)" #keep updated
 ordering="NONE"
 side="BOTH"

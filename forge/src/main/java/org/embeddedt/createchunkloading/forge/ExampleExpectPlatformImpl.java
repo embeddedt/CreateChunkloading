@@ -40,6 +40,6 @@ public class ExampleExpectPlatformImpl {
     }
 
     public static void registerMovementBehavior() {
-        AllMovementBehaviours.registerBehaviour(CreateChunkloading.CHUNK_LOADER.get().delegate, new ChunkLoaderMovementBehaviour());
+        AllMovementBehaviours.registerBehaviour(CreateChunkloading.CHUNK_LOADER.get(), new ChunkLoaderMovementBehaviour());
     }
 }

@@ -39,8 +39,8 @@ dependencies {
     // Remove the next line if you don't want to depend on the API
     modApi "dev.architectury:architectury-forge:${rootProject.architectury_version}"
 
-    modImplementation "curse.maven:create-328085:3872145"
-    modImplementation "curse.maven:flywheel-486392:3871082"
+    modImplementation "curse.maven:create-328085:4550986"
+    modImplementation "curse.maven:flywheel-486392:4174748"
     modRuntimeOnly "curse.maven:lazydfu-460819:3544496"
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
