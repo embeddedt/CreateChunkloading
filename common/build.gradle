@@ -5,7 +5,7 @@ dependencies {
     // Remove the next line if you don't want to depend on the API
     modApi "dev.architectury:architectury:${rootProject.architectury_version}"
 
-    modImplementation("com.simibubi:Create:0.5.0c-708")
+    modImplementation("com.simibubi.create:create-fabric-1.19.2:0.5.1-b-build.1079+mc1.19.2")
 }
 
 architectury {

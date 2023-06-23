@@ -1,10 +1,10 @@
 package org.embeddedt.createchunkloading;
 
+import com.simibubi.create.content.contraptions.behaviour.MovementBehaviour;
+import com.simibubi.create.content.contraptions.behaviour.MovementContext;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.server.level.ServerLevel;
-import com.simibubi.create.content.contraptions.components.structureMovement.MovementBehaviour;
-import com.simibubi.create.content.contraptions.components.structureMovement.MovementContext;
 import net.minecraft.core.BlockPos;
 
 import static org.embeddedt.createchunkloading.ExampleExpectPlatform.forceLoadChunk;
