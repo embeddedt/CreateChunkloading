@@ -26,6 +26,6 @@
     "fabric": "*",
     "minecraft": ">=1.18.1",
     "architectury": ">=3.7.22",
-    "create": ">=0.5.1"
+    "create": ">=0.5.1-a"
   }
 }
