@@ -17,10 +17,4 @@ public class ChunkLoader extends Block {
     public RenderShape getRenderShape(BlockState blockState) {
         return RenderShape.MODEL;
     }
-
-    @Nonnull
-    @Override
-    public PushReaction getPistonPushReaction(@Nonnull BlockState state) {
-        return PushReaction.NORMAL;
-    }
 }

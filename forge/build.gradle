@@ -43,9 +43,9 @@ dependencies {
     // Remove the next line if you don't want to depend on the API
     modApi "dev.architectury:architectury-forge:${rootProject.architectury_version}"
 
-    modImplementation "curse.maven:create-328085:4550987"
+    modImplementation "curse.maven:create-328085:4626108"
 
-    modImplementation("curse.maven:jei-238222:3928388")
+    modImplementation("curse.maven:jei-238222:4644453")
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
